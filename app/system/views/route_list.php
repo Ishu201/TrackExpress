@@ -3,20 +3,30 @@
 <?php include('header.php') ?>
 
 <?php 
-  include('../models/Train_model.php');
-  $obj = new Train;
+  include('../models/Route_model.php');
+  $obj = new Route;
   $result = $obj->get_all();
+
+  include('../models/Station_model.php');
+  $obj2 = new Station;
 ?>
 
+<script>
+  $(document).ready(function() {
+    $("#Train").addClass("active");
+    $("#Trainmenu").attr("style", "display: block;");
+    $("#route_reg").addClass("current-page");
+  });
+</script>
 
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="">
     <div class="page-title">
       <div class="title_left"><br>
-        <p>Train Details Mgt / Train List</p>
+        <p>Train Details Mgt / Route List</p>
         </div>
-        <a href="train_reg.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Train Register</a>
+        <a href="Route_reg.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Route Register</a>
    </div>
 
     <div class="clearfix"></div>
@@ -25,7 +35,7 @@
       <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
           <div class="x_title">
-            <h2><b>Train List</b></h2>
+            <h2><b>Route List</b></h2>
             <div class="clearfix">
             <?php include('session_msg.php') ?>
             </div>
@@ -34,13 +44,12 @@
             <table id="datatable" class="table table-bordered" style="width:100%">
               <thead>
                 <tr>
-                  <th>Train Name</th>
-                  <th>Code</th>
-                  <th>Type</th>
-                  <th>GPS Link</th>
-                  <th>Class 1</th>
-                  <th>Class 2</th>
-                  <th>Class 3</th>
+                  <th>Route Name</th>
+                  <th style="text-align:center">Start Station</th>
+                  <th style="text-align:center">End Station</th>
+                  <th style="text-align:center">Distance</th>
+                  <th style="text-align:center">Ticket Price</th>
+                  <th style="text-align:center">Special Note</th>
                   <th style="text-align:right">Action</th>
                 </tr>
               </thead>
@@ -49,16 +58,29 @@
                 while ($row_des = $result->fetch_array()) {
                   ?>
                 <tr>
-                  <td><?php echo $row_des['name']; ?></td>
-                  <td><?php echo $row_des['code']; ?></td>
-                  <td><?php echo $row_des['type']; ?></td>
-                  <td><?php echo $row_des['gps_link']; ?></td>
-                  <td><?php echo $row_des['class_1']; ?></td>
-                  <td><?php echo $row_des['class_2']; ?></td>
-                  <td><?php echo $row_des['class_3']; ?></td>
+                  <td><?php echo $row_des['route_name']; ?></td>
+                  <td style="text-align:center">
+                    <?php 
+                    $start_station_id = $row_des['start_station_id'];
+                    $start_station = $obj2->viewStationselected($start_station_id);
+                    $row_start_station = $start_station->fetch_array();
+                    echo $row_start_station['name'];
+                    ?>
+                  </td>
+                  <td style="text-align:center">
+                    <?php 
+                    $final_station_id = $row_des['final_station_id'];
+                    $final_station = $obj2->viewStationselected($final_station_id);
+                    $row_final_station = $final_station->fetch_array();
+                    echo $row_final_station['name'];
+                    ?>
+                  </td>
+                  <td style="text-align:right"><?php echo $row_des['total_distance']; ?>km</td>
+                  <td style="text-align:right">Rs.<?php echo number_format($row_des['total_price'],2); ?></td>
+                  <td style="text-align:right"><?php echo $row_des['sp_note']; ?></td>
                   <td style="text-align:right">
-                    <button onclick="window.location.href = 'train_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
-                    <button onclick="confirmRemove('../controllers/Train.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>
+                    <button onclick="window.location.href = 'Route_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
+                    <button onclick="confirmRemove('../controllers/Route.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>
                   </td>
                 </tr>
               <?php } ?>

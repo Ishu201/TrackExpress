@@ -12,33 +12,47 @@ class Route {
 
   public function update_single() {
       $con = $GLOBALS['con'];
+      $route_name = $_POST['route_name'];
+      $total_distance = $_POST['total_distance'];
+      $total_price = $_POST['total_price'];
+      $start_station_id = $_POST['start_station_id'];
+      $final_station_id = $_POST['final_station_id'];
+      $sp_note = $_POST['sp_note'];
       $tid = $_POST['tid'];
-      $code = $_POST['code'];
-      $name = $_POST['name'];
-      $gps_link = $_POST['gps_link'];
-      $type = $_POST['type'];
-      $class_1 = $_POST['class_1'];
-      $class_2 = $_POST['class_2'];
-      $class_3 = $_POST['class_3'];
+      $intst_no = $_POST['intst_no'];
 
-        $sql_check = "SELECT * FROM tbl_route WHERE code='$code' and id !='$tid'";
+        $sql_check = "SELECT * FROM tbl_route WHERE route_name='$route_name' and id !='$tid'";
         $result_check = $con->query($sql_check);
         $count_chk = $result_check->num_rows;
 
         if($count_chk != 0){
           $msg = $tid;
         } else{
-          $sql = "UPDATE tbl_route SET `code`='$code', `name`='$name', `gps_link`='$gps_link', `type`='$type', `class_1`='$class_1', `class_2`='$class_2', `class_3`='$class_3' WHERE id ='$tid'";
+          $sql = "UPDATE tbl_route SET `route_name`='$route_name', `total_distance`='$total_distance', `total_price`='$total_price', `start_station_id`='$start_station_id', `final_station_id`='$final_station_id', `sp_note`='$sp_note' WHERE id ='$tid'";
           $result = $con->query($sql) or die($con->error);
           $msg = 'success';
+
         }
       return $msg;
+  }
+
+  public function update_intst($tid,$station,$distance) {
+      $con = $GLOBALS['con'];
+          $sql = "UPDATE tbl_route_stations SET `station_id`='$station', `distance`='$distance' WHERE id ='$tid'";
+          $result = $con->query($sql) or die($con->error);
+          
   }
 
 
   public function remove_single($tid) {
       $con = $GLOBALS['con'];
       $sql = "UPDATE tbl_route SET `status`='no' WHERE id ='$tid'";
+      $result = $con->query($sql) or die($con->error);
+  }
+
+  public function rem_intst($tid) {
+      $con = $GLOBALS['con'];
+      $sql = "UPDATE tbl_route_stations SET `status`='no' WHERE id ='$tid'";
       $result = $con->query($sql) or die($con->error);
   }
 
@@ -66,7 +80,7 @@ class Route {
           $lastInsertedId = $con->insert_id;
           
           if($intst_no > 0){
-            for ($i = 1; $i <= $intst_no; $i++) {
+            for ($i = 0; $i < $intst_no; $i++) {
               $stationId = $_POST['station_id'][$i];
               $distance = $_POST['distance'][$i];
 

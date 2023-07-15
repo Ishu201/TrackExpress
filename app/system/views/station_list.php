@@ -8,6 +8,13 @@
   $result = $obj->get_all();
 ?>
 
+<script>
+  $(document).ready(function() {
+    $("#Train").addClass("active");
+    $("#Trainmenu").attr("style", "display: block;");
+    $("#station_reg").addClass("current-page");
+  });
+</script>
 
 <!-- page content -->
 <div class="right_col" role="main">

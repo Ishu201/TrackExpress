@@ -47,5 +47,19 @@ switch ($status) {
             header("Location:../views/route_list.php");
         break;
 
+    case "station":
+      $tid = $_POST['id'];
+      $station = $_POST['station'];
+      $distance = $_POST['distance'];
+        $msg = $obj->update_intst($tid,$station,$distance);
+            header("Location:../views/route_list.php");
+        break;
+
+    case "rem_station":
+      $tid = $_POST['id'];
+        $msg = $obj->rem_intst($tid);
+            header("Location:../views/route_list.php");
+        break;
+
 
 }

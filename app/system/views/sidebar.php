@@ -152,39 +152,39 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home </a>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Train Details Mgt<span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="train_reg.php">Train Register</a></li>
-                      <li><a href="station_reg.php">Station Register</a></li>
-                      <li><a href="route_reg.php">Route Register</a></li>
+                  <li id="Train"><a><i class="fa fa-edit"></i> Train Details Mgt<span class="fa fa-chevron-down"></span></a>
+                    <ul id="Trainmenu" class="nav child_menu">
+                      <li id="train_reg"><a href="train_reg.php">Train Register</a></li>
+                      <li id="station_reg"><a href="station_reg.php">Station Register</a></li>
+                      <li id="route_reg"><a href="route_reg.php">Route Register</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-list"></i> Train Schedule Mgt <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="schedule_trains.php">Schedule Trains</a></li>
-                      <li><a href="scheduled_list.php">Schedule Train List</a></li>
-                      <li><a href="train_availability.php">Train Availability</a></li>
-                      <li><a href="train_tracking.php">Train Tracking</a></li>
+                  <li id="Schedule"><a><i class="fa fa-list"></i> Train Schedule Mgt <span class="fa fa-chevron-down"></span></a>
+                    <ul id="Schedulemenu" class="nav child_menu">
+                      <li id="schedule_trains"><a href="schedule_trains.php">Schedule Trains</a></li>
+                      <li id="scheduled_list"><a href="scheduled_list.php">Schedule Train List</a></li>
+                      <li id="train_availability"><a href="train_availability.php">Train Availability</a></li>
+                      <li id="train_tracking"><a href="train_tracking.php">Train Tracking</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-group"></i> Passenger Mgt <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="customers.php">Customer List</a></li>
-                      <li><a href="loyalty.php">Loyalty Customer</a></li>
-                      <li><a href="supports.php">Customer Support</a></li>
+                  <li id="Passenger"><a><i class="fa fa-group"></i> Passenger Mgt <span class="fa fa-chevron-down"></span></a>
+                    <ul id="Passengermenu" class="nav child_menu">
+                      <li id="customers"><a href="customers.php">Customer List</a></li>
+                      <li id="loyalty"><a href="loyalty.php">Loyalty Customer</a></li>
+                      <li id="supports"><a href="supports.php">Customer Support</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Ticket Booking Mgt <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="booking_list.php">Booking List</a></li>
-                      <li><a href="booking_history.php">Booking History</a></li>
+                  <li id="Booking"><a><i class="fa fa-bar-chart-o"></i> Ticket Booking Mgt <span class="fa fa-chevron-down"></span></a>
+                    <ul id="Bookingmenu" class="nav child_menu">
+                      <li id="booking_list"><a href="booking_list.php">Booking List</a></li>
+                      <li id="booking_history"><a href="booking_history.php">Booking History</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-clone"></i>Revenue Mgt <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="income_rep.php">Income Report</a></li>
-                      <li><a href="booking_rep.php">Online Booking Report</a></li>
-                      <li><a href="income_chart.php">Income Chart</a></li>
+                  <li id="Revenue"><a><i class="fa fa-clone"></i>Revenue Mgt <span class="fa fa-chevron-down"></span></a>
+                    <ul id="Revenuemenu" class="nav child_menu">
+                      <li id="income_rep"><a href="income_rep.php">Income Report</a></li>
+                      <li id="booking_rep"><a href="booking_rep.php">Online Booking Report</a></li>
+                      <li id="income_chart"><a href="income_chart.php">Income Chart</a></li>
                     </ul>
                   </li>
                 </ul>
