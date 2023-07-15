@@ -20,7 +20,7 @@ if(isset($_GET['id'])){
     <div class=""> 
         <div class="page-title"> 
             <div class="title_left"><br>
-                <p>Train Details Mgt / Train Register</p>
+                <p>Train Details Mgt / Train Details Register</p>
             </div>
             <a href="train_list.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Train List</a>
         </div>
@@ -55,7 +55,7 @@ if(isset($_GET['id'])){
                             </div> <br>
                             <div class="form-group row">
                             <div class="col-md-5 col-sm-6 ">
-                                    <label class="control-label">GPS Link</label>
+                                    <label class="control-label">GPS Device Link</label>
                                     <input id="gps_link" name="gps_link" type="text" class="form-control" value="<?php  if($id != ''){ echo $row_des['gps_link']; } ?>" placeholder="Tracking GPS"  >
                                 </div>
                                 <div class="col-md-4 col-sm-6 ">
