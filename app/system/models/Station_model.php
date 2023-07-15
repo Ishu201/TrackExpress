@@ -4,7 +4,7 @@ class Station {
 
   public function get_all() {
       $con = $GLOBALS['con'];
-      $sql = "SELECT * FROM tbl_station WHERE status='active'";
+      $sql = "SELECT * FROM tbl_station WHERE status='active' ORDER BY name";
       $result = $con->query($sql);
       return $result;
   }

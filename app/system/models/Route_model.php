@@ -63,17 +63,15 @@ class Route {
         else{
           $sql = "INSERT INTO `tbl_route`( `route_name`, `start_station_id`, `final_station_id`, `total_distance`, `total_price`, `sp_note`) VALUES ('$route_name','$start_station_id','$final_station_id','$total_distance','$total_price','$sp_note')";
           $result = $con->query($sql) or die($con->error);
-          $sql = "INSERT INTO `tbl_route_stations`(`id`, `route_id`, `station_id`, `distance`, `status`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]')";
-          $result = $con->query($sql) or die($con->error);
-
+          $lastInsertedId = $con->insert_id;
+          
           if($intst_no > 0){
             for ($i = 1; $i <= $intst_no; $i++) {
               $stationId = $_POST['station_id'][$i];
               $distance = $_POST['distance'][$i];
-      
-              // Do something with the station_id and distance values
-              // For example, you can insert them into a database
-              // using prepared statements or perform any other desired operation
+
+              $sql = "INSERT INTO `tbl_route_stations`(`route_id`, `station_id`, `distance`) VALUES ('$lastInsertedId','$stationId','$distance')";
+              $result = $con->query($sql) or die($con->error);
           }
           }
 

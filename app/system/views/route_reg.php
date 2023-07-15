@@ -23,6 +23,13 @@ $result2 = $obj->get_all();
 $result3 = $obj->get_all();
 ?>
 
+<style>
+    .intstations option:disabled {
+        color: #a6a6a6; /* Desired background color for disabled options */
+        cursor:not-allowed; /* Desired cursor style for disabled options */
+    }
+
+</style>
 <!-- page content -->
 <div class="right_col" role="main">
     <div class="">
@@ -54,21 +61,15 @@ $result3 = $obj->get_all();
                                 <div class="form-group row ">
                                     <div class="col-md-5 col-sm-6 ">
                                         <label class="control-label"><span>* </span>Route Name</label>
-                                        <input id="route_name" name="route_name" type="text" class="form-control" value="<?php if ($id != '') {
-                                                                                                                                echo $row_des['route_name'];
-                                                                                                                            } ?>" placeholder="Route Name..." data-parsley-trigger="change" required>
+                                        <input id="route_name" name="route_name" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['route_name']; } ?>" placeholder="Route Name..." data-parsley-trigger="change" required>
                                     </div>
                                     <div class="col-md-3 col-sm-6 ">
-                                        <label class="control-label"><span>* </span>Total Distance</label>
-                                        <input id="total_distance" name="total_distance" type="text" class="form-control" value="<?php if ($id != '') {
-                                                                                                                                        echo $row_des['total_distance'];
-                                                                                                                                    } ?>" placeholder="Total Distance..." data-parsley-trigger="change" required>
+                                        <label class="control-label"><span>* </span>Total Distance (Km)</label>
+                                        <input id="total_distance" name="total_distance" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['total_distance']; } ?>" placeholder="Total Distance..." data-parsley-trigger="change" required  pattern="[0-9]+(\.[0-9]+)?">
                                     </div>
                                     <div class="col-md-3 col-sm-6 ">
                                         <label class="control-label"><span>* </span>Total Price</label>
-                                        <input id="total_price" name="total_price" type="text" class="form-control" value="<?php if ($id != '') {
-                                                                                                                                echo $row_des['total_price'];
-                                                                                                                            } ?>" placeholder="Total Price (Rs)..." data-parsley-trigger="change" required>
+                                        <input id="total_price" name="total_price" type="text" class="form-control" value="<?php if ($id != '') {  echo $row_des['total_price']; } ?>" placeholder="Total Price (Rs)..." data-parsley-trigger="change" required  pattern="[0-9]+(\.[0-9]+)?">
                                     </div>
                                 </div> <br>
                                 <div class="form-group row">
@@ -120,7 +121,7 @@ $result3 = $obj->get_all();
                                             <label class="control-label"><span>*</span> Station</label>
                                         </div>
                                         <div class="col-md-4 col-sm-6">
-                                            <label class="control-label"><span>*</span> Distance From Start</label>
+                                            <label class="control-label"><span>*</span> Distance From Start (Km)</label>
                                         </div>
                                         <div class="col-md-4 col-sm-6">&nbsp;</div>
                                     </div>
@@ -128,10 +129,10 @@ $result3 = $obj->get_all();
                                     <div id="new_stations">
                                         <div class="form-group row">
                                             <div class="col-md-4 col-sm-6">
-                                                <select id="station_id_1" name="station_id[]" class="form-control">
+                                                <select id="station_id_1" name="station_id[]" class="form-control intstations">
                                                     <option value="">- select station -</option>
                                                     <?php
-                                                    $sql = "SELECT * FROM tbl_station WHERE status='active'";
+                                                    $sql = "SELECT * FROM tbl_station WHERE status='active' ORDER BY name";
                                                     $result = $con->query($sql);
                                                     while ($row_station2 = $result->fetch_array()) {
                                                     ?>
@@ -178,6 +179,35 @@ $result3 = $obj->get_all();
     </div>
 </div>
 <!-- /page content -->
+
+<script>
+    $(document).ready(function() {
+  // Trigger the initial check on page load
+  checkSelectedOptions();
+
+  // Bind the change event to the start_station_id and final_station_id elements
+  $("#start_station_id, #final_station_id").change(function() {
+    checkSelectedOptions();
+  });
+
+  function checkSelectedOptions() {
+    var startStationValue = $("#start_station_id").val();
+    var finalStationValue = $("#final_station_id").val();
+
+    $(".intstations").find("option").each(function() {
+      var optionValue = $(this).val();
+
+      if (optionValue === startStationValue || optionValue === finalStationValue) {
+        $(this).prop("disabled", true);
+      } else {
+        $(this).prop("disabled", false);
+      }
+    });
+  }
+});
+
+</script>
+
 <script>
     $(document).ready(function() {
         var stationIndex = 2; // Starting index for additional stations
