@@ -86,11 +86,20 @@ $result3 = $obj->get_all();
                                                                                                                                         echo $row_des['total_distance'];
                                                                                                                                     } ?>" placeholder="Total Distance..." data-parsley-trigger="change" required pattern="[0-9]+(\.[0-9]+)?">
                                     </div>
-                                    <div class="col-md-3 col-sm-6 ">
-                                        <label class="control-label"><span>* </span>Total Price</label>
-                                        <input id="total_price" name="total_price" type="text" class="form-control" value="<?php if ($id != '') {
-                                                                                                                                echo $row_des['total_price'];
-                                                                                                                            } ?>" placeholder="Total Price (Rs)..." data-parsley-trigger="change" required pattern="[0-9]+(\.[0-9]+)?">
+                                </div> <br>
+                                
+                                <div class="form-group row ">
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <label class="control-label"><span>* </span>1st Class Price</label>
+                                        <input id="total_price_1st" name="total_price_1st" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['total_price_1st']; } ?>" placeholder="Total Price (Rs)..." data-parsley-trigger="change"  pattern="[0-9]+(\.[0-9]+)?">
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <label class="control-label"><span>* </span>2nd Class Price</label>
+                                        <input id="total_price_2nd" name="total_price_2nd" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['total_price_2nd']; } ?>" placeholder="Total Price (Rs)..." data-parsley-trigger="change" required pattern="[0-9]+(\.[0-9]+)?">
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <label class="control-label"><span>* </span>3rd Class Price</label>
+                                        <input id="total_price_3rd" name="total_price_3rd" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['total_price_3rd']; } ?>" placeholder="Total Price (Rs)..." data-parsley-trigger="change" required pattern="[0-9]+(\.[0-9]+)?">
                                     </div>
                                 </div> <br>
                                 <div class="form-group row">

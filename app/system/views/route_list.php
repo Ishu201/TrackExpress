@@ -48,7 +48,9 @@
                   <th style="text-align:center">Start Station</th>
                   <th style="text-align:center">End Station</th>
                   <th style="text-align:center">Distance</th>
-                  <th style="text-align:center">Ticket Price</th>
+                  <th style="text-align:center">1st Class</th>
+                  <th style="text-align:center">2nd Class</th>
+                  <th style="text-align:center">3rd Class</th>
                   <th style="text-align:center">Special Note</th>
                   <th style="text-align:right">Action</th>
                 </tr>
@@ -76,7 +78,9 @@
                     ?>
                   </td>
                   <td style="text-align:right"><?php echo $row_des['total_distance']; ?>km</td>
-                  <td style="text-align:right">Rs.<?php echo number_format($row_des['total_price'],2); ?></td>
+                  <td style="text-align:right">Rs.<?php if($row_des['total_price_1st'] == ''){ $total_price_1st = '0'; }else{ $total_price_1st = $row_des['total_price_1st']; } echo number_format($total_price_1st,2); ?></td>
+                  <td style="text-align:right">Rs.<?php if($row_des['total_price_2nd'] == ''){ $total_price_2nd = '0'; }else{ $total_price_2nd = $row_des['total_price_2nd']; } echo number_format($total_price_2nd,2); ?></td>
+                  <td style="text-align:right">Rs.<?php if($row_des['total_price_3rd'] == ''){ $total_price_3rd = '0'; }else{ $total_price_3rd = $row_des['total_price_3rd']; } echo number_format($total_price_3rd,2); ?></td>
                   <td style="text-align:right"><?php echo $row_des['sp_note']; ?></td>
                   <td style="text-align:right">
                     <button onclick="window.location.href = 'Route_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>

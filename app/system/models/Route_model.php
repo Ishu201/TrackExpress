@@ -14,7 +14,9 @@ class Route {
       $con = $GLOBALS['con'];
       $route_name = $_POST['route_name'];
       $total_distance = $_POST['total_distance'];
-      $total_price = $_POST['total_price'];
+      $total_price_1st = $_POST['total_price_1st'];
+      $total_price_2nd = $_POST['total_price_2nd'];
+      $total_price_3rd = $_POST['total_price_3rd'];
       $start_station_id = $_POST['start_station_id'];
       $final_station_id = $_POST['final_station_id'];
       $sp_note = $_POST['sp_note'];
@@ -28,7 +30,7 @@ class Route {
         if($count_chk != 0){
           $msg = $tid;
         } else{
-          $sql = "UPDATE tbl_route SET `route_name`='$route_name', `total_distance`='$total_distance', `total_price`='$total_price', `start_station_id`='$start_station_id', `final_station_id`='$final_station_id', `sp_note`='$sp_note' WHERE id ='$tid'";
+          $sql = "UPDATE tbl_route SET `route_name`='$route_name', `total_distance`='$total_distance', `total_price_1st`='$total_price_1st', `total_price_2nd`='$total_price_2nd', `total_price_3rd`='$total_price_3rd', `start_station_id`='$start_station_id', `final_station_id`='$final_station_id', `sp_note`='$sp_note' WHERE id ='$tid'";
           $result = $con->query($sql) or die($con->error);
           $msg = 'success';
 
@@ -61,7 +63,9 @@ class Route {
     $con = $GLOBALS['con'];
       $route_name = $_POST['route_name'];
       $total_distance = $_POST['total_distance'];
-      $total_price = $_POST['total_price'];
+      $total_price_1st = $_POST['total_price_1st'];
+      $total_price_2nd = $_POST['total_price_2nd'];
+      $total_price_3rd = $_POST['total_price_3rd'];
       $start_station_id = $_POST['start_station_id'];
       $final_station_id = $_POST['final_station_id'];
       $sp_note = $_POST['sp_note'];
@@ -75,7 +79,7 @@ class Route {
           $msg = '1';
         }
         else{
-          $sql = "INSERT INTO `tbl_route`( `route_name`, `start_station_id`, `final_station_id`, `total_distance`, `total_price`, `sp_note`) VALUES ('$route_name','$start_station_id','$final_station_id','$total_distance','$total_price','$sp_note')";
+          $sql = "INSERT INTO `tbl_route`( `route_name`, `start_station_id`, `final_station_id`, `total_price_1st`,`total_price_2nd`,`total_price_3rd`, `total_distance`, `sp_note`) VALUES ('$route_name','$start_station_id','$final_station_id','$total_price_1st','$total_price_2nd','$total_price_3rd','$total_distance','$sp_note')";
           $result = $con->query($sql) or die($con->error);
           $lastInsertedId = $con->insert_id;
           
