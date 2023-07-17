@@ -82,8 +82,8 @@ $result3 = $obj->get_all();
                                     </div>
                                     <div class="col-md-3 col-sm-6 ">
                                         <label class="control-label"><span>* </span>Total Distance (Km)</label>
-                                        <input id="total_distance" name="total_distance" type="text" class="form-control" value="<?php if ($id != '') {
-                                                                                                                                        echo $row_des['total_distance'];
+                                        <input id="total_distance" onchange="chk_total_main()" name="total_distance" type="text" class="form-control" value="<?php if ($id != '') {
+                                                                                                                                        echo $total_distance = $row_des['total_distance'];
                                                                                                                                     } ?>" placeholder="Total Distance..." data-parsley-trigger="change" required pattern="[0-9]+(\.[0-9]+)?">
                                     </div>
                                 </div> <br>
@@ -148,18 +148,27 @@ $result3 = $obj->get_all();
                                 <h6><b>Intermediate Stations</b></h6> <br>
 
                                 <?php 
+                                
                                     if ($id != '') {
                                     $sql2 = "SELECT * FROM tbl_route_stations WHERE route_id='$id' and status='active'";
                                     $result2 = $con->query($sql2);?>
 
                                     <div class="form-group row">
-                                        <div class="col-md-4 col-sm-6">
+                                        <div class="col-md-3 col-sm-6">
                                             <label class="control-label"><span>*</span> Station</label>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
+                                        <div class="col-md-2 col-sm-6">
                                             <label class="control-label"><span>*</span> Distance From Start (Km)</label>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">&nbsp;</div>
+                                        <div class="col-md-2 col-sm-6">
+                                            <label class="control-label"><span>*</span> 1st Class Ticket (Rs)</label>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6">
+                                            <label class="control-label"><span>*</span> 2nd Class Ticket (Rs)</label>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6">
+                                            <label class="control-label"><span>*</span> 3rd Class Ticket (Rs)</label>
+                                        </div>
                                     </div>
 
                                     <?php 
@@ -169,7 +178,7 @@ $result3 = $obj->get_all();
 
                                     <div> <br>
                                         <div class="form-group row">
-                                            <div class="col-md-4 col-sm-6">
+                                            <div class="col-md-3 col-sm-6">
                                                 <select id="edit_station_id_<?php echo $no; ?>"  class="form-control intstations" onchange="updateStation('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')">
                                                     <option value="">- select station -</option>
                                                     <?php
@@ -185,33 +194,53 @@ $result3 = $obj->get_all();
                                                     <?php } ?>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <input id="edit_distance_<?php echo $no; ?>"  type="text" class="form-control"  onchange="updateStation('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')" placeholder="Distance Upto the Station..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?" value="<?php if ($id != '') {
-                                                                                                                                        echo $row_Intermediate['distance'];
-                                                                                                                                    } ?>">
+                                            <?php $total_distance = $total_distance - $row_Intermediate['distance']; ?>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="edit_distance_<?php echo $no; ?>"  type="text" class="form-control Idist"  onchange="chk_total_dist(this);updateStation('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')" value="<?php if ($id != '') { echo $row_Intermediate['distance']; } ?>" placeholder="Distance Upto the Station..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?">
+                                            </div>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="price_1st<?php echo $no; ?>"  type="text" class="form-control" onchange="updateStation('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')"  placeholder="Price..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?" value="<?php if ($id != '') { echo $row_Intermediate['price_1st']; } ?>">
+                                            </div>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="price_2nd<?php echo $no; ?>"  type="text" class="form-control" onchange="updateStation('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')"  placeholder="Price..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?" value="<?php if ($id != '') { echo $row_Intermediate['price_2nd']; } ?>">
+                                            </div>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="price_3rd<?php echo $no; ?>"  type="text" class="form-control" onchange="updateStation('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')"  placeholder="Price..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?" value="<?php if ($id != '') { echo $row_Intermediate['price_3rd']; } ?>">
                                             </div>
 
-                                            <div class="col-md-3 col-sm-6">
+                                            <div class="col-md-1 col-sm-6">
                                                 <button id='edit_remove_<?php echo $no; ?>' type="button" class="btn btn-sm btn-danger remove-station" onclick="remintst('<?php echo $row_Intermediate['id']; ?>','<?php echo $no; ?>')">Remove</button>
+                                            </div>
+
+                                            <div id='msg_<?php echo $no; ?>' class="col-md-12 col-sm-6" style="text-align: center;padding-top:5px;display:none">
+                                                <label style='color:limegreen'>Station Data Updated ..!!</label>
                                             </div>
                                         </div>
                                     </div> 
-                                <?php $no++; } echo '<br> <br>'; } ?>
+                                <?php $no++; }  echo '<br> <hr>'; } ?>
 
                                 <div id="intst"> 
                                     <div class="form-group row">
-                                        <div class="col-md-4 col-sm-6">
+                                        <div class="col-md-3 col-sm-6">
                                             <label class="control-label"><span>*</span> Station</label>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
+                                        <div class="col-md-2 col-sm-6">
                                             <label class="control-label"><span>*</span> Distance From Start (Km)</label>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">&nbsp;</div>
+                                        <div class="col-md-2 col-sm-6">
+                                            <label class="control-label"><span>*</span> 1st Class Ticket (Rs)</label>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6">
+                                            <label class="control-label"><span>*</span> 2nd Class Ticket (Rs)</label>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6">
+                                            <label class="control-label"><span>*</span> 3rd Class Ticket (Rs)</label>
+                                        </div>
                                     </div>
 
                                     <div id="new_stations">
                                         <div class="form-group row">
-                                            <div class="col-md-4 col-sm-6">
+                                            <div class="col-md-3 col-sm-6">
                                                 <select id="station_id_1" name="station_id[]" class="form-control intstations">
                                                     <option value="">- select station -</option>
                                                     <?php
@@ -223,12 +252,21 @@ $result3 = $obj->get_all();
                                                     <?php } ?>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <input id="distance_1" name="distance[]" type="text" class="form-control" placeholder="Distance Upto the Station..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?">
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="distance_1" name="distance[]" onchange="chk_total_dist(this)" type="text" class="form-control Idist" placeholder="To the Station..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?">
+                                            </div>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="price_1st_1" name="price_1st[]"  type="text" class="form-control"  placeholder="Price..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?">
+                                            </div>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="price_2nd_1"  name="price_2nd[]"  type="text" class="form-control"  placeholder="Price..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?">
+                                            </div>
+                                            <div class="col-md-2 col-sm-6">
+                                                <input id="price_3rd_1" name="price_3rd[]"  type="text" class="form-control"  placeholder="Price..." data-parsley-trigger="change" pattern="[0-9]+(\.[0-9]+)?">
                                             </div>
 
-                                            <div class="col-md-3 col-sm-6">
-                                                <button type="button" class="btn btn-sm btn-danger remove-station">Remove</button>
+                                            <div class="col-md-1 col-sm-6">
+                                                <button type="button" class="btn btn-sm btn-danger remove-station" style="display:none">Remove</button>
                                             </div>
                                         </div>
                                     </div> <br>
@@ -237,7 +275,6 @@ $result3 = $obj->get_all();
                                 <br>
                                 <div class="form-group">
                                     <div class="col-md-12 col-sm-12">
-                                        <br>
                                         <button type="button" id="addst" class="btn btn-sm btn-info">Add Station</button>
                                     </div>
                                 </div>
@@ -310,6 +347,67 @@ $result3 = $obj->get_all();
             });
         }
     });
+
+    function chk_total_dist(element) {
+
+    var total_distance = $('#total_distance').val();
+    var distance1Input = $(element).val();
+
+    if(distance1Input == ''){
+        distance1Input= 0.00;
+    }else{
+        distance1Input = parseFloat(distance1Input);
+    }
+
+    var intDistInput = 0;
+
+    $('.Idist').each(function() {
+        var intDistInput2 = $(this).val();
+
+        if(intDistInput2 == ''){
+            intDistInput2 = 0.00;
+        }else{
+            intDistInput2 = parseFloat(intDistInput2);
+        }
+
+        intDistInput += intDistInput2
+    });
+
+    // alert(intDistInput)
+
+    if (total_distance < intDistInput) {
+        // Show the HTML error message
+        alert('Insufficient Distance Value')
+        $(element).val(total_distance-(intDistInput-distance1Input))
+    } 
+}
+
+
+function chk_total_main() {
+var total_distance = $('#total_distance').val();
+
+var intDistInput = 0;
+
+$('.Idist').each(function() {
+    var intDistInput2 = $(this).val();
+
+    if(intDistInput2 == ''){
+        intDistInput2 = 0.00;
+    }else{
+        intDistInput2 = parseFloat(intDistInput2);
+    }
+
+    intDistInput += intDistInput2
+});
+
+// alert(intDistInput)
+
+if (total_distance < intDistInput) {
+    // Show the HTML error message
+    alert('Insufficient Total Distance')
+    $('#total_distance').val(intDistInput)
+} 
+}
 </script>
 
 <script>
@@ -321,11 +419,12 @@ $result3 = $obj->get_all();
     var newStationDiv = $('#new_stations').find('.form-group').first().clone(); // Clone the first station div
     newStationDiv.find('select').attr('id', 'station_id_' + stationIndex).val(''); // Update select ID and empty its value
     newStationDiv.find('input').attr('id', 'distance_' + stationIndex).val(''); // Update input ID and empty its value
-    newStationDiv.find('.remove-station').attr('data-station-index', stationIndex); // Add data attribute for tracking
+    newStationDiv.find('.remove-station').attr('data-station-index', stationIndex).css('display', 'block'); // Add data attribute and set display to block
     newStationDiv.appendTo('#new_stations'); // Append the new station div
     stationIndex++; // Increment the station index
     $('#intst_no').val(parseInt($('#intst_no').val()) + 1); // Increment intst_no value
-  });
+});
+
 
   // Remove Station button click event
   $(document).on('click', '.remove-station', function() {
@@ -354,14 +453,18 @@ $result3 = $obj->get_all();
     function updateStation(id,no) {
         var station = $("#edit_station_id_"+no).val();
         var distance = $("#edit_distance_"+no).val();
+        var price_1st = $("#price_1st"+no).val();
+        var price_2nd = $("#price_2nd"+no).val();
+        var price_3rd = $("#price_3rd"+no).val();
     $.ajax({
         url: '../controllers/Route.php?status=station', // Replace with the URL of your PHP controller
         type: 'POST',
-        data: { station: station, distance: distance, id:id },
+        data: { station: station, distance: distance, price_1st:price_1st, price_2nd:price_2nd, price_3rd:price_3rd, id:id },
         success: function(response) {
             // Handle the success response from the server
-            alert('Update query successful!');
-            // Additional actions or UI updates after the update query
+
+            var messageDiv = $('#msg_'+no);
+            messageDiv.fadeIn().delay(1000).fadeOut();
         },
         error: function(xhr, status, error) {
             // Handle the error response from the server
@@ -378,7 +481,7 @@ $result3 = $obj->get_all();
         data: {id:id },
         success: function(response) {
             // Handle the success response from the server
-            alert('Update query successful!');
+            alert('Station Removed successfully!');
             // Additional actions or UI updates after the update query
         },
         error: function(xhr, status, error) {

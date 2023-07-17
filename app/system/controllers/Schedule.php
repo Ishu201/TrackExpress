@@ -1,11 +1,11 @@
 <?php
 session_start();
 include 'db_connect.php';
-include '../models/Route_model.php';
+include '../models/Schedule_model.php';
 
 $ob = new dbconnection();
 $con = $ob->connection();
-$obj = new Route();
+$obj = new Schedule();
 //$result = $obj->viewAemployee($name);
 
 $status = $_REQUEST['status'];
@@ -16,14 +16,14 @@ switch ($status) {
         $msg = $obj->add();
         $code = 'success';
           if ($msg == '1') {
-            echo $_SESSION['error'] = 'This Route is Already Registered';
+            echo $_SESSION['error'] = 'This Schedule is Already Registered';
             $code = 'error';
           } else if($msg == '2'){
             echo $_SESSION['success'] =  'Successfully Registered ..!!';
             $code = 'error';
           } 
         
-        header("Location:../views/route_reg.php");
+        header("Location:../views/Schedule_reg.php");
         break;
 
     case "update":
@@ -31,10 +31,10 @@ switch ($status) {
         $code = 'success';
           if ($msg == 'success') {
             $_SESSION['success'] =  'Successfully Updated ..!!';
-            header("Location:../views/route_list.php");
+            header("Location:../views/Schedule_list.php");
           }else{
-            $_SESSION['error'] = 'This Route Code is Already Registered';
-            header("Location:../views/route_reg.php?id=$msg");
+            $_SESSION['error'] = 'This Schedule Code is Already Registered';
+            header("Location:../views/Schedule_reg.php?id=$msg");
           }
           
         
@@ -43,27 +43,22 @@ switch ($status) {
     case "remove":
       $tid = $_REQUEST['id'];
         $msg = $obj->remove_single($tid);
-            $_SESSION['success'] = 'Route data is removed ..!!';
-            header("Location:../views/route_list.php");
+            $_SESSION['success'] = 'Schedule data is removed ..!!';
+            header("Location:../views/Schedule_list.php");
         break;
-
 
     case "station":
       $tid = $_POST['id'];
       $station = $_POST['station'];
       $distance = $_POST['distance'];
-      $price_1st = $_POST['price_1st'];
-      $price_2nd = $_POST['price_2nd'];
-      $price_3rd = $_POST['price_3rd'];
-        $msg = $obj->update_intst($tid,$station,$distance,$price_1st,$price_2nd,$price_3rd);
-            header("Location:../views/route_list.php");
+        $msg = $obj->update_intst($tid,$station,$distance);
+            header("Location:../views/Schedule_list.php");
         break;
-
 
     case "rem_station":
       $tid = $_POST['id'];
         $msg = $obj->rem_intst($tid);
-            header("Location:../views/route_list.php");
+            header("Location:../views/Schedule_list.php");
         break;
 
 

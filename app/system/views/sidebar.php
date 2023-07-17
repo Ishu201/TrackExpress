@@ -162,7 +162,7 @@
                   <li id="Schedule"><a><i class="fa fa-list"></i> Train Schedule Mgt <span class="fa fa-chevron-down"></span></a>
                     <ul id="Schedulemenu" class="nav child_menu">
                       <li id="schedule_trains"><a href="schedule_trains.php">Schedule Trains</a></li>
-                      <li id="scheduled_list"><a href="scheduled_list.php">Schedule Train List</a></li>
+                      <li id="scheduled_list"><a href="scheduled_start.php">Start Schedule</a></li>
                       <li id="train_availability"><a href="train_availability.php">Train Availability</a></li>
                       <li id="train_tracking"><a href="train_tracking.php">Train Tracking</a></li>
                     </ul>

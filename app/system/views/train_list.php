@@ -45,9 +45,9 @@
                   <th>Code</th>
                   <th>Type</th>
                   <th>GPS Link</th>
-                  <th>Class 1</th>
-                  <th>Class 2</th>
-                  <th>Class 3</th>
+                  <th>1st Class St</th>
+                  <th>2nd Class St</th>
+                  <th>3rd Class St</th>
                   <th style="text-align:right">Action</th>
                 </tr>
               </thead>
