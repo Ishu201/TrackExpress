@@ -43,6 +43,8 @@
                 <tr>
                   <th>Station Name</th>
                   <th>Type</th>
+                  <th>Contact No</th>
+                  <th>User Account</th>
                   <th style="text-align:right">Action</th>
                 </tr>
               </thead>
@@ -53,6 +55,8 @@
                 <tr>
                   <td><?php echo $row_des['name']; ?></td>
                   <td><?php echo $row_des['type']; ?></td>
+                  <td><?php echo $row_des['contact']; ?></td>
+                  <td><?php echo $row_des['user']; ?></td>
                   <td style="text-align:right">
                     <button onclick="window.location.href = 'station_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
                     <button onclick="confirmRemove('../controllers/Station.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>

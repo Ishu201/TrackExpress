@@ -51,40 +51,7 @@ class Schedule {
   }
 
 
-  function start() {
-    $con = $GLOBALS['con'];
-
-    $dateString = date('Y-m-d');
-    $timestamp = strtotime($dateString);
-    $dayInWords = date("l", $timestamp);
-
-      $day = $_POST['day'];
-      $train_id = $_POST['train_id'];
-      $route_id = $_POST['route_id'];
-      
-          $sql = "INSERT INTO `tbl_schedule`( `day`, `train_id`, `route_id`) VALUES('$day','$train_id','$route_id')";
-          $result = $con->query($sql) or die($con->error);
-          $lastInsertedId = $con->insert_id;
-
-          $sql2 = "SELECT * FROM tbl_route_stations WHERE route_id='$route_id'";
-          $result2 = $con->query($sql2);
-          while ($row_route_station = $result2->fetch_array()) {
-              $int_stationId = $row_route_station['id'];
-              
-              $sql = "INSERT INTO `tbl_schedule_stations`(`schedule_id`, `int_station_id`) VALUES ('$lastInsertedId','$int_stationId')";
-              $result = $con->query($sql) or die($con->error);
-          }
-          
-          if ($result) {
-            $msg = $lastInsertedId;
-          }else{
-            $msg = 'err';
-          }
-          
-        
-      return $msg;
-  }
-
+ 
 
   public function update_time($value,$table,$col,$id){
     $con = $GLOBALS['con'];
@@ -117,8 +84,12 @@ class Schedule {
     return $result;
   }
 
+  public function route_available($id) {
+    $con = $GLOBALS['con'];
+    $sql = "SELECT * FROM tbl_schedule WHERE route_id='$id'";
+    $result = $con->query($sql);
+    $count = $result->num_rows;
+    return $count;
 }
 
- ?>
-
-
+}

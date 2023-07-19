@@ -48,6 +48,7 @@ $obj4 = new Station;
                 <p>Train Schedule Mgt / Schedule Trains</p>
             </div>
             <a href="schedule_list.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Schedule List</a>
+            <a href="schedule_trains.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">New Schedule</a>
         </div>
 
         <div class="clearfix"></div>

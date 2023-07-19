@@ -40,6 +40,8 @@ class Train {
       $con = $GLOBALS['con'];
       $sql = "UPDATE tbl_train SET `status`='no' WHERE id ='$tid'";
       $result = $con->query($sql) or die($con->error);
+      $sql = "UPDATE tbl_schedule SET `train_id`='0' WHERE train_id ='$tid'";
+      $result = $con->query($sql) or die($con->error);
   }
 
 

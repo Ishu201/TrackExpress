@@ -8,7 +8,7 @@
 
 include('../models/Schedule_model.php');
 $Schedule_obj = new Schedule;
-// $schedule = $Schedule_obj->get_all($day);
+$schedule = $Schedule_obj->get_all('sunday');
 
 include('../models/Route_model.php');
 $route_obj = new Route;
@@ -36,13 +36,28 @@ $train_obj = new Train;
       <div class="title_left"><br>
         <p>Train Schedule Mgt / Cancel & Delayed Trains </p>
         </div>
-        <a href="../controllers/Schedule.php?status=start" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Start &nbsp; <?php echo date('Y-m-d'); ?></a>
-   </div>
+        <div style="float: right;text-align:center">
+        <?php 
+        $sql_last_date = "SELECT MAX(DATE_FORMAT(STR_TO_DATE(date, '%Y-%m-%d'), '%Y-%m-%d')) AS max_date FROM tbl_daily_trains"; //sunday
+        $result_last_date = $con->query($sql_last_date);
+        $row_last_date = $result_last_date->fetch_array();
+         $row_last_date = $row_last_date['max_date'];
 
+          $newDate = date('Y-m-d', strtotime($row_last_date . ' +1 month'));
+          // Get the year and month after adding one month
+           $newYear = date('Y', strtotime($newDate));
+           $newMonth = date('F', strtotime($newDate));
+        ?>
+        <a href="../controllers/Timetable.php?status=start" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="left" title="Time Table is created for 2023-07-31" >Start for <?php echo $newYear ?>-<?php echo $newMonth ?></a>
+        <br><span >Time Table is created untill  <?php echo $row_last_date ?></span>
+      </div>
+        
+   </div>
+<br>
     <div class="clearfix"></div>
 
-    <div class="row">
-      <div class="col-md-12 col-sm-12  ">
+    <div class="row"> <br>
+      <div class="col-md-12 col-sm-12  "><br>
         <div class="x_panel">
           <div class="x_title">
             <h2><b>Scheduled Train List</b></h2>
@@ -51,6 +66,12 @@ $train_obj = new Train;
             </div>
           </div>
 
+          <div class="col-md-6 col-sm-4 ">
+            <label for="datetime">Select Date</label>
+        <input type="date" style="width:50%" id="datetime" class="form-control" >
+        </div>
+
+          <br><br><br> <br><br> <hr>
           <div id="table_schedule">
           <div class="x_content" id="table-container">
             <table id="datatable" class="table table-bordered" style="width:100%">
@@ -131,13 +152,9 @@ $train_obj = new Train;
                         ?>
                     </td>
                     <td style="text-align:right">
-                        <button onclick="window.location.href = 'schedule_trains.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
-                        <?php if ($row_des['status'] == 'Active') { ?>
-                            <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','no');" class="btn btn-sm btn-warning">Deactivate</button>
-                        <?php }else { ?>
-                            <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','Active');" class="btn btn-sm btn-info">Activate</button>
-                        <?php } ?>
-                    </td>
+                        <button onclick="window.location.href = 'schedule_trains.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-info editbtn">Delay</button>
+                        <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','Active');" class="btn btn-sm btn-danger">Cancel</button>
+                      </td>
                 </tr>
               <?php } ?>
                 

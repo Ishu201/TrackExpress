@@ -49,20 +49,10 @@ switch ($status) {
       $tid = $_REQUEST['id'];
       $val = $_REQUEST['val'];
         $msg = $obj->deactivate($tid,$val);
-            $_SESSION['success'] = 'The Schedule is deactivated ..!!';
+            // $_SESSION['success'] = 'The Schedule is deactivated ..!!';
             header("Location:../views/schedule_list.php");
         break;
 
 
-        case "start":
-          $msg = $obj->start();
-            if ($msg == 'err') {
-               $_SESSION['error'] = 'Something went wrong.. Try Again..!';
-               header("Location:../views/schedule_trains.php");
-            } else{
-               $_SESSION['success'] =  'Successfully Registered ..!!';
-               header("Location:../views/schedule_trains.php?id=$msg");
-            } 
-          
-          break;
+        
 }

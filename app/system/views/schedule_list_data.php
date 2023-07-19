@@ -39,7 +39,8 @@ $day = $_GET['day'];
               </thead>
               <tbody>
               <?php
-              if($schedule){ 
+              
+              if($schedule->num_rows > 0){ 
                 while ($row_des = $schedule->fetch_array()) {
 
                   ?>
@@ -56,10 +57,14 @@ $day = $_GET['day'];
                   <td style="text-align:center">
                     <?php 
                     $train_id = $row_des['train_id'];
+                    if($train_id != '0'){
+                      $train = $train_obj->viewTrainselected($train_id);
+                      $row_train = $train->fetch_array();
+                      echo $row_train['name'];
+                    }else{
+                      echo '-';
+                    }
 
-                    $train = $train_obj->viewTrainselected($train_id);
-                    $row_train = $train->fetch_array();
-                    echo $row_train['name'];
                     ?>
                   </td>
                   <td style="text-align:center">
@@ -102,15 +107,18 @@ $day = $_GET['day'];
                     </td>
                     <td style="text-align:right">
                         <button onclick="window.location.href = 'schedule_trains.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
-                        <?php if ($row_des['status'] == 'Active') { ?>
+                        <?php if ($row_des['status'] == 'active') { ?>
                             <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','no');" class="btn btn-sm btn-warning">Deactivate</button>
                         <?php }else { ?>
-                            <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','Active');" class="btn btn-sm btn-info">Activate</button>
+                            <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','active');" class="btn btn-sm btn-info">Activate</button>
                         <?php } ?>
                     </td>
                 </tr>
-              <?php } } ?>
-                
+              <?php } }else{ ?>
+                <tr>
+                  <th style="text-align:right" colspan="10">There is No record for this Day..</th>
+                </tr>
+                <?php } ?>
               </tbody>
             </table>
           </div>

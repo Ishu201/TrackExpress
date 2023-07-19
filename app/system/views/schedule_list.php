@@ -103,7 +103,7 @@
         },
         error: function(xhr, status, error) {
             // Handle the error response from the server
-            console.error('Error updating station:', error);
+            alert('Error updating station:', error);
             // Additional error handling or UI updates
         }
     });

@@ -32,6 +32,21 @@ class Route {
         } else{
           $sql = "UPDATE tbl_route SET `route_name`='$route_name', `total_distance`='$total_distance', `total_price_1st`='$total_price_1st', `total_price_2nd`='$total_price_2nd', `total_price_3rd`='$total_price_3rd', `start_station_id`='$start_station_id', `final_station_id`='$final_station_id', `sp_note`='$sp_note' WHERE id ='$tid'";
           $result = $con->query($sql) or die($con->error);
+
+          if($intst_no > 0){
+            for ($i = 0; $i < $intst_no; $i++) {
+              $stationId = $_POST['station_id'][$i];
+              $distance = $_POST['distance'][$i];
+              $price_1st = $_POST['price_1st'][$i];
+              $price_2nd = $_POST['price_2nd'][$i];
+              $price_3rd = $_POST['price_3rd'][$i];
+               if($stationId > 0){ 
+              $sql = "INSERT INTO `tbl_route_stations`(`route_id`, `station_id`, `distance`,`price_1st`,`price_2nd`,`price_3rd`) VALUES ('$tid','$stationId','$distance','$price_1st','$price_2nd','$price_3rd')";
+              $result = $con->query($sql) or die($con->error);
+               }
+          }
+          }
+
           $msg = 'success';
 
         }
@@ -90,9 +105,10 @@ class Route {
               $price_1st = $_POST['price_1st'][$i];
               $price_2nd = $_POST['price_2nd'][$i];
               $price_3rd = $_POST['price_3rd'][$i];
-
+               if($stationId > 0){ 
               $sql = "INSERT INTO `tbl_route_stations`(`route_id`, `station_id`, `distance`,`price_1st`,`price_2nd`,`price_3rd`) VALUES ('$lastInsertedId','$stationId','$distance','$price_1st','$price_2nd','$price_3rd')";
               $result = $con->query($sql) or die($con->error);
+               }
           }
           }
 

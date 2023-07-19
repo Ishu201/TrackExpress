@@ -9,6 +9,10 @@
 
   include('../models/Station_model.php');
   $obj2 = new Station;
+
+  include('../models/Schedule_model.php');
+  $Schedule_obj = new Schedule;
+  
 ?>
 
 <script>
@@ -94,7 +98,7 @@
                   </td>
                   <td style="text-align:right">
                     <button onclick="window.location.href = 'Route_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
-                    <button onclick="confirmRemove('../controllers/Route.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>
+                    <button <?php if($Schedule_obj->route_available($row_des['id']) > 0){ ?>  data-toggle="tooltip" data-placement="left" title="Remove the Train Schedules associated with this route first" style='background-color:#ff8080 !important'<?php } else{  ?> onclick="confirmRemove('../controllers/Route.php?status=remove&id=<?php echo $row_des['id']; ?>');" <?php } ?> class="btn btn-sm btn-danger removebtn">Remove</button>
                   </td>
                 </tr>
               <?php } ?>

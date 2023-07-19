@@ -150,8 +150,10 @@ $result3 = $obj->get_all();
                                 <?php 
                                 
                                     if ($id != '') {
-                                    $sql2 = "SELECT * FROM tbl_route_stations WHERE route_id='$id' and status='active'";
-                                    $result2 = $con->query($sql2);?>
+                                        $sql2 = "SELECT * FROM tbl_route_stations WHERE route_id='$id' and status='active'";
+                                        $result2 = $con->query($sql2);
+                                        if ($result2->num_rows > 0) {
+                                    ?>
 
                                     <div class="form-group row">
                                         <div class="col-md-3 col-sm-6">
@@ -218,6 +220,7 @@ $result3 = $obj->get_all();
                                         </div>
                                     </div> 
                                 <?php $no++; }  echo '<br> <hr>'; } ?>
+                                    <?php } ?>
 
                                 <div id="intst"> 
                                     <div class="form-group row">
@@ -278,7 +281,7 @@ $result3 = $obj->get_all();
                                         <button type="button" id="addst" class="btn btn-sm btn-info">Add Station</button>
                                     </div>
                                 </div>
-                                <input type="hidden" name="intst_no" id="intst_no" value="1">
+                                <input type="text" name="intst_no" id="intst_no" value="1">
 
                                 <div class="form-group">
                                     <div class="col-md-12 col-sm-12 " style="text-align:right">
