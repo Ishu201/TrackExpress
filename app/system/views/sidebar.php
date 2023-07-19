@@ -94,7 +94,63 @@
         font-size:13px !important
       }
 
+    /* Custom checkbox style */
+    .checkbox-custom {
+      display: inline-block;
+      position: relative;
+      padding-left: 30px; /* Add padding to the left for the checkbox */
+      cursor: pointer;
+    }
     
+    /* Hide the default checkbox */
+    .checkbox-custom input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    /* Custom checkbox design */
+    .checkbox-custom .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #bfbfbf; /* Default checkbox background color */
+    }
+    
+    /* Checkbox label style */
+    .checkbox-custom .checkbox-label {
+      margin-left: 5px; /* Add margin to the left for the checkbox label */
+    }
+    
+    /* Checkbox checked style */
+    .checkbox-custom input:checked ~ .checkmark {
+      background-color: #26B899; /* Change the checkbox background color when checked */
+    }
+    
+    /* Checkmark design */
+    .checkbox-custom .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    /* Show the checkmark when the checkbox is checked */
+    .checkbox-custom input:checked ~ .checkmark:after {
+      display: block;
+    }
+    
+    /* Checkmark design */
+    .checkbox-custom .checkmark:after {
+      left: 7px;
+      top: 3px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
     </style>
 
 
@@ -117,6 +173,8 @@
       }
     });
   }
+
+  
 </script>
   </head>
 
@@ -162,8 +220,7 @@
                   <li id="Schedule"><a><i class="fa fa-list"></i> Train Schedule Mgt <span class="fa fa-chevron-down"></span></a>
                     <ul id="Schedulemenu" class="nav child_menu">
                       <li id="schedule_trains"><a href="schedule_trains.php">Schedule Trains</a></li>
-                      <li id="scheduled_list"><a href="scheduled_start.php">Start Schedule</a></li>
-                      <li id="train_availability"><a href="train_availability.php">Train Availability</a></li>
+                      <li id="cancel_schedule"><a href="cancel_schedule.php">Cancel & Delay Schedule</a></li>
                       <li id="train_tracking"><a href="train_tracking.php">Train Tracking</a></li>
                     </ul>
                   </li>

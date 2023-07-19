@@ -6,60 +6,63 @@ include '../models/Schedule_model.php';
 $ob = new dbconnection();
 $con = $ob->connection();
 $obj = new Schedule();
-//$result = $obj->viewAemployee($name);
+
 
 $status = $_REQUEST['status'];
-
 
 switch ($status) {
     case "add":
         $msg = $obj->add();
-        $code = 'success';
-          if ($msg == '1') {
-            echo $_SESSION['error'] = 'This Schedule is Already Registered';
-            $code = 'error';
-          } else if($msg == '2'){
-            echo $_SESSION['success'] =  'Successfully Registered ..!!';
-            $code = 'error';
+          if ($msg == 'err') {
+             $_SESSION['error'] = 'Something went wrong.. Try Again..!';
+             header("Location:../views/schedule_trains.php");
+          } else{
+             $_SESSION['success'] =  'Successfully Registered ..!!';
+             header("Location:../views/schedule_trains.php?id=$msg");
           } 
         
-        header("Location:../views/Schedule_reg.php");
         break;
 
-    case "update":
-        $msg = $obj->update_single();
-        $code = 'success';
+
+    case "update_time":
+      $value = $_REQUEST['value'];
+      $table   = $_REQUEST['table'];
+      $col     = $_REQUEST['col'];
+      $id      = $_REQUEST['id'];
+      $msg = $obj->update_time($value,$table,$col,$id);
           if ($msg == 'success') {
-            $_SESSION['success'] =  'Successfully Updated ..!!';
-            header("Location:../views/Schedule_list.php");
-          }else{
-            $_SESSION['error'] = 'This Schedule Code is Already Registered';
-            header("Location:../views/Schedule_reg.php?id=$msg");
+            header("Location:../views/schedule_trains.php?id=$msg");
           }
           
-        
         break;
 
-    case "remove":
+
+    case "delete":
       $tid = $_REQUEST['id'];
         $msg = $obj->remove_single($tid);
             $_SESSION['success'] = 'Schedule data is removed ..!!';
-            header("Location:../views/Schedule_list.php");
-        break;
-
-    case "station":
-      $tid = $_POST['id'];
-      $station = $_POST['station'];
-      $distance = $_POST['distance'];
-        $msg = $obj->update_intst($tid,$station,$distance);
-            header("Location:../views/Schedule_list.php");
-        break;
-
-    case "rem_station":
-      $tid = $_POST['id'];
-        $msg = $obj->rem_intst($tid);
-            header("Location:../views/Schedule_list.php");
+            header("Location:../views/schedule_trains.php");
         break;
 
 
+    case "deactivate":
+      $tid = $_REQUEST['id'];
+      $val = $_REQUEST['val'];
+        $msg = $obj->deactivate($tid,$val);
+            $_SESSION['success'] = 'The Schedule is deactivated ..!!';
+            header("Location:../views/schedule_list.php");
+        break;
+
+
+        case "start":
+          $msg = $obj->start();
+            if ($msg == 'err') {
+               $_SESSION['error'] = 'Something went wrong.. Try Again..!';
+               header("Location:../views/schedule_trains.php");
+            } else{
+               $_SESSION['success'] =  'Successfully Registered ..!!';
+               header("Location:../views/schedule_trains.php?id=$msg");
+            } 
+          
+          break;
 }

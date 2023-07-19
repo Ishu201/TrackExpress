@@ -16,7 +16,7 @@ switch ($status) {
         $msg = $obj->add();
         
           if ($msg == '1') {
-             $_SESSION['error'] = 'This Station is Already Registered';
+             $_SESSION['error'] = 'This Station or Contact is Already Registered';
           } else if($msg == '2'){
              $_SESSION['success'] =  'Successfully Registered ..!!';
           } 

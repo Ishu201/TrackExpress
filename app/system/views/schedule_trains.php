@@ -16,10 +16,6 @@ if (isset($_GET['id'])) {
 ?>
 
 <?php
-include('../models/Station_model.php');
-$obj = new Station;
-$station = $obj->get_all();
-
 include('../models/Train_model.php');
 $obj2 = new Train;
 $trains = $obj2->get_all();
@@ -27,30 +23,23 @@ $trains = $obj2->get_all();
 include('../models/Route_model.php');
 $obj3 = new Route;
 $routes = $obj3->get_all();
+
+include('../models/Station_model.php');
+$obj4 = new Station;
+
 ?>
 
 <style>
-    .intstations option:disabled {
-        color: #a6a6a6;
-        /* Desired background color for disabled options */
-        cursor: not-allowed;
-        /* Desired cursor style for disabled options */
-    }
+.input-with-tickmark {
+  display: flex;
+  align-items: center;
+}
 
-    #start_station_id option:disabled {
-        color: #a6a6a6;
-        /* Desired background color for disabled options */
-        cursor: not-allowed;
-        /* Desired cursor style for disabled options */
-    }
-
-    #final_station_id option:disabled {
-        color: #a6a6a6;
-        /* Desired background color for disabled options */
-        cursor: not-allowed;
-        /* Desired cursor style for disabled options */
-    }
+.input-with-tickmark input {
+  margin-right: 5px;
+}
 </style>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <div class="">
@@ -64,7 +53,7 @@ $routes = $obj3->get_all();
         <div class="clearfix"></div>
 
         <div class="row">
-            <div class="col-md-12 col-sm-12  ">
+            <div class="col-md-12 col-sm-12" >
                 <div class="x_panel">
                     <div class="x_title">
                         <h2><b>Create Schedule</b></h2>
@@ -73,24 +62,21 @@ $routes = $obj3->get_all();
                         </div>
                     </div>
                     <div class="x_content" style="padding:10px"> <br>
-                        <?php if ($id != '') { ?>
-                            <form action="../controllers/Schedule.php?status=update" method="post" data-parsley-validate>
-                                <input type="hidden" name="tid" id="tid" value="<?php echo $row_des['id'];  ?>">
-                            <?php } else { ?>
-                                <form action="../controllers/Schedule.php?status=add" method="post" data-parsley-validate>
-                                <?php } ?>
+                         
+                                <form <?php if ($id == '') { ?> action="../controllers/Schedule.php?status=add" <?php } ?> method="post" data-parsley-validate>
+                                
                                 <div class="form-group row ">
                                     <div class="col-md-3 col-sm-4 ">
                                         <label class="control-label"><span>* </span>Day</label>
                                         <select id="day" name="day" class="form-control" required>
                                             <option value="">- select a day -</option>
-                                            <option value="1">Sunday</option>
-                                            <option value="2">Monday</option>
-                                            <option value="3">Tuesday</option>
-                                            <option value="4">Wednessday</option>
-                                            <option value="5">Thursday</option>
-                                            <option value="6">Friday</option>
-                                            <option value="7">Saturday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Sunday') { echo 'selected'; } } ?> value="Sunday">Sunday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Monday') { echo 'selected'; } } ?> value="Monday">Monday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Tuesday') { echo 'selected'; } } ?> value="Tuesday">Tuesday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Wednessday') { echo 'selected'; } } ?> value="Wednessday">Wednessday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Thursday') { echo 'selected'; } } ?> value="Thursday">Thursday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Friday') { echo 'selected'; } } ?> value="Friday">Friday</option>
+                                            <option <?php if ($id != '') { if ($row_des['day'] == 'Saturday') { echo 'selected'; } } ?> value="Saturday">Saturday</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 ">
@@ -123,11 +109,30 @@ $routes = $obj3->get_all();
                                             <?php } ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-2 col-sm-6 "> <br>
-                                        <button style="float:right" type="submit" class="btn btn-success">Add</button>
+                                    <div class="col-md-2 col-sm-6 " style="text-align:right"> <br>
+                                        <?php if ($id == '') { ?> 
+                                            <button type="submit" class="btn btn-success">Add</button>
+                                        <?php } ?>
+                                        <?php if ($id != '') { ?> 
+                                            <button onclick="confirmRemove('../controllers/Schedule.php?status=delete&id=<?php echo $id; ?>')" type="button" class="btn btn-danger">Cancel</button>
+                                        <?php } ?>
                                     </div>
-                                </div> <br> <br>
-                                
+                                </div>
+                                </form> 
+                                <br> <br>
+
+                                <?php if ($id != '') { 
+
+                                    $route = $row_des['route_id'];
+                                    $sql_route_main = "SELECT * FROM tbl_route WHERE id='$route'";
+                                    $result_route_main = $con->query($sql_route_main);
+                                    $row_route_main = $result_route_main->fetch_array();
+
+                                    $sql_route_int = "SELECT * FROM tbl_route_stations WHERE route_id='$route'";
+                                    $result_route_int = $con->query($sql_route_int);
+                                    
+                                    ?> 
+                                <div id="station_data" style="width:90%">
                                 <div class="form-group row ">
                                     <div class="col-md-1 col-sm-4 ">
                                     </div>
@@ -137,69 +142,93 @@ $routes = $obj3->get_all();
                                     <div class="col-md-2 col-sm-4 ">
                                         <label class="control-label">Distance (km)</label>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
+                                    <div class="col-md-3 col-sm-4 ">
                                         <label class="control-label">Arrival</label>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
+                                    <div class="col-md-3 col-sm-4 ">
                                         <label class="control-label">Departure</label>
                                     </div>
                                 </div>
+                                
                                 
                                 <div class="form-group row ">
                                     <div class="col-md-1 col-sm-4 ">
                                         <label class="control-label">Start</label>
                                     </div>
                                     <div class="col-md-3 col-sm-4 ">
-                                        <input readonly id="start_st" name="start_st" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['name']; } ?>" >
+                                        <input readonly type="text" style="cursor: not-allowed;" class="form-control" value="<?php  $param = $row_route_main['start_station_id']; echo $obj4->viewStationname($param); ?>" >
                                     </div>
                                     <div class="col-md-2 col-sm-4 ">
-                                        <input readonly id="" name="" type="text" class="form-control" >
+                                        <input readonly style="cursor: not-allowed;" type="text" class="form-control"  >
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
-                                        <input readonly id="" name="" type="text" class="form-control" >
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <input readonly style="cursor: not-allowed;" type="text" class="form-control" >
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
-                                        <input id="start_st_departure" name="start_st_departure" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['departure']; } ?>">
+                                    <div class="col-md-3 col-sm-4 ">
+                                    <div class="input-with-tickmark">
+                                        <input id="start_st_departure" onchange="validateTime(this);update_time(this,'tbl_schedule','departure','<?php echo $id; ?>','starttick')" name="start_st_departure" type="time" class="form-control" value="<?php if ($id != '') { echo $row_des['departure']; } ?>">
+                                        <span style="color:limegreen;display:none;font-size:20px" id="starttick">&#10004;</span>
+                                </div>
                                     </div>
                                 </div> <br>
-                                
+                               
+                                <?php $nno = 1; while ($row_route_int = $result_route_int->fetch_array()) { 
+                                        $int_station_id = $row_route_int['id'];
+                                        $sql = "SELECT * FROM tbl_schedule_stations WHERE schedule_id='$id' and int_station_id='$int_station_id'";
+                                        $result_int_schedule = $con->query($sql);
+                                        $row_int_schedule = $result_int_schedule->fetch_array();
+                                    ?>
                                 <div class="form-group row ">
                                     <div class="col-md-1 col-sm-4 ">
                                         <label class="control-label">Int</label>
                                     </div>
                                     <div class="col-md-3 col-sm-4 ">
-                                        <input readonly id="int_st1" name="int_st1" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['name']; } ?>" >
+                                        <input readonly style="cursor: not-allowed;" type="text" class="form-control" value="<?php $param = $row_route_int['station_id']; echo $obj4->viewStationname($param); ?>" >
                                     </div>
                                     <div class="col-md-2 col-sm-4 ">
-                                        <input readonly id="" name="" type="text" class="form-control" >
+                                        <input readonly style="cursor: not-allowed;" class="form-control" value="<?php echo number_format($row_route_int['distance'],2);  ?>">
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
-                                    <input id="int_st_arrival1" name="int_st_arrival1" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['departure']; } ?>">
+                                    <div class="col-md-3 col-sm-4 "> 
+                                        <div class="input-with-tickmark">
+                                        <input id="int_st_arrival1" name="int_st_arrival1" onchange="validateTime(this);update_time(this,'tbl_schedule_stations','arrival','<?php echo $row_int_schedule['id']; ?>','inttick_arr<?php echo $nno; ?>')"  type="time" class="form-control" value="<?php if ($id != '') { echo $row_int_schedule['arrival']; } ?>">
+                                        <span style="color:limegreen;display:none;font-size:20px"  id="inttick_arr<?php echo $nno; ?>">&#10004;</span>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
-                                        <input id="int_st_departure1" name="int_st_departure1" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['departure']; } ?>">
+                                </div>
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <div class="input-with-tickmark">
+                                        <input id="int_st_departure1" name="int_st_departure1" onchange="validateTime(this);update_time(this,'tbl_schedule_stations','departure','<?php echo $row_int_schedule['id']; ?>','inttick_dep<?php echo $nno; ?>')" type="time" class="form-control" value="<?php if ($id != '') { echo $row_int_schedule['departure']; } ?>">
+                                        <span style="color:limegreen;display:none;font-size:20px" id="inttick_dep<?php echo $nno; ?>">&#10004;</span>
+                                        </div>
                                     </div>
                                 </div> <br>
-                                
+                                <?php $nno++; } ?>
+
+
                                 <div class="form-group row ">
                                     <div class="col-md-1 col-sm-4 ">
                                         <label class="control-label">End</label>
                                     </div>
                                     <div class="col-md-3 col-sm-4 ">
-                                        <input readonly id="end_st" name="end_st" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['name']; } ?>" >
+                                        <input readonly style="cursor: not-allowed;" type="text" class="form-control" value="<?php  $param = $row_route_main['final_station_id']; echo $obj4->viewStationname($param); ?>" >
                                     </div>
                                     <div class="col-md-2 col-sm-4 ">
-                                        <input readonly id="end_st_distance" name="end_st_distance" type="text" class="form-control" >
+                                        <input readonly style="cursor: not-allowed;" type="text" class="form-control" value="<?php echo number_format($row_route_main['total_distance'],2); ?>">
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
-                                        <input  id="end_st_arrival" name="end_st_arrival" type="text" class="form-control" value="<?php if ($id != '') { echo $row_des['arrival']; } ?>">
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <div class="input-with-tickmark">
+                                        <input  id="end_st_arrival" name="end_st_arrival" type="time" onchange="validateTime(this);update_time(this,'tbl_schedule','arrival','<?php echo $id; ?>','endtick')" class="form-control" value="<?php if ($id != '') { echo $row_des['arrival']; } ?>">
+                                        <span style="color:limegreen;display:none;font-size:20px"  id="endtick">&#10004;</span>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 ">
-                                        <input readonly id="" name="" type="text" class="form-control" >
+                                    <div class="col-md-3 col-sm-4 ">
+                                        <input readonly style="cursor: not-allowed;" type="text" class="form-control" >
                                     </div>
-                                </div> <br>
+                                </div>
+                                </div>
+                                <?php } ?>
+                                 <br>
 
-                                </form>
+                                
                     </div>
                 </div>
             </div>
@@ -209,108 +238,20 @@ $routes = $obj3->get_all();
 <!-- /page content -->
 
 <script>
-    $(document).ready(function() {
-        // Trigger the initial check on page load
-        checkSelectedOptions();
 
-        // Bind the change event to the start_station_id and final_station_id elements
-        $("#start_station_id, #final_station_id").change(function() {
-            checkSelectedOptions();
-            checkSelectedOptions2();
-        }); // Bind the change event to the start_station_id and final_station_id elements
-
-        function checkSelectedOptions() {
-            var startStationValue = $("#start_station_id").val();
-            var finalStationValue = $("#final_station_id").val();
-
-            $(".intstations").find("option").each(function() {
-                var optionValue = $(this).val();
-
-                if (optionValue === startStationValue || optionValue === finalStationValue) {
-                    $(this).prop("disabled", true);
-                } else {
-                    $(this).prop("disabled", false);
-                }
-            });
-        }
-
-        function checkSelectedOptions2() {
-            var startStationValue = $("#start_station_id").val();
-            var finalStationValue = $("#final_station_id").val();
-
-            $("#start_station_id").find("option").each(function() {
-                var optionValue = $(this).val();
-
-                if (optionValue === finalStationValue) {
-                    $(this).prop("disabled", true);
-                } else {
-                    $(this).prop("disabled", false);
-                }
-            });
-
-            $("#final_station_id").find("option").each(function() {
-                var optionValue = $(this).val();
-
-                if (optionValue === startStationValue) {
-                    $(this).prop("disabled", true);
-                } else {
-                    $(this).prop("disabled", false);
-                }
-            });
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-  var stationIndex = 2; // Starting index for additional stations
-
-  // Add Station button click event
-  $('#addst').click(function() {
-    var newStationDiv = $('#new_stations').find('.form-group').first().clone(); // Clone the first station div
-    newStationDiv.find('select').attr('id', 'station_id_' + stationIndex).val(''); // Update select ID and empty its value
-    newStationDiv.find('input').attr('id', 'distance_' + stationIndex).val(''); // Update input ID and empty its value
-    newStationDiv.find('.remove-station').attr('data-station-index', stationIndex); // Add data attribute for tracking
-    newStationDiv.appendTo('#new_stations'); // Append the new station div
-    stationIndex++; // Increment the station index
-    $('#intst_no').val(parseInt($('#intst_no').val()) + 1); // Increment intst_no value
-  });
-
-  // Remove Station button click event
-  $(document).on('click', '.remove-station', function() {
-    var stationIndex = $(this).data('station-index');
-    $(this).closest('.form-group').remove(); // Remove the corresponding station div
-    reindexStationElements(stationIndex); // Reindex station elements
-    $('#intst_no').val(parseInt($('#intst_no').val()) - 1); // Decrement intst_no value
-  });
-
-  // Function to reindex station elements
-  function reindexStationElements(startIndex) {
-    $('.remove-station').each(function() {
-      var currentStationIndex = parseInt($(this).data('station-index'));
-      if (currentStationIndex > startIndex) {
-        $(this).data('station-index', currentStationIndex - 1); // Decrement data-station-index
-        $(this).closest('.form-group').find('select').attr('id', 'station_id_' + (currentStationIndex - 1)); // Update select ID
-        $(this).closest('.form-group').find('input').attr('id', 'distance_' + (currentStationIndex - 1)); // Update input ID
-      }
-    });
-  }
-});
-
-</script>
-
-<script>
-    function updateStation(id,no) {
-        var station = $("#edit_station_id_"+no).val();
-        var distance = $("#edit_distance_"+no).val();
+function update_time(element,table,col,id,tickid) {
+    // alert(tickid)
+    var value = $(element).val()
     $.ajax({
-        url: '../controllers/Schedule.php?status=station', // Replace with the URL of your PHP controller
-        type: 'POST',
-        data: { station: station, distance: distance, id:id },
+        url: '../controllers/Schedule.php?status=update_time', // Replace with the URL of your PHP controller
+        type: 'GET',
+        data: {value:value,table:table,col:col,id:id },
         success: function(response) {
-            // Handle the success response from the server
-            alert('Update query successful!');
-            // Additional actions or UI updates after the update query
+            var usernameStat = $('#'+tickid);
+                    usernameStat.fadeIn(); // Show the element
+                    setTimeout(function() {
+                        usernameStat.fadeOut(); // Hide the element
+                    }, 1000);
         },
         error: function(xhr, status, error) {
             // Handle the error response from the server
@@ -320,22 +261,21 @@ $routes = $obj3->get_all();
     });
 }
 
-    function remintst(id) {
-    $.ajax({
-        url: '../controllers/Schedule.php?status=rem_station', // Replace with the URL of your PHP controller
-        type: 'POST',
-        data: {id:id },
-        success: function(response) {
-            // Handle the success response from the server
-            alert('Update query successful!');
-            // Additional actions or UI updates after the update query
-        },
-        error: function(xhr, status, error) {
-            // Handle the error response from the server
-            console.error('Error updating station:', error);
-            // Additional error handling or UI updates
-        }
-    });
+</script>
+
+<script>
+    // Function to check if the entered time has minutes that are multiples of 5
+function validateTime(element) {
+    var timeValue = $(element).val(); // Get the entered time value
+    var timeParts = timeValue.split(':'); // Split the time into hours and minutes
+
+    // Check if minutes are not multiples of 5
+    if (timeParts.length === 2 && timeParts[1] % 5 !== 0) {
+        // Reset the input value to the nearest lower multiple of 5
+        var nearestMultiple = Math.floor(timeParts[1] / 5) * 5;
+        timeParts[1] = (nearestMultiple < 10 ? '0' : '') + nearestMultiple; // Pad with leading zero if necessary
+        $(element).val(timeParts.join(':')); // Update the input value
+    }
 }
 
 </script>

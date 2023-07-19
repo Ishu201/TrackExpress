@@ -14,6 +14,7 @@ class Station {
       $con = $GLOBALS['con'];
       $sid = $_POST['sid'];
       $name = $_POST['name'];
+      $contact = $_POST['contact'];
       $type = $_POST['type'];
 
         $sql_check = "SELECT * FROM tbl_station WHERE name='$name' and id !='$sid'";
@@ -23,7 +24,7 @@ class Station {
         if($count_chk != 0){
           $msg = $sid;
         } else{
-          $sql = "UPDATE tbl_station SET `name`='$name', `type`='$type' WHERE id ='$sid'";
+          $sql = "UPDATE tbl_station SET `name`='$name', `type`='$type' , `contact`='$contact' WHERE id ='$sid'";
           $result = $con->query($sql) or die($con->error);
           $msg = 'success';
         }
@@ -41,9 +42,10 @@ class Station {
   function add() {
     $con = $GLOBALS['con'];
     $name = $_POST['name'];
+    $contact = $_POST['contact'];
     $type = $_POST['type'];
       
-        $sql_query = "SELECT * FROM tbl_station WHERE name='$name' and status='active'";
+        $sql_query = "SELECT * FROM tbl_station WHERE name='$name' or contact='$contact' and status='active'";
         $result_query = $con->query($sql_query); 
         $count = $result_query->num_rows;
 
@@ -51,9 +53,21 @@ class Station {
           $msg = '1';
         }
         else{
-          $sql = "INSERT INTO tbl_station ( `name`, `type`) VALUES('$name','$type')";
+          $sql = "INSERT INTO tbl_station ( `name`,`contact`, `type`) VALUES('$name','$contact','$type')";
+          $result = $con->query($sql) or die($con->error);
+          $lastInsertID = $con->insert_id;
+          
+          if (isset($_POST['chkuser'])) {
+          $username = $_POST['username'];
+          $password = md5($_POST['password']);
+
+          $sql = "INSERT INTO `tbl_user`(`station_id`,`username`, `password`, `first_name`, `mobile`, `type`) VALUES ('$lastInsertID','$username','$password','$name','$contact','station')";
           $result = $con->query($sql) or die($con->error);
 
+          $sql = "UPDATE`tbl_station` SET `user`='yes'";
+          $result = $con->query($sql) or die($con->error);
+
+          }
           $msg = '2';
         }
       return $msg;
@@ -63,6 +77,28 @@ class Station {
   public function viewStationselected($id){
     $con = $GLOBALS['con'];
     $sql = "SELECT * FROM tbl_station WHERE id='$id'";
+    $result = $con->query($sql);
+    return $result;
+  }
+
+  public function viewStationname($id) {
+    $con = $GLOBALS['con'];
+    $sql = "SELECT * FROM tbl_station WHERE id='$id'";
+    $resultrow = $con->query($sql);
+
+    if ($resultrow->num_rows > 0) {
+        $row = $resultrow->fetch_assoc();
+        $result = $row['name'];
+        return $result;
+    } else {
+        return null; // or any other appropriate value if the result is not found
+    }
+}
+
+
+  public function viewStation_user($stid){
+    $con = $GLOBALS['con'];
+    $sql = "SELECT * FROM tbl_user WHERE station_id='$stid'";
     $result = $con->query($sql);
     return $result;
   }
