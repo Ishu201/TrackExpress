@@ -10,11 +10,11 @@
 	          <li class="nav-item active"><a href="index.php" class="nav-link">Home</a></li>
 	          <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="schedule.php" class="nav-link">Train Schedule</a></li>
-	          <li class="nav-item"><a href="tracking.php" class="nav-link">Tracking</a></li>
-	          <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+	          <!-- <li class="nav-item"><a href="tracking.php" class="nav-link">Tracking</a></li> -->
+	          <li class="nav-item"><a href="contact.php" class="nav-link">Contact Us</a></li>
 	          <li class="nav-item"><a href="my_account.php" class="nav-link">My Account</a></li>
-	          <li class="nav-item"><a href="signup.php" class="nav-link">Sign Up</a></li>
-	          <li class="nav-item"><a href="login.php" class="nav-link">Login</a></li>
+	          <!-- <li class="nav-item"><a href="signup.php" class="nav-link">Sign Up</a></li>
+	          <li class="nav-item"><a href="login.php" class="nav-link">Login</a></li> -->
 	        </ul>
 	      </div>
 	    </div>
