@@ -3,11 +3,12 @@
 <?php include('header.php') ?>
 
 <?php
+include('../models/Train_model.php');
+$obj = new Train;
+$codeNo = $obj->get_max();
+                      
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-
-    include('../models/Train_model.php');
-    $obj = new Train;
     $result = $obj->viewTrainselected($id);
     $row_des = $result->fetch_array();
 } else{
@@ -46,7 +47,7 @@ if(isset($_GET['id'])){
                             <div class="form-group row ">
                                 <div class="col-md-4 col-sm-6 ">
                                     <label class="control-label"><span>*</span> Code</label>
-                                    <input id="code" name="code" type="text" class="form-control" value="<?php  if($id != ''){ echo $row_des['code']; } ?>" placeholder="Train Code" data-parsley-trigger="change" required >
+                                    <input id="code" name="code" type="text" readonly class="form-control" value="<?php  if($id != ''){ echo $row_des['code']; } else{ echo $codeNo;} ?>" placeholder="Train Code" data-parsley-trigger="change" required >
                                 </div>
                                 <div class="col-md-6 col-sm-6 ">
                                     <label class="control-label"><span>*</span> Name</label>
@@ -55,8 +56,8 @@ if(isset($_GET['id'])){
                             </div> <br>
                             <div class="form-group row">
                             <div class="col-md-5 col-sm-6 ">
-                                    <label class="control-label">GPS Link</label>
-                                    <input id="gps_link" name="gps_link" type="text" class="form-control" value="<?php  if($id != ''){ echo $row_des['gps_link']; } ?>" placeholder="Tracking GPS"  >
+                                    <label class="control-label"><span>*</span> Spped in kmh<sup>-1</sup></label>
+                                    <input id="speed" name="speed" required type="text" class="form-control" value="<?php  if($id != ''){ echo $row_des['speed']; } ?>" placeholder="Train Average speed"  pattern="[0-9]+(\.[0-9]+)?">
                                 </div>
                                 <div class="col-md-4 col-sm-6 ">
                                     <label class="control-label"><span>*</span> Train Type</label>
@@ -69,39 +70,59 @@ if(isset($_GET['id'])){
                                     </select>
                                 </div>
                             </div>
-                            
-                            <div class="form-group row">
+                            <br><br>
+
+                            <div class="form-group row" >
                                 <label class="col-md-3 col-sm-3  control-label" style="font-size:16px">
                                     <br><br>Select Train Seats
                                     <br>
                                     <small class="text-navy" style="font-size:13px">Relavant to Class</small>
                                 </label>
 
-                                <div class="col-md-2 col-sm-2 "> <br><br>
+                                <div class="col-md-2 col-sm-2 "> <br><br><br>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox"  name='train_class1' checked readonly class="flat" >&nbsp;  1st Class
+                                            <input type="checkbox"  name='train_class1' checked readonly class="flat" >&nbsp;  First Class
                                         </label>
                                     </div>
                                     <br>
                                     <div class="checkbox" style="margin-top:10px">
                                         <label> 
-                                            <input type="checkbox" name='train_class2' checked  readonly class="flat" > &nbsp; 2nd Class
+                                            <input type="checkbox" name='train_class2' checked  readonly class="flat" > &nbsp; Standard Class
                                         </label>
                                     </div>
                                     <br>
                                     <div class="checkbox" style="margin-top:10px">
                                         <label> 
-                                            <input type="checkbox" name='train_class3' checked  readonly class="flat" > &nbsp; 3rd Class
+                                            <input type="checkbox" name='train_class3' checked  readonly class="flat" > &nbsp; General Class
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-9 "><br><br>
-                                    <input  id="class_1" name="class_1" type="number" class="form-control" required min='1' placeholder="No of Seats"  value="<?php  if($id != ''){ echo $row_des['class_1']; } ?>">
+                                
+                                <div class="col-md-2 col-sm-9" style="padding:0px"><br> Window Seats<br><br>
+                                    <input  id="wclass_1" name="wclass_1" type="number" class="form-control" required min='1' placeholder="No of Seats" oninput="updateTotalSeats('1')"  value="<?php  if($id != ''){ echo $row_des['wclass_1']; } ?>">
                                     
-                                    <input style="margin-top:15px"  id="class_2" name="class_2" type="number" class="form-control" required min='1' placeholder="No of Seats"  value="<?php  if($id != ''){ echo $row_des['class_2']; } ?>">
+                                    <input style="margin-top:15px"  id="wclass_2" name="wclass_2" type="number" class="form-control" required min='1' oninput="updateTotalSeats('2')" placeholder="No of Seats"  value="<?php  if($id != ''){ echo $row_des['wclass_2']; } ?>">
                                     
-                                    <input style="margin-top:15px"  id="class_3" name="class_3" type="number" class="form-control" required min='1' placeholder="No of Seats" value="<?php  if($id != ''){ echo $row_des['class_3']; } ?>" >
+                                    <input style="margin-top:15px"  id="wclass_3" name="wclass_3" type="number" class="form-control" required min='1' oninput="updateTotalSeats('3')" placeholder="No of Seats" value="<?php  if($id != ''){ echo $row_des['wclass_3']; } ?>" >
+                                </div>
+
+                                <div class="col-md-2 col-sm-9 "><br> Middle Seats<br><br>
+                                    <input  id="mclass_1" name="mclass_1" type="number" class="form-control" required min='1' placeholder="No of Seats" oninput="updateTotalSeats('1')"  value="<?php  if($id != ''){ echo $row_des['mclass_1']; } ?>">
+                                    
+                                    <input style="margin-top:15px"  id="mclass_2" name="mclass_2" type="number" class="form-control" required min='1' oninput="updateTotalSeats('2')" placeholder="No of Seats"  value="<?php  if($id != ''){ echo $row_des['mclass_2']; } ?>">
+                                    
+                                    <input style="margin-top:15px"  id="mclass_3" name="mclass_3" type="number" class="form-control" required min='1' oninput="updateTotalSeats('3')" placeholder="No of Seats" value="<?php  if($id != ''){ echo $row_des['mclass_3']; } ?>" >
+                                </div>
+
+                                <div class="col-md-2 col-sm-9 "><br> Total Seats<br><br>
+                                    <input  id="total_seats1" name="total_seats1" type="number" class="form-control" required  placeholder="Total Seats"  readonly>
+                                    
+                                    <input style="margin-top:15px"  id="total_seats2" name="total_seats2" type="number" required class="form-control"  placeholder="Total Seats"  readonly>
+                                    
+                                    <input style="margin-top:15px"  id="total_seats3" name="total_seats3" type="number"required  class="form-control"  placeholder="Total Seats" readonly>
+
+                                    <input style="margin-top:15px"  id="total" name="total" type="number"required  class="form-control"  placeholder="Final Total Seats" readonly>
                                 </div>
                             </div>
                             
@@ -122,6 +143,40 @@ if(isset($_GET['id'])){
     </div>
 </div>
 <!-- /page content -->
+
+<script>
+    $(document).ready(function() {
+            updateTotalSeats('1');
+            updateTotalSeats('2');
+            updateTotalSeats('3');
+
+    });
+function updateTotalSeats(classNumber) {
+  var wclass = parseInt(document.getElementById('wclass_' + classNumber).value);
+  var mclass = parseInt(document.getElementById('mclass_' + classNumber).value);
+
+  // Calculate the total seats for the given class number
+  var totalSeats = wclass + mclass;
+
+  // Update the corresponding total seats input field
+  document.getElementById('total_seats' + classNumber).value = totalSeats;
+  calculateTotal()
+}
+</script>
+
+<script>
+function calculateTotal() {
+  var totalSeats1 = parseInt(document.getElementById('total_seats1').value) || 0;
+  var totalSeats2 = parseInt(document.getElementById('total_seats2').value) || 0;
+  var totalSeats3 = parseInt(document.getElementById('total_seats3').value) || 0;
+
+  // Calculate the final total seats by adding the values from the three inputs
+  var finalTotalSeats = totalSeats1 + totalSeats2 + totalSeats3;
+
+  // Update the "Final Total Seats" input field
+  document.getElementById('total').value = finalTotalSeats;
+}
+</script>
 
 
 <?php include('footer.php') ?>

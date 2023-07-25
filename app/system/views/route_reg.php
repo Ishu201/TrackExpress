@@ -281,7 +281,7 @@ $result3 = $obj->get_all();
                                         <button type="button" id="addst" class="btn btn-sm btn-info">Add Station</button>
                                     </div>
                                 </div>
-                                <input type="text" name="intst_no" id="intst_no" value="1">
+                                <input type="hidden" name="intst_no" id="intst_no" value="1">
 
                                 <div class="form-group">
                                     <div class="col-md-12 col-sm-12 " style="text-align:right">

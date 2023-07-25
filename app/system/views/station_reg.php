@@ -19,6 +19,12 @@ if (isset($_GET['id'])) {
 }
 ?>
 
+<script>
+    $(document).ready(function() {
+        chk_type();
+    });
+</script>
+
 <style>
     .password-input-container {
         position: relative;
@@ -70,7 +76,7 @@ if (isset($_GET['id'])) {
                                     </div>
                                     <div class="col-md-4 col-sm-6 ">
                                         <label class="control-label"><span>*</span> Station Type</label>
-                                        <select id="type" name="type" class="form-control" required>
+                                        <select id="type" name="type" class="form-control" required onchange="chk_type()">
                                             <option <?php if ($id != '') {
                                                         if ($row_des['type'] == '') {
                                                             echo 'selected';
@@ -89,6 +95,7 @@ if (isset($_GET['id'])) {
                                         </select>
                                     </div>
                                     <div class="col-md-2 col-sm-6">
+                                        
                                         <label class="control-label" style="margin-top:10px">&nbsp;</label> <br>
                                         &nbsp;&nbsp; <label class="checkbox-custom">
                                             <input type="checkbox" id="chkuser" name="chkuser" <?php if ($id != '') {
@@ -101,19 +108,24 @@ if (isset($_GET['id'])) {
                                         </label>
                                     </div>
                                     <div class="col-md-4 col-sm-6 "> <br>
-                                        <label class="control-label"><span>*</span> Contact No</label>
+                                        <label class="control-label"><span>*</span> Contact Mail</label>
                                         <input id="contact" name="contact" type="text" class="form-control" value="<?php if ($id != '') {
                                                                                                                         echo $row_des['contact'];
-                                                                                                                    } ?>" placeholder="Contact No of the Station" data-parsley-trigger="change" required pattern="^\d{10}$">
+                                                                                                                    } ?>" placeholder="Contact Mail of the Station" data-parsley-trigger="change" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
                                     </div>
                                 </div> <br>
 
+                                <?php if (isset($_GET['id'])) {
+                                }
+
+                                ?>
                                 <div class="form-group row " id="userdiv" style="display:none">
                                     <div class="col-md-4 col-sm-6 ">
                                         <label class="control-label"><span>*</span> Username &nbsp; &nbsp;<span style="color:limegreen;display:none" id="usernamestat"><b>Updated Successfully..!!</b></span></label>
                                         <input id="username" name="username" type="text" class="form-control" <?php if ($id != '') { ?>onchange='updateuser(<?php echo $id; ?>,"username",this)' <?php } ?> value="<?php if ($id != '') {
-                                                                                                                                                                    echo $row_user['username'];
-                                                                                                                                                                } ?>" placeholder="Username for the station account.." data-parsley-trigger="change">
+                                             if ($row_des['user'] == 'yes') {
+                                                                                                                                                                                                                        echo $row_user['username']; }
+                                                                                                                                                                                                                    } ?>" placeholder="Username for the station account.." data-parsley-trigger="change">
                                     </div>
                                     <div class="col-md-4 col-sm-6 ">
                                         <label class="control-label"><span>*</span> Password &nbsp; &nbsp;<span style="color:limegreen;display:none" id="passwordstat"><b>Updated Successfully..!!</b></span></label>
@@ -165,6 +177,29 @@ if (isset($_GET['id'])) {
 </script>
 
 <script>
+    // Wait for the DOM to be ready
+    function chk_type() {
+        // Get references to the select and checkbox elements
+        // alert('wtf');
+        var selectType = $('#type');
+        var checkboxUser = $('#chkuser');
+
+        // Add an event listener to the select element
+        selectType.on('change', function() {
+            // Check if the selected value is "Main Station"
+            if (selectType.val() === "Main Station") {
+                // Enable the checkbox
+                checkboxUser.prop('disabled', false);
+            } else {
+                // Disable the checkbox
+                checkboxUser.prop('disabled', true);
+            }
+        });
+    }
+</script>
+
+
+<script>
     function togglePasswordVisibility() {
         var passwordInput = document.getElementById("password");
         var passwordToggle = document.getElementById("password-toggle");
@@ -196,7 +231,7 @@ if (isset($_GET['id'])) {
                     setTimeout(function() {
                         usernameStat.fadeOut(); // Hide the element
                     }, 1000);
-                }else{
+                } else {
                     var usernameStat = $("#passwordstat");
                     usernameStat.fadeIn(); // Show the element
                     setTimeout(function() {

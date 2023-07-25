@@ -17,7 +17,7 @@ class Station {
       $contact = $_POST['contact'];
       $type = $_POST['type'];
 
-        $sql_check = "SELECT * FROM tbl_station WHERE name='$name' and id !='$sid'";
+        $sql_check = "SELECT * FROM tbl_station WHERE name='$name' and id !='$sid' and status='active'";
         $result_check = $con->query($sql_check);
         $count_chk = $result_check->num_rows;
 
@@ -45,7 +45,7 @@ class Station {
     $contact = $_POST['contact'];
     $type = $_POST['type'];
       
-        $sql_query = "SELECT * FROM tbl_station WHERE name='$name' or contact='$contact' and status='active'";
+        $sql_query = "SELECT * FROM tbl_station WHERE (name='$name' or contact='$contact') and status='active'";
         $result_query = $con->query($sql_query); 
         $count = $result_query->num_rows;
 
@@ -57,7 +57,7 @@ class Station {
           $result = $con->query($sql) or die($con->error);
           $lastInsertID = $con->insert_id;
           
-          if (isset($_POST['chkuser'])) {
+          if (isset($_POST['chkuser']) and ($type == 'Main Station')) {
           $username = $_POST['username'];
           $password = md5($_POST['password']);
 
@@ -101,6 +101,7 @@ class Station {
     $sql = "SELECT * FROM tbl_user WHERE station_id='$stid'";
     $result = $con->query($sql);
     return $result;
+    
   }
 
 }

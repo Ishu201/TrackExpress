@@ -9,17 +9,47 @@ class Train {
       return $result;
   }
 
+  public function get_max() {
+    $con = $GLOBALS['con'];
+    $sql = "SELECT * FROM tbl_train WHERE status='active' ORDER BY code DESC LIMIT 1";
+    $result = $con->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $biggestCode = $row['code'];
+        
+        // Extract the numeric part from the biggest code
+        $numericPart = intval(substr($biggestCode, 2));
+
+        // Increment the numeric part to get the next number
+        $nextNumber = $numericPart + 1;
+
+        // Combine with the code prefix (e.g., "TC") to get the next code
+        $nextCode = 'TC' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
+        return $nextCode;
+    } else {
+        // If no rows are found, return the default code (e.g., "TC001")
+        return 'TC001';
+    }
+}
+
+
 
   public function update_single() {
       $con = $GLOBALS['con'];
       $tid = $_POST['tid'];
       $code = $_POST['code'];
       $name = $_POST['name'];
-      $gps_link = $_POST['gps_link'];
+      $speed = $_POST['speed'];
       $type = $_POST['type'];
-      $class_1 = $_POST['class_1'];
-      $class_2 = $_POST['class_2'];
-      $class_3 = $_POST['class_3'];
+      $wclass_1 = $_POST['wclass_1'];
+      $wclass_2 = $_POST['wclass_2'];
+      $wclass_3 = $_POST['wclass_3'];
+      $mclass_1 = $_POST['mclass_1'];
+      $mclass_2 = $_POST['mclass_2'];
+      $mclass_3 = $_POST['mclass_3'];
+      $total = $_POST['total'];
 
         $sql_check = "SELECT * FROM tbl_train WHERE code='$code' and id !='$tid'";
         $result_check = $con->query($sql_check);
@@ -28,7 +58,7 @@ class Train {
         if($count_chk != 0){
           $msg = $tid;
         } else{
-          $sql = "UPDATE tbl_train SET `code`='$code', `name`='$name', `gps_link`='$gps_link', `type`='$type', `class_1`='$class_1', `class_2`='$class_2', `class_3`='$class_3' WHERE id ='$tid'";
+          $sql = "UPDATE tbl_train SET `code`='$code', `name`='$name', `speed`='$speed', `type`='$type', `wclass_1`='$wclass_1', `wclass_2`='$wclass_2', `wclass_3`='$wclass_3', `mclass_1`='$mclass_1', `mclass_2`='$mclass_2', `mclass_3`='$mclass_3', `total`='$total' WHERE id ='$tid'";
           $result = $con->query($sql) or die($con->error);
           $msg = 'success';
         }
@@ -49,11 +79,15 @@ class Train {
     $con = $GLOBALS['con'];
       $code = $_POST['code'];
       $name = $_POST['name'];
-      $gps_link = $_POST['gps_link'];
+      $speed = $_POST['speed'];
       $type = $_POST['type'];
-      $class_1 = $_POST['class_1'];
-      $class_2 = $_POST['class_2'];
-      $class_3 = $_POST['class_3'];
+      $wclass_1 = $_POST['wclass_1'];
+      $wclass_2 = $_POST['wclass_2'];
+      $wclass_3 = $_POST['wclass_3'];
+      $mclass_1 = $_POST['mclass_1'];
+      $mclass_2 = $_POST['mclass_2'];
+      $mclass_3 = $_POST['mclass_3'];
+      $total = $_POST['total'];
       
         $sql_query = "SELECT * FROM tbl_train WHERE code='$code' and status='active'";
         $result_query = $con->query($sql_query);
@@ -63,7 +97,8 @@ class Train {
           $msg = '1';
         }
         else{
-          $sql = "INSERT INTO tbl_train (`code`, `name`, `gps_link`, `type`, `class_1`, `class_2`, `class_3`) VALUES('$code','$name','$gps_link','$type','$class_1','$class_2','$class_3')";
+          $sql = "INSERT INTO tbl_train (`code`, `name`, `speed`, `type`, `wclass_1`, `wclass_2`, `wclass_3`, `mclass_1`, `mclass_2`, `mclass_3`, `total`) 
+          VALUES ('$code', '$name', '$speed', '$type', '$wclass_1', '$wclass_2', '$wclass_3', '$mclass_1', '$mclass_2', '$mclass_3', '$total')";
           $result = $con->query($sql) or die($con->error);
 
           $msg = '2';

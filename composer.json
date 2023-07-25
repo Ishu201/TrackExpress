@@ -1,0 +1,19 @@
+{
+    "repositories": [
+        {
+            "packagist": false
+        },
+        {
+            "packagist": {
+                "url": "https://packagist.org"
+            }
+        },
+        {
+            "packagist": {
+                "url": "https://repo.packagist.org",
+                "allow_ssl_downgrade": true
+            }
+        }
+    ]
+}
+

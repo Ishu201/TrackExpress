@@ -41,14 +41,23 @@
             <table id="datatable" class="table table-bordered" style="width:100%">
               <thead>
                 <tr>
-                  <th>Train Name</th>
-                  <th>Code</th>
-                  <th>Type</th>
-                  <th>GPS Link</th>
-                  <th>1st Class St</th>
-                  <th>2nd Class St</th>
-                  <th>3rd Class St</th>
-                  <th style="text-align:right">Action</th>
+                  <th rowspan="2" style="vertical-align: middle;">Train Name</th>
+                  <th rowspan="2" style="vertical-align: middle;">Code</th>
+                  <th rowspan="2" style="vertical-align: middle;">Type</th>
+                  <th rowspan="2" style="vertical-align: middle;">Speed <br>(kmh<sup>-1</sup>)</th>
+                  <th colspan="2" style="text-align:center;width:10%">First Class</th>
+                  <th colspan="2" style="text-align:center;width:10%">Standard Class</th>
+                  <th colspan="2" style="text-align:center;width:10%">General Class</th>
+                  <th rowspan="2" style="vertical-align: middle;">Total seats</th>
+                  <th rowspan="2" style="text-align:right;vertical-align: middle;">Action</th>
+                </tr>
+                <tr>
+                  <th style="font-size:11px !important;width:50px !important">Window Seats</th>
+                  <th style="font-size:11px !important;width:50px !important">Middle Seats</th>
+                  <th style="font-size:11px !important;width:50px !important">Window Seats</th>
+                  <th style="font-size:11px !important;width:50px !important">Middle Seats</th>
+                  <th style="font-size:11px !important;width:50px !important">Window Seats</th>
+                  <th style="font-size:11px !important;width:50px !important;border:1px solid #DEE2E6">Middle Seats</th>
                 </tr>
               </thead>
               <tbody>
@@ -59,10 +68,14 @@
                   <td><?php echo $row_des['name']; ?></td>
                   <td><?php echo $row_des['code']; ?></td>
                   <td><?php echo $row_des['type']; ?></td>
-                  <td><?php echo $row_des['gps_link']; ?></td>
-                  <td><?php echo $row_des['class_1']; ?></td>
-                  <td><?php echo $row_des['class_2']; ?></td>
-                  <td><?php echo $row_des['class_3']; ?></td>
+                  <td><?php echo $row_des['speed']; ?></td>
+                  <td><?php echo $row_des['wclass_1']; ?></td>
+                  <td><?php echo $row_des['mclass_1']; ?></td>
+                  <td><?php echo $row_des['wclass_2']; ?></td>
+                  <td><?php echo $row_des['mclass_2']; ?></td>
+                  <td><?php echo $row_des['wclass_3']; ?></td>
+                  <td><?php echo $row_des['mclass_3']; ?></td>
+                  <td style="text-align:center;"><b><?php echo $row_des['total']; ?></b></td>
                   <td style="text-align:right">
                     <button onclick="window.location.href = 'train_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
                     <button onclick="confirmRemove('../controllers/Train.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>

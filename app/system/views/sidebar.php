@@ -1,5 +1,11 @@
 <?php include('common.php'); session_start(); ?>
 
+<?php 
+$userID = $_SESSION['userID'];
+$userType = $_SESSION['userType'];
+$userName = $_SESSION['userName'];
+
+?>
 <!DOCTYPE html>
 <!-- <php lang="en"> -->
   <head>
@@ -196,7 +202,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Admin</h2>
+                <h2><?php echo $userName; ?></h2>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -206,9 +212,10 @@
 
 <!-- sidebar menu -->
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+          <?php if($userType == 'admin'){ ?>
               <div class="menu_section">
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
+                  <li id="home"><a><i class="fa fa-home"></i> Home </a>
                   </li>
                   <li id="Train"><a><i class="fa fa-edit"></i> Train Details Mgt<span class="fa fa-chevron-down"></span></a>
                     <ul id="Trainmenu" class="nav child_menu">
@@ -246,6 +253,18 @@
                   </li>
                 </ul>
               </div>
+              <?php }else{ ?>
+                <div class="menu_section">
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Home </a>
+                  </li>
+                  <li id="Schedule"><a href="cancel_schedule.php"><i class="fa fa-list"></i> Cancel & Delay Schedule</a></li>
+                  <li id="Booking"><a href="booking_list.php"><i class="fa fa-bar-chart-o"></i> Check Booking Tickets</a></li>
+                  <li id="Revenue"><a href="booking_list.php"><i class="fa fa-clone"></i>Train Trcking Details </li>
+                </ul>
+              </div>
+
+              <?php } ?>
 
             </div>
             <!-- /sidebar menu -->

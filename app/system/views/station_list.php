@@ -51,12 +51,14 @@
               <tbody>
               <?php
                 while ($row_des = $result->fetch_array()) {
+                  $result2 = $obj->viewStation_user($row_des['id']);
+                  $row_user = $result2->fetch_array();
                   ?>
                 <tr>
                   <td><?php echo $row_des['name']; ?></td>
                   <td><?php echo $row_des['type']; ?></td>
                   <td><?php echo $row_des['contact']; ?></td>
-                  <td><?php echo $row_des['user']; ?></td>
+                  <td style="text-transform:capitalize;text-align:center"><span style="cursor: pointer;" data-toggle="tooltip" data-placement="left" <?php if($row_des['user'] == 'yes'){ ?>title="  <?php echo $row_user['username']; ?>  " <?php } ?>><?php echo $row_des['user']; ?></span></td>
                   <td style="text-align:right">
                     <button onclick="window.location.href = 'station_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
                     <button onclick="confirmRemove('../controllers/Station.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>
