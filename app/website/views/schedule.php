@@ -120,7 +120,7 @@
                                 <label for="mySelect"><span>*</span> Start Location</label>
                                 <div class="select">
                                     <select name="format" id="start_location" onchange="updateFinalLocation()">
-                                        <option selected disabled>Choose a Destination</option>
+                                        <option selected value="" disabled>Choose a Destination</option>
                                         <?php
                                             while ($row_des = $start_stations->fetch_array()) {
                                         ?>
@@ -133,7 +133,7 @@
                                 <label for="mySelect"><span>*</span> Final Location</label>
                                 <div class="select">
                                     <select name="format" id="final_location" onchange="updateStartLocation()">
-                                        <option selected disabled>Choose a Destination</option>
+                                        <option selected value="" disabled>Choose a Destination</option>
                                         <?php
                                             while ($row_des = $final_stations->fetch_array()) {
                                         ?>
@@ -144,7 +144,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="book_pick_date" class="label"><span>*</span> Date</label>
-                                    <input type="date" id="datepicker" class="form-control">
+                                    <input type="date" id="datepicker" min="<?php echo date('Y-m-d'); ?>" class="form-control">
                             </div>
                             <div class="col-md-3">
                                 <br>
@@ -223,6 +223,9 @@
             const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
+                    document.getElementById("start_location").value = '';
+                    document.getElementById("final_location").value = '';
+                    document.getElementById("datepicker").value = '';
                     document.getElementById("table_schedule").innerHTML = this.responseText; // Update the content
                 }
             };
