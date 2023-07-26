@@ -23,8 +23,10 @@
 						<a class="dropdown-item" href="login.php"><i class="fa fa-sign-out text-dark mr-2" aria-hidden="true"></i>Log Out</a>
 					</div>
 				</li>
+					<?php if($cusid == ''){  ?>
 				<li class="nav-item"><a href="login/register.php" class="nav-link">Sign Up</a></li>
 	          <li class="nav-item"><a href="login/login.php" class="nav-link">Login</a></li>
+<?php } ?>
 			</ul>
 		</div>
 	</div>

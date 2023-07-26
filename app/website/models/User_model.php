@@ -183,13 +183,12 @@ class User
   }
 
 
-  // public function remove_single($tid) {
-  //     $con = $GLOBALS['con'];
-  //     $sql = "UPDATE tbl_user SET `status`='no' WHERE id ='$tid'";
-  //     $result = $con->query($sql) or die($con->error);
-  //     $sql = "UPDATE tbl_schedule SET `user_id`='0' WHERE user_id ='$tid'";
-  //     $result = $con->query($sql) or die($con->error);
-  // }
+  public function show_single($tid) {
+      $con = $GLOBALS['con'];
+      $sql = "SELECT * FROM tbl_customer  WHERE id ='$tid'";
+      $result = $con->query($sql);
+      return $result;
+  }
 
 
   public function login_check()

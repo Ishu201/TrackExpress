@@ -4,6 +4,16 @@ $web_assets_base_url = 'http://localhost/TrackExpress/assets/website/';
 include '../controllers/db_connect.php';
 $db = new dbconnection();
 $con = $db->connection();
+session_start();
+
+$cusid = $_SESSION['customerID'];
+include '../models/User_model.php';
+$user = new User();
+$user_details = $user->show_single($cusid);
+$row_user = $user_details->fetch_array();
+
+$cusName = $row_user['cus_name'];
+$userLevel = $row_user['level'];
 ?>
 
 <link rel="icon" type="image/x-icon" href="<?php echo $web_assets_base_url; ?>images/logo.png">
