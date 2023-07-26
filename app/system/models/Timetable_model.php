@@ -2,9 +2,9 @@
 
 class Timetable {
 
-  public function get_all() {
+  public function get_all_by_date($date) {
       $con = $GLOBALS['con'];
-      $sql = "SELECT * FROM tbl_daily_trains WHERE status='active' ORDER BY name";
+      $sql = "SELECT * FROM tbl_daily_trains WHERE date='$date' and status='active' ORDER BY schedule_id";
       $result = $con->query($sql);
       return $result;
   }

@@ -12,14 +12,14 @@ class Station {
 
   public function update_single() {
       $con = $GLOBALS['con'];
-      $sid = $_POST['sid'];
+      $sid = $_POST['tid'];
       $name = $_POST['name'];
       $contact = $_POST['contact'];
       $type = $_POST['type'];
 
-        $sql_check = "SELECT * FROM tbl_station WHERE name='$name' and id !='$sid' and status='active'";
+         $sql_check = "SELECT * FROM tbl_station WHERE name='$name' and id !='$sid' and status='active'";
         $result_check = $con->query($sql_check);
-        $count_chk = $result_check->num_rows;
+         $count_chk = $result_check->num_rows;
 
         if($count_chk != 0){
           $msg = $sid;
@@ -64,7 +64,7 @@ class Station {
           $sql = "INSERT INTO `tbl_user`(`station_id`,`username`, `password`, `first_name`, `mobile`, `type`) VALUES ('$lastInsertID','$username','$password','$name','$contact','station')";
           $result = $con->query($sql) or die($con->error);
 
-          $sql = "UPDATE`tbl_station` SET `user`='yes'";
+          $sql = "UPDATE`tbl_station` SET `user`='yes' where id='$lastInsertID'";
           $result = $con->query($sql) or die($con->error);
 
           }

@@ -88,7 +88,7 @@
                   <td style="text-align:right">
                   <?php 
                   $interst = $obj->view_total_intst($row_des['id']);
-                  $output = '';
+                  $output = '-';
                     while ($row_int = $interst->fetch_array()) {
                         $output .= $row_int['name'] . ', ';
                     }

@@ -43,7 +43,7 @@
                 <tr>
                   <th>Station Name</th>
                   <th>Type</th>
-                  <th>Contact No</th>
+                  <th>Contact Mail</th>
                   <th>User Account</th>
                   <th style="text-align:right">Action</th>
                 </tr>

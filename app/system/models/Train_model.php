@@ -37,33 +37,58 @@ class Train {
 
 
   public function update_single() {
-      $con = $GLOBALS['con'];
-      $tid = $_POST['tid'];
-      $code = $_POST['code'];
-      $name = $_POST['name'];
-      $speed = $_POST['speed'];
-      $type = $_POST['type'];
-      $wclass_1 = $_POST['wclass_1'];
-      $wclass_2 = $_POST['wclass_2'];
-      $wclass_3 = $_POST['wclass_3'];
-      $mclass_1 = $_POST['mclass_1'];
-      $mclass_2 = $_POST['mclass_2'];
-      $mclass_3 = $_POST['mclass_3'];
-      $total = $_POST['total'];
+    $con = $GLOBALS['con'];
+    $tid = $_POST['tid'];
+    $code = $_POST['code'];
+    $name = $_POST['name'];
+    $speed = $_POST['speed'];
+    $type = $_POST['type'];
+    $wclass_1 = $_POST['wclass_1'];
+    $wclass_2 = $_POST['wclass_2'];
+    $wclass_3 = $_POST['wclass_3'];
+    $mclass_1 = $_POST['mclass_1'];
+    $mclass_2 = $_POST['mclass_2'];
+    $mclass_3 = $_POST['mclass_3'];
+    $total = $_POST['total'];
 
-        $sql_check = "SELECT * FROM tbl_train WHERE code='$code' and id !='$tid'";
-        $result_check = $con->query($sql_check);
-        $count_chk = $result_check->num_rows;
+    // File upload handling
+    $targetDir = "../../../assets/website/images/upload/";
+    $fileName = basename($_FILES["image"]["name"]);
+    $targetFilePath = $targetDir . $fileName;
+    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-        if($count_chk != 0){
-          $msg = $tid;
-        } else{
-          $sql = "UPDATE tbl_train SET `code`='$code', `name`='$name', `speed`='$speed', `type`='$type', `wclass_1`='$wclass_1', `wclass_2`='$wclass_2', `wclass_3`='$wclass_3', `mclass_1`='$mclass_1', `mclass_2`='$mclass_2', `mclass_3`='$mclass_3', `total`='$total' WHERE id ='$tid'";
-          $result = $con->query($sql) or die($con->error);
-          $msg = 'success';
+    if ($_FILES["image"]["name"] != "") {
+        // Check if the file is an actual image or fake image
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        if ($check !== false) {
+            // Allow only certain file formats
+            $allowedTypes = array('jpg', 'jpeg', 'png', 'gif','webp');
+            if (in_array($fileType, $allowedTypes)) {
+                // Move the uploaded file to the destination directory
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+                    // Perform database update
+                    $sql = "UPDATE tbl_train SET `code`='$code', `name`='$name', `speed`='$speed', `type`='$type', `wclass_1`='$wclass_1', `wclass_2`='$wclass_2', `wclass_3`='$wclass_3', `mclass_1`='$mclass_1', `mclass_2`='$mclass_2', `mclass_3`='$mclass_3', `total`='$total', `image`='$fileName' WHERE id ='$tid'";
+                    $result = $con->query($sql) or die($con->error);
+                    $msg = 'success';
+                } else {
+                    $msg = 'Error occurred while uploading the file.';
+                }
+            } else {
+                $msg = 'Invalid file format. Only JPG, JPEG, PNG, and GIF images are allowed.';
+            }
+        } else {
+            $msg = 'File is not an image.';
         }
-      return $msg;
-  }
+    } else {
+        // No new image uploaded, perform database update without changing the image
+        $sql = "UPDATE tbl_train SET `code`='$code', `name`='$name', `speed`='$speed', `type`='$type', `wclass_1`='$wclass_1', `wclass_2`='$wclass_2', `wclass_3`='$wclass_3', `mclass_1`='$mclass_1', `mclass_2`='$mclass_2', `mclass_3`='$mclass_3', `total`='$total' WHERE id ='$tid'";
+        $result = $con->query($sql) or die($con->error);
+        $msg = 'success';
+    }
+    $_SESSION['tid'] = $tid;
+    return $msg;
+}
+
 
 
   public function remove_single($tid) {
@@ -77,34 +102,59 @@ class Train {
 
   function add() {
     $con = $GLOBALS['con'];
-      $code = $_POST['code'];
-      $name = $_POST['name'];
-      $speed = $_POST['speed'];
-      $type = $_POST['type'];
-      $wclass_1 = $_POST['wclass_1'];
-      $wclass_2 = $_POST['wclass_2'];
-      $wclass_3 = $_POST['wclass_3'];
-      $mclass_1 = $_POST['mclass_1'];
-      $mclass_2 = $_POST['mclass_2'];
-      $mclass_3 = $_POST['mclass_3'];
-      $total = $_POST['total'];
-      
-        $sql_query = "SELECT * FROM tbl_train WHERE code='$code' and status='active'";
-        $result_query = $con->query($sql_query);
-        $count = $result_query->num_rows;
+    $code = $_POST['code'];
+    $name = $_POST['name'];
+    $speed = $_POST['speed'];
+    $type = $_POST['type'];
+    $wclass_1 = $_POST['wclass_1'];
+    $wclass_2 = $_POST['wclass_2'];
+    $wclass_3 = $_POST['wclass_3'];
+    $mclass_1 = $_POST['mclass_1'];
+    $mclass_2 = $_POST['mclass_2'];
+    $mclass_3 = $_POST['mclass_3'];
+    $total = $_POST['total'];
 
-        if($count != 0){
-          $msg = '1';
-        }
-        else{
-          $sql = "INSERT INTO tbl_train (`code`, `name`, `speed`, `type`, `wclass_1`, `wclass_2`, `wclass_3`, `mclass_1`, `mclass_2`, `mclass_3`, `total`) 
-          VALUES ('$code', '$name', '$speed', '$type', '$wclass_1', '$wclass_2', '$wclass_3', '$mclass_1', '$mclass_2', '$mclass_3', '$total')";
-          $result = $con->query($sql) or die($con->error);
+    // File upload handling
+    $targetDir = "../../../assets/website/images/upload/";
+    $fileName = basename($_FILES["image"]["name"]);
+    $targetFilePath = $targetDir . $fileName;
+    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-          $msg = '2';
+    // Check if the file is an actual image or fake image
+    $check = getimagesize($_FILES["image"]["tmp_name"]);
+    if ($check !== false) {
+        // Allow only certain file formats
+        $allowedTypes = array('jpg', 'jpeg', 'png', 'gif'.'webp');
+        if (in_array($fileType, $allowedTypes)) {
+            // Move the uploaded file to the destination directory
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+                // Perform database insertion
+                $sql_query = "SELECT * FROM tbl_train WHERE code='$code' AND status='active'";
+                $result_query = $con->query($sql_query);
+                $count = $result_query->num_rows;
+
+                if ($count != 0) {
+                    $msg = '1';
+                } else {
+                    $sql = "INSERT INTO tbl_train (`code`, `name`, `speed`, `type`, `wclass_1`, `wclass_2`, `wclass_3`, `mclass_1`, `mclass_2`, `mclass_3`, `total`, `image`) 
+                            VALUES ('$code', '$name', '$speed', '$type', '$wclass_1', '$wclass_2', '$wclass_3', '$mclass_1', '$mclass_2', '$mclass_3', '$total', '$fileName')";
+                    $result = $con->query($sql) or die($con->error);
+
+                    $msg = '2';
+                }
+            } else {
+                $msg = 'Error occurred while uploading the file.';
+            }
+        } else {
+            $msg = 'Invalid file format. Only JPG, JPEG, PNG, and GIF images are allowed.';
         }
-      return $msg;
-  }
+    } else {
+        $msg = 'File is not an image.';
+    }
+
+    return $msg;
+}
+
 
 
   public function viewTrainselected($id){

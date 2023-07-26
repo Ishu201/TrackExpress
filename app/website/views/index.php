@@ -5,6 +5,11 @@
   <title>Track Express</title>
 
   <?php include('links.php') ?>
+  <?php 
+  include('../models/Train_model.php');
+  $obj = new Train;
+  $result = $obj->get_all();
+?>
 </head>
 
 <body>
@@ -32,41 +37,14 @@
       <div class="row no-gutters">
         <div class="col-md-12 featured-top">
           <div class="row no-gutters">
-            <div class="col-md-4 d-flex align-items-center">
-              <form action="#" class="request-form ftco-animate bg-primary">
-                <h2>Book your Train Journey</h2>
-                <div class="form-group">
-                  <label for="departureLocation" class="label">Departure Station</label>
-                  <input type="text" class="form-control" id="departureLocation" placeholder="City, Station, etc">
-                </div>
-                <div class="form-group">
-                  <label for="arrivalLocation" class="label">Arrival Station</label>
-                  <input type="text" class="form-control" id="arrivalLocation" placeholder="City, Station, etc">
-                </div>
-                <div class="d-flex">
-                  <div class="form-group mr-2">
-                    <label for="departureDate" class="label">Departure Date</label>
-                    <input type="text" class="form-control" id="departureDate" placeholder="Date">
-                  </div>
-                  <div class="form-group ml-2">
-                    <label for="returnDate" class="label">Return Date</label>
-                    <input type="text" class="form-control" id="returnDate" placeholder="Date">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="departureTime" class="label">Departure Time</label>
-                  <input type="text" class="form-control" id="departureTime" placeholder="Time">
-                </div>
-                <div class="form-group">
-                  <input type="submit" value="Find Trains" class="btn btn-secondary py-3 px-4">
-                </div>
-              </form>
-            </div>
-            <div class="col-md-8 d-flex align-items-center">
+            <div class="col-md-12 d-flex align-items-center">
               <div class="services-wrap rounded-right w-100">
+                <center>
                 <h3 class="heading-section mb-4">The Best Way to Book Train Tickets</h3>
+                </center>
                 <div class="row d-flex mb-4">
-                  <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+
+                  <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                     <div class="services w-100 text-center">
                       <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
                       <div class="text w-100">
@@ -74,15 +52,24 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+                  <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                     <div class="services w-100 text-center">
-                      <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
+                      <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
                       <div class="text w-100">
-                        <h3 class="heading mb-2">Choose the Best Train Options</h3>
+                        <h3 class="heading mb-2">Select Your Arrival Station</h3>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+
+                  <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+                    <div class="services w-100 text-center">
+                      <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
+                      <div class="text w-100">
+                        <h3 class="heading mb-2">Choose the Best Seating Options</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 d-flex align-self-stretch ftco-animate">
                     <div class="services w-100 text-center">
                       <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
                       <div class="text w-100">
@@ -91,7 +78,7 @@
                     </div>
                   </div>
                 </div>
-                <p><a href="schedule.php" class="btn btn-primary py-3 px-4">Find Your Train Now</a></p>
+                <center><p><a href="schedule.php" class="btn btn-primary py-3 px-4">Find Your Train Now</a></p></center>
               </div>
             </div>
           </div>
@@ -112,58 +99,26 @@
       <div class="row">
         <div class="col-md-12">
           <div class="carousel-car owl-carousel">
+
+          <?php
+                while ($row_des = $result->fetch_array()) {
+                  ?>
             <div class="item">
               <div class="car-wrap rounded ftco-animate">
-                <div class="img rounded d-flex align-items-end" style="background-image: url('<?php echo $web_assets_base_url; ?>images/abclogo1.jpg');"></div>
+                <div class="img rounded d-flex align-items-end" style="background-image: url('<?php echo $web_assets_base_url; ?>images/upload/<?php echo $row_des['image']; ?>');"></div>
                 <div class="text">
-                  <h2 class="mb-0"><a href="#">Podi Manike Train</a></h2>
+                  <h2 class="mb-0"><a href="#"><?php echo $row_des['name']; ?> Train</a></h2>
                   <div class="d-flex mb-3">
-                    <span class="cat" style="color:gray !important">Intercity</span>
-                    <p class="price ml-auto" style="color:gray !important">450 <span style="color:gray !important">/Seats</span></p>
+                    <span class="cat" style="color:gray !important;text-transform:capitalized"><?php echo $row_des['type']; ?></span>
+                    <p class="price ml-auto" style="color:gray !important"><?php echo $row_des['total']; ?> <span style="color:gray !important">/Seats</span></p>
                   </div>
                   <p class="d-flex mb-0 d-block"></p>
                 </div>
               </div>
             </div>
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate">
-                <div class="img rounded d-flex align-items-end" style="background-image: url('<?php echo $web_assets_base_url; ?>images/udarata.jpg');"></div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">Podi Manike Train</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat" style="color:gray !important">Intercity</span>
-                    <p class="price ml-auto" style="color:gray !important">450 <span style="color:gray !important">/Seats</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block"></p>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate">
-                <div class="img rounded d-flex align-items-end" style="background-image: url('<?php echo $web_assets_base_url; ?>images/yaal.webp');"></div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">Podi Manike Train</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat" style="color:gray !important">Intercity</span>
-                    <p class="price ml-auto" style="color:gray !important">450 <span style="color:gray !important">/Seats</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block"></p>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="car-wrap rounded ftco-animate">
-                <div class="img rounded d-flex align-items-end" style="background-image: url('<?php echo $web_assets_base_url; ?>images/Sleeper_Express.jpg');"></div>
-                <div class="text">
-                  <h2 class="mb-0"><a href="#">Podi Manike Train</a></h2>
-                  <div class="d-flex mb-3">
-                    <span class="cat" style="color:gray !important">Intercity</span>
-                    <p class="price ml-auto" style="color:gray !important">450 <span style="color:gray !important">/Seats</span></p>
-                  </div>
-                  <p class="d-flex mb-0 d-block"></p>
-                </div>
-              </div>
-            </div>
+                  <?php } ?>
+
+           
           </div>
         </div>
       </div>
@@ -203,16 +158,14 @@
       <div class="row">
         <div class="col-md-3">
           <div class="services services-2 w-100 text-center">
-            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-train"></span></div>
             <div class="text w-100">
-              <h3 class="heading mb-2">Train Tickets</h3>
-              <p>Experience the joy of seamless train ticket booking with Track Express. We offer a wide range of train options for your convenience.</p>
+              <h3 class="heading mb-2">Train Schedule</h3>
+              <p>Explore our seamless Train Schedule for hassle-free ticket booking with Track Express. Wide range of options available</p>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="services services-2 w-100 text-center">
-            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-ticket"></span></div>
             <div class="text w-100">
               <h3 class="heading mb-2">Ticket Reservations</h3>
               <p>Reserve your train tickets in advance with Track Express. Secure your seats for a hassle-free journey.</p>
@@ -221,19 +174,17 @@
         </div>
         <div class="col-md-3">
           <div class="services services-2 w-100 text-center">
-            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-travel"></span></div>
             <div class="text w-100">
-              <h3 class="heading mb-2">Travel Planning</h3>
-              <p>Plan your train journeys effortlessly with Track Express. Get detailed information about routes, schedules, and more.</p>
+              <h3 class="heading mb-2">Seat Selection</h3>
+              <p>Choose your preferred seats on the train with Track Express. Enjoy a comfortable and personalized journey.</p>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="services services-2 w-100 text-center">
-            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-seat"></span></div>
             <div class="text w-100">
-              <h3 class="heading mb-2">Seat Selection</h3>
-              <p>Choose your preferred seats on the train with Track Express. Enjoy a comfortable and personalized journey.</p>
+              <h3 class="heading mb-2">Train Tracking</h3>
+              <p>Track your trains in real-time with Track Express. Experience live train tracking for hassle-free journeys</p>
             </div>
           </div>
         </div>
@@ -248,34 +199,54 @@
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
+                  <?php 
+                  $sql = "SELECT * FROM tbl_customer WHERE status='Active'";
+                  $result = $con->query($sql);
+                  $count1 = mysqli_num_rows($result);
+                  ?>
         <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
           <div class="block-18">
             <div class="text text-border d-flex align-items-center">
-              <strong class="number" data-number="10">0</strong>
-              <span>Total <br>Routes</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
-          <div class="block-18">
-            <div class="text text-border d-flex align-items-center">
-              <strong class="number" data-number="500">0</strong>
-              <span>Total <br>Trains</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
-          <div class="block-18">
-            <div class="text text-border d-flex align-items-center">
-              <strong class="number" data-number="1500">0</strong>
+              <strong class="number" data-number="<?php echo $count1; ?>">0</strong>
               <span>Happy <br>Passengers</span>
             </div>
           </div>
         </div>
+        <?php 
+                  $sql = "SELECT * FROM tbl_train WHERE status='active'";
+                  $result = $con->query($sql);
+                  $count2 = mysqli_num_rows($result);
+                  ?>
+        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+          <div class="block-18">
+            <div class="text text-border d-flex align-items-center">
+              <strong class="number" data-number="<?php echo $count2; ?>">0</strong>
+              <span>Total <br>Trains</span>
+            </div>
+          </div>
+        </div>
+        <?php 
+                  $sql = "SELECT * FROM tbl_route WHERE status='active'";
+                  $result = $con->query($sql);
+                  $count3 = mysqli_num_rows($result);
+                  ?>
+        <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+          <div class="block-18">
+            <div class="text text-border d-flex align-items-center">
+              <strong class="number" data-number="<?php echo $count3; ?>">0</strong>
+              <span>Total <br>Routes</span>
+            </div>
+          </div>
+        </div>
+        <?php 
+                  $sql = "SELECT * FROM tbl_station WHERE status='active'";
+                  $result = $con->query($sql);
+                  $count4 = mysqli_num_rows($result);
+                  ?>
         <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
           <div class="block-18">
             <div class="text d-flex align-items-center">
-              <strong class="number" data-number="20">0</strong>
+              <strong class="number" data-number="<?php echo $count4; ?>">0</strong>
               <span>Total <br>Destinations</span>
             </div>
           </div>

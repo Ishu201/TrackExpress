@@ -3,12 +3,19 @@
 <?php include('header.php') ?>
 
 <?php 
+if(isset($_GET['id'])){
+  $id = $_GET['id'];
+}else{
+  $id = '0';
+}
 
 
+include('../models/Timetable_model.php');
+$timetable_obj = new Timetable;
+$timetable = $timetable_obj->get_all_by_date($id);
 
 include('../models/Schedule_model.php');
 $Schedule_obj = new Schedule;
-$schedule = $Schedule_obj->get_all('sunday');
 
 include('../models/Route_model.php');
 $route_obj = new Route;
@@ -48,8 +55,13 @@ $train_obj = new Train;
            $newYear = date('Y', strtotime($newDate));
            $newMonth = date('F', strtotime($newDate));
         ?>
-        <a href="../controllers/Timetable.php?status=start" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="left" title="Time Table is created for 2023-07-31" >Start for <?php echo $newYear ?>-<?php echo $newMonth ?></a>
-        <br><span >Time Table is created untill  <?php echo $row_last_date ?></span>
+        <!-- HTML code -->
+<!-- HTML code -->
+<img src="images/Loading2.gif" alt="" style="width: 50px; display: none;" id="loadingImage">
+<div style="display: none; cursor: not-allowed; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.15); z-index: 99999" id="loadingOverlay"></div>
+<a href="#" id='btnload' class="btn btn-sm btn-info" id="startButton" onclick="startLoading()">Start for <?php echo $newYear ?>-<?php echo $newMonth ?></a>
+
+<br><span >Time Table is created untill  <?php echo $row_last_date ?></span>
       </div>
         
    </div>
@@ -80,39 +92,44 @@ $train_obj = new Train;
                   <th>Route Name</th>
                   <th>Train</th>
                   <th style="text-align:center">Start Station</th>
-                  <th style="text-align:center">Original Departure</th>
-                  <th style="text-align:center">Delayed Departure</th>
+                  <th style="text-align:center;width:8%">Original Departure</th>
+                  <th style="text-align:center;width:8%">Delayed Departure</th>
                   <th style="text-align:center">Booked Seats</th>
                   <th style="text-align:center">End Station</th>
-                  <th style="text-align:center">Original Arrival</th>
-                  <th style="text-align:center">Delayed Arrival</th>
-                  <th style="text-align:right">Action</th>
+                  <th style="text-align:center;width:8%">Original Arrival</th>
+                  <th style="text-align:center;width:8%">Delayed Arrival</th>
+                  <th style="text-align:right;width:12%">Action</th>
                 </tr>
               </thead>
               <tbody>
               <?php
-                while ($row_des = $schedule->fetch_array()) {
-
+                while ($row_des = $timetable->fetch_array()) {
+                  $schedule_id = $row_des['schedule_id'];
+                  $schedule = $Schedule_obj->viewScheduleselected($schedule_id);
+                  $row_schedule = $schedule->fetch_array();
                   ?>
                 <tr>
-                  <td>
+                  <!-- routename -->
+                  <td> 
                   <?php 
-                    $route_id = $row_des['route_id'];
+                    $route_id = $row_schedule['route_id'];
 
                     $route = $route_obj->viewRouteselected($route_id);
                     $row_route = $route->fetch_array();
                     echo $row_route['route_name'];
                     ?>
                   </td>
+                  <!-- train -->
                   <td style="text-align:center">
                     <?php 
-                    $train_id = $row_des['train_id'];
+                    $train_id = $row_schedule['train_id'];
 
                     $train = $train_obj->viewTrainselected($train_id);
                     $row_train = $train->fetch_array();
                     echo $row_train['name'];
                     ?>
                   </td>
+                  <!-- start station -->
                   <td style="text-align:center">
                     <?php 
                     $start_station_id = $row_route['start_station_id'];
@@ -121,7 +138,13 @@ $train_obj = new Train;
                     echo $row_start_station['name'];
                     ?>
                   </td>
-                  <td style="text-align:right"><?php echo $row_des['departure']; ?></td>
+                  <!-- original departure -->
+                  <td style="text-align:center"><?php echo $row_schedule['departure']; ?></td>
+                  <!-- delays -->
+                  <td style="text-align:center"><?php echo $row_des['delay']; ?></td>
+                  <!-- booked seats -->
+                  <td style="text-align:center"><?php echo $row_des['booked_seats']; ?></td>
+                  <!--  arrival station -->
                   <td style="text-align:right">
                   <?php 
                     $final_station_id = $row_route['final_station_id'];
@@ -130,30 +153,14 @@ $train_obj = new Train;
                     echo $row_final_station['name'];
                     ?>
                     </td>
-                    <td style="text-align:right"><?php echo $row_des['arrival']; ?></td>
-                    <td style="text-align:right"><?php echo $row_route['total_distance']; ?></td>
+                    <!-- original arrival -->
+                    <td style="text-align:center"><?php echo $row_schedule['arrival']; ?></td>
+                    
+                  <!-- delayed arrival -->
+                    <td style="text-align:center"></td>
                     <td style="text-align:right">
-                    <?php 
-                    $interst = $route_obj->view_total_intst($row_route['id']);
-                    $output = '';
-                        while ($row_int = $interst->fetch_array()) {
-                            $output .= $row_int['name'] . ', ';
-                        }
-                        $output = rtrim($output, ', '); // Remove the trailing comma and space
-                        echo $output;
-                    ?>
-                    </td>
-                    <td style="text-align:center">
-                        <?php 
-                            echo $sum = (!empty($row_train['class_1']) ? $row_train['class_1'] : 0) +
-                                        (!empty($row_train['class_2']) ? $row_train['class_2'] : 0) +
-                                        (!empty($row_train['class_3']) ? $row_train['class_3'] : 0);
-                     
-                        ?>
-                    </td>
-                    <td style="text-align:right">
-                        <button onclick="window.location.href = 'schedule_trains.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-info editbtn">Delay</button>
-                        <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','Active');" class="btn btn-sm btn-danger">Cancel</button>
+                        <!-- <button onclick="window.location.href = 'schedule_trains.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-info editbtn">Delay</button> -->
+                        <!-- <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','Active');" class="btn btn-sm btn-danger">Cancel</button> -->
                       </td>
                 </tr>
               <?php } ?>
@@ -170,7 +177,25 @@ $train_obj = new Train;
 </div>
 <!-- /page content -->
 
+
 <script>
+
+  // JavaScript code
+function startLoading() {
+  // Show the loading image and the loading overlay div
+  document.getElementById('loadingImage').style.display = 'inline';
+  document.getElementById('loadingOverlay').style.display = 'block';
+  $('#btnload').hide()
+
+  // Slight delay before navigating to the specified URL
+  setTimeout(function() {
+    window.location.href = '../controllers/Timetable.php?status=start';
+  }, 200); // 200 milliseconds (adjust this value as needed)
+}
+
+
+  // JavaScript code
+
     function loadTextFromPage(selectedValue) {
         if (selectedValue === "") {
             document.getElementById("table_schedule").innerHTML = ""; // Clear the content

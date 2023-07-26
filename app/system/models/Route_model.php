@@ -12,16 +12,16 @@ class Route {
 
   public function update_single() {
       $con = $GLOBALS['con'];
-      $route_name = $_POST['route_name'];
-      $total_distance = $_POST['total_distance'];
-      $total_price_1st = $_POST['total_price_1st'];
-      $total_price_2nd = $_POST['total_price_2nd'];
-      $total_price_3rd = $_POST['total_price_3rd'];
-      $start_station_id = $_POST['start_station_id'];
-      $final_station_id = $_POST['final_station_id'];
-      $sp_note = $_POST['sp_note'];
-      $tid = $_POST['tid'];
-      $intst_no = $_POST['intst_no'];
+      $route_name = mysqli_real_escape_string($con,$_POST['route_name']);
+      $total_distance = mysqli_real_escape_string($con,$_POST['total_distance']);
+      $total_price_1st = mysqli_real_escape_string($con,$_POST['total_price_1st']);
+      $total_price_2nd = mysqli_real_escape_string($con,$_POST['total_price_2nd']);
+      $total_price_3rd = mysqli_real_escape_string($con,$_POST['total_price_3rd']);
+      $start_station_id = mysqli_real_escape_string($con,$_POST['start_station_id']);
+      $final_station_id = mysqli_real_escape_string($con,$_POST['final_station_id']);
+      $sp_note = mysqli_real_escape_string($con,$_POST['sp_note']);
+      $tid = mysqli_real_escape_string($con,$_POST['tid']);
+      $intst_no = mysqli_real_escape_string($con,$_POST['intst_no']);
 
         $sql_check = "SELECT * FROM tbl_route WHERE route_name='$route_name' and id !='$tid' and status='Active'";
         $result_check = $con->query($sql_check);
@@ -35,11 +35,11 @@ class Route {
 
           if($intst_no > 0){
             for ($i = 0; $i < $intst_no; $i++) {
-              $stationId = $_POST['station_id'][$i];
-              $distance = $_POST['distance'][$i];
-              $price_1st = $_POST['price_1st'][$i];
-              $price_2nd = $_POST['price_2nd'][$i];
-              $price_3rd = $_POST['price_3rd'][$i];
+              $stationId = mysqli_real_escape_string($con,$_POST['station_id'][$i]);
+              $distance = mysqli_real_escape_string($con,$_POST['distance'][$i]);
+              $price_1st = mysqli_real_escape_string($con,$_POST['price_1st'][$i]);
+              $price_2nd = mysqli_real_escape_string($con,$_POST['price_2nd'][$i]);
+              $price_3rd = mysqli_real_escape_string($con,$_POST['price_3rd'][$i]);
                if($stationId > 0){ 
               $sql = "INSERT INTO `tbl_route_stations`(`route_id`, `station_id`, `distance`,`price_1st`,`price_2nd`,`price_3rd`) VALUES ('$tid','$stationId','$distance','$price_1st','$price_2nd','$price_3rd')";
               $result = $con->query($sql) or die($con->error);
@@ -76,15 +76,15 @@ class Route {
 
   function add() {
     $con = $GLOBALS['con'];
-      $route_name = $_POST['route_name'];
-      $total_distance = $_POST['total_distance'];
-      $total_price_1st = $_POST['total_price_1st'];
-      $total_price_2nd = $_POST['total_price_2nd'];
-      $total_price_3rd = $_POST['total_price_3rd'];
-      $start_station_id = $_POST['start_station_id'];
-      $final_station_id = $_POST['final_station_id'];
-      $sp_note = $_POST['sp_note'];
-      $intst_no = $_POST['intst_no'];
+      $route_name = mysqli_real_escape_string($con,$_POST['route_name']);
+      $total_distance = mysqli_real_escape_string($con,$_POST['total_distance']);
+      $total_price_1st = mysqli_real_escape_string($con,$_POST['total_price_1st']);
+      $total_price_2nd = mysqli_real_escape_string($con,$_POST['total_price_2nd']);
+      $total_price_3rd = mysqli_real_escape_string($con,$_POST['total_price_3rd']);
+      $start_station_id = mysqli_real_escape_string($con,$_POST['start_station_id']);
+      $final_station_id = mysqli_real_escape_string($con,$_POST['final_station_id']);
+      $sp_note = mysqli_real_escape_string($con,$_POST['sp_note']);
+      $intst_no = mysqli_real_escape_string($con,$_POST['intst_no']);
       
         $sql_query = "SELECT * FROM tbl_route WHERE route_name='$route_name' and status='active'";
         $result_query = $con->query($sql_query);
@@ -100,11 +100,11 @@ class Route {
           
           if($intst_no > 0){
             for ($i = 0; $i < $intst_no; $i++) {
-              $stationId = $_POST['station_id'][$i];
-              $distance = $_POST['distance'][$i];
-              $price_1st = $_POST['price_1st'][$i];
-              $price_2nd = $_POST['price_2nd'][$i];
-              $price_3rd = $_POST['price_3rd'][$i];
+              $stationId = mysqli_real_escape_string($con,$_POST['station_id'][$i]);
+              $distance = mysqli_real_escape_string($con,$_POST['distance'][$i]);
+              $price_1st = mysqli_real_escape_string($con,$_POST['price_1st'][$i]);
+              $price_2nd = mysqli_real_escape_string($con,$_POST['price_2nd'][$i]);
+              $price_3rd = mysqli_real_escape_string($con,$_POST['price_3rd'][$i]);
                if($stationId > 0){ 
               $sql = "INSERT INTO `tbl_route_stations`(`route_id`, `station_id`, `distance`,`price_1st`,`price_2nd`,`price_3rd`) VALUES ('$lastInsertedId','$stationId','$distance','$price_1st','$price_2nd','$price_3rd')";
               $result = $con->query($sql) or die($con->error);

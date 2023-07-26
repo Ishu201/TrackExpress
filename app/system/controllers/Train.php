@@ -21,20 +21,22 @@ switch ($status) {
           } else if($msg == '2'){
              $_SESSION['success'] =  'Successfully Registered ..!!';
             // $code = 'error';
-          } 
+          } else{
+            $_SESSION['error'] =  $msg;
+          }
         
         header("Location:../views/train_reg.php");
         break;
 
     case "update":
         $msg = $obj->update_single();
-        $code = 'success';
           if ($msg == 'success') {
             $_SESSION['success'] =  'Successfully Updated ..!!';
             header("Location:../views/train_list.php");
           }else{
             $_SESSION['error'] = 'This Train Code is Already Registered';
-            header("Location:../views/train_reg.php?id=$msg");
+            $tid = $_SESSION['tid'];
+            header("Location:../views/train_reg.php?id=$tid");
           }
           
         

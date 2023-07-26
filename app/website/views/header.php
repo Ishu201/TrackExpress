@@ -7,13 +7,13 @@
 
 		<div class="collapse navbar-collapse" id="ftco-nav">
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item active"><a href="index.php" class="nav-link">Home</a></li>
-				<li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
-				<li class="nav-item"><a href="schedule.php" class="nav-link">Train Schedule</a></li>
+				<li class="nav-item active"><a style="font-size:17px !important" href="index.php" class="nav-link">Home</a></li>
+				<li class="nav-item"><a style="font-size:17px !important" href="about.php" class="nav-link">About</a></li>
+				<li class="nav-item"><a style="font-size:17px !important" href="schedule.php" class="nav-link">Train Schedule</a></li>
 				<!-- <li class="nav-item"><a href="tracking.php" class="nav-link">Tracking</a></li> -->
-				<li class="nav-item"><a href="contact.php" class="nav-link">Contact Us</a></li>
+				<li class="nav-item"><a style="font-size:17px !important" href="contact.php" class="nav-link">Contact Us</a></li>
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a style="font-size:17px !important" class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					My Account
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="top: 85%;left: -30px;">
@@ -23,9 +23,9 @@
 						<a class="dropdown-item" href="login.php"><i class="fa fa-sign-out text-dark mr-2" aria-hidden="true"></i>Log Out</a>
 					</div>
 				</li>
-					<?php if($cusid == ''){  ?>
-				<li class="nav-item"><a href="login/register.php" class="nav-link">Sign Up</a></li>
-	          <li class="nav-item"><a href="login/login.php" class="nav-link">Login</a></li>
+					<?php if (isset($_SESSION['customerID'])) {  ?>
+				<li class="nav-item"><a style="font-size:17px !important" href="login/register.php" class="nav-link">Sign Up</a></li>
+	          <li class="nav-item"><a style="font-size:17px !important" href="login/login.php" class="nav-link">Login</a></li>
 <?php } ?>
 			</ul>
 		</div>

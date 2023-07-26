@@ -26,9 +26,9 @@ switch ($status) {
 
     case "update_time":
       $value = $_REQUEST['value'];
-      $table   = $_REQUEST['table'];
-      $col     = $_REQUEST['col'];
-      $id      = $_REQUEST['id'];
+      $table      = $_REQUEST['table'];
+      $col  = $_REQUEST['col'];
+      $id  = $_REQUEST['id'];
       $msg = $obj->update_time($value,$table,$col,$id);
           if ($msg == 'success') {
             header("Location:../views/schedule_trains.php?id=$msg");

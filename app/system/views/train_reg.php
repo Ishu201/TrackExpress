@@ -39,12 +39,16 @@ if(isset($_GET['id'])){
                     </div>
                     <div class="x_content" style="padding:10px"> <br>
                     <?php  if($id != ''){ ?>
-                        <form action="../controllers/Train.php?status=update" method="post"  data-parsley-validate>
+                        <form action="../controllers/Train.php?status=update" method="post"  data-parsley-validate  enctype="multipart/form-data">
                             <input type="hidden" name="tid" id="tid" value="<?php  echo $row_des['id'];  ?>">
                       <?php }else{ ?>
-                        <form action="../controllers/Train.php?status=add" method="post"  data-parsley-validate>
+                        <form action="../controllers/Train.php?status=add" method="post"  data-parsley-validate enctype="multipart/form-data">
                         <?php } ?>
                             <div class="form-group row ">
+                            <div class="col-md-12 col-sm-12 ">
+                                    <label class="control-label"><span>*</span> Image</label>
+                                    <input id="image" name="image" type="file" required>  <br><br>
+                                </div>
                                 <div class="col-md-4 col-sm-6 ">
                                     <label class="control-label"><span>*</span> Code</label>
                                     <input id="code" name="code" type="text" readonly class="form-control" value="<?php  if($id != ''){ echo $row_des['code']; } else{ echo $codeNo;} ?>" placeholder="Train Code" data-parsley-trigger="change" required >

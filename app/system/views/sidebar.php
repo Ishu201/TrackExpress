@@ -5,6 +5,10 @@ $userID = $_SESSION['userID'];
 $userType = $_SESSION['userType'];
 $userName = $_SESSION['userName'];
 
+if ($userID == '') {
+  header("Location:homr.php");
+}
+
 ?>
 <!DOCTYPE html>
 <!-- <php lang="en"> -->
@@ -37,6 +41,13 @@ $userName = $_SESSION['userName'];
     <!-- bootstrap-daterangepicker -->
     <link href="<?php echo $system_assets_base_url; ?>vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Include jQuery UI JavaScript -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    
     <!-- Datatables -->
     <link href="<?php echo $system_assets_base_url; ?>vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo $system_assets_base_url; ?>vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
@@ -157,6 +168,48 @@ $userName = $_SESSION['userName'];
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
+
+
+    /* Define custom properties for scrollbar width and colors */
+:root {
+  --scrollbar-width: 5px;
+  --scrollbar-color: #00cc66;
+  --scrollbar-background: lightgray;
+}
+
+/* Style the scrollbar */
+/* Note that this only works in webkit-based browsers (Chrome, Safari) */
+/* Use ::-webkit-scrollbar for styling the scrollbar */
+/* Use ::-webkit-scrollbar-thumb for styling the scrollbar handle (thumb) */
+/* Use ::-webkit-scrollbar-track for styling the scrollbar track */
+/* Use ::-webkit-scrollbar-corner for styling the scrollbar corner */
+/* Use ::-webkit-scrollbar-thumb:hover for styling the scrollbar handle on hover */
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+/* Scrollbar Handle (Thumb) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-background);
+}
+
+/* Scrollbar Corner */
+::-webkit-scrollbar-corner {
+  background-color: var(--scrollbar-background);
+}
+
+/* Scrollbar Handle (Thumb) on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: darken(var(--scrollbar-color), 10%);
+}
+
     </style>
 
 
@@ -215,7 +268,7 @@ $userName = $_SESSION['userName'];
           <?php if($userType == 'admin'){ ?>
               <div class="menu_section">
                 <ul class="nav side-menu">
-                  <li id="home"><a><i class="fa fa-home"></i> Home </a>
+                  <li id="home"><a href="admin_home.php"><i class="fa fa-home"></i> Home </a>
                   </li>
                   <li id="Train"><a><i class="fa fa-edit"></i> Train Details Mgt<span class="fa fa-chevron-down"></span></a>
                     <ul id="Trainmenu" class="nav child_menu">
@@ -227,7 +280,7 @@ $userName = $_SESSION['userName'];
                   <li id="Schedule"><a><i class="fa fa-list"></i> Train Schedule Mgt <span class="fa fa-chevron-down"></span></a>
                     <ul id="Schedulemenu" class="nav child_menu">
                       <li id="schedule_trains"><a href="schedule_trains.php">Schedule Trains</a></li>
-                      <li id="cancel_schedule"><a href="cancel_schedule.php">Cancel & Delay Schedule</a></li>
+                      <li id="cancel_schedule"><a href="cancel_schedule.php">Train Time Table</a></li>
                       <li id="train_tracking"><a href="train_tracking.php">Train Tracking</a></li>
                     </ul>
                   </li>

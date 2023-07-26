@@ -29,7 +29,7 @@ switch ($status) {
         $code = 'success';
           if ($msg == 'success') {
             $_SESSION['success'] =  'Successfully Updated ..!!';
-            header("Location:../views/Station_list.php");
+            header("Location:../views/Station_reg.php");
           }else{
             $_SESSION['error'] = 'This Station Code is Already Registered';
             header("Location:../views/Station_reg.php?id=$msg");

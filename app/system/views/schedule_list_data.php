@@ -99,9 +99,12 @@ $day = $_GET['day'];
                     </td>
                     <td style="text-align:center">
                         <?php 
-                            echo $sum = (!empty($row_train['class_1']) ? $row_train['class_1'] : 0) +
-                                        (!empty($row_train['class_2']) ? $row_train['class_2'] : 0) +
-                                        (!empty($row_train['class_3']) ? $row_train['class_3'] : 0);
+                            echo $sum = (!empty($row_train['mclass_1']) ? $row_train['mclass_1'] : 0) +
+                                        (!empty($row_train['mclass_2']) ? $row_train['mclass_2'] : 0) +
+                                        (!empty($row_train['mclass_3']) ? $row_train['mclass_3'] : 0)+
+                                        (!empty($row_train['wclass_1']) ? $row_train['wclass_1'] : 0) +
+                                        (!empty($row_train['wclass_2']) ? $row_train['wclass_2'] : 0) +
+                                        (!empty($row_train['wclass_3']) ? $row_train['wclass_3'] : 0);
                      
                         ?>
                     </td>

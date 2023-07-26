@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
     $obj = new Station;
     $result = $obj->viewStationselected($id);
     $row_des = $result->fetch_array();
-    $station = $row_des['id'];
+    echo $station = $row_des['id'];
 
     $result2 = $obj->viewStation_user($station);
     $row_user = $result2->fetch_array();
@@ -55,7 +55,7 @@ if (isset($_GET['id'])) {
             <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2><b>Station Details</b></h2>
+                        <h2><b>Station Details </b></h2>
                         <div class="clearfix">
                             <?php include('session_msg.php') ?>
                         </div>

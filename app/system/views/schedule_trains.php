@@ -39,6 +39,7 @@ $obj4 = new Station;
   margin-right: 5px;
 }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.css">
 
 <!-- page content -->
 <div class="right_col" role="main">
@@ -48,7 +49,7 @@ $obj4 = new Station;
                 <p>Train Schedule Mgt / Schedule Trains</p>
             </div>
             <a href="schedule_list.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Schedule List</a>
-            <a href="schedule_trains.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">New Schedule</a>
+            
         </div>
 
         <div class="clearfix"></div>
@@ -58,8 +59,9 @@ $obj4 = new Station;
                 <div class="x_panel">
                     <div class="x_title">
                         <h2><b>Create Schedule</b></h2>
+                        <a href="schedule_trains.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">New Schedule</a>
                         <div class="clearfix">
-                            <?php include('session_msg.php') ?>
+                            <?php include('session_msg.php') ?> 
                         </div>
                     </div>
                     <div class="x_content" style="padding:10px"> <br>
@@ -167,7 +169,7 @@ $obj4 = new Station;
                                     </div>
                                     <div class="col-md-3 col-sm-4 ">
                                     <div class="input-with-tickmark">
-                                        <input id="start_st_departure" onchange="validateTime(this);update_time(this,'tbl_schedule','departure','<?php echo $id; ?>','starttick')" name="start_st_departure" type="time" class="form-control" value="<?php if ($id != '') { echo $row_des['departure']; } ?>">
+                                        <input id="start_st_departure" style="background-color: white;" onchange="validateTime(this);update_time(this,'tbl_schedule','departure','<?php echo $id; ?>','starttick')" name="start_st_departure" type="time" class="form-control times" value="<?php if ($id != '') { echo $row_des['departure']; } ?>">
                                         <span style="color:limegreen;display:none;font-size:20px" id="starttick">&#10004;</span>
                                 </div>
                                     </div>
@@ -191,13 +193,13 @@ $obj4 = new Station;
                                     </div>
                                     <div class="col-md-3 col-sm-4 "> 
                                         <div class="input-with-tickmark">
-                                        <input id="int_st_arrival1" name="int_st_arrival1" onchange="validateTime(this);update_time(this,'tbl_schedule_stations','arrival','<?php echo $row_int_schedule['id']; ?>','inttick_arr<?php echo $nno; ?>')"  type="time" class="form-control" value="<?php if ($id != '') { echo $row_int_schedule['arrival']; } ?>">
+                                        <input id="int_st_arrival1" style="background-color: white;" name="int_st_arrival1" onchange="validateTime(this);update_time(this,'tbl_schedule_stations','arrival','<?php echo $row_int_schedule['id']; ?>','inttick_arr<?php echo $nno; ?>')"  type="time" class="form-control times" value="<?php if ($id != '') { echo $row_int_schedule['arrival']; } ?>">
                                         <span style="color:limegreen;display:none;font-size:20px"  id="inttick_arr<?php echo $nno; ?>">&#10004;</span>
                                     </div>
                                 </div>
                                     <div class="col-md-3 col-sm-4 ">
                                         <div class="input-with-tickmark">
-                                        <input id="int_st_departure1" name="int_st_departure1" onchange="validateTime(this);update_time(this,'tbl_schedule_stations','departure','<?php echo $row_int_schedule['id']; ?>','inttick_dep<?php echo $nno; ?>')" type="time" class="form-control" value="<?php if ($id != '') { echo $row_int_schedule['departure']; } ?>">
+                                        <input id="int_st_departure1" style="background-color: white;" name="int_st_departure1" onchange="validateTime(this);update_time(this,'tbl_schedule_stations','departure','<?php echo $row_int_schedule['id']; ?>','inttick_dep<?php echo $nno; ?>')" type="time" class="form-control times" value="<?php if ($id != '') { echo $row_int_schedule['departure']; } ?>">
                                         <span style="color:limegreen;display:none;font-size:20px" id="inttick_dep<?php echo $nno; ?>">&#10004;</span>
                                         </div>
                                     </div>
@@ -217,7 +219,7 @@ $obj4 = new Station;
                                     </div>
                                     <div class="col-md-3 col-sm-4 ">
                                         <div class="input-with-tickmark">
-                                        <input  id="end_st_arrival" name="end_st_arrival" type="time" onchange="validateTime(this);update_time(this,'tbl_schedule','arrival','<?php echo $id; ?>','endtick')" class="form-control" value="<?php if ($id != '') { echo $row_des['arrival']; } ?>">
+                                        <input  id="end_st_arrival" style="background-color: white;" name="end_st_arrival" type="time" onchange="validateTime(this);update_time(this,'tbl_schedule','arrival','<?php echo $id; ?>','endtick')" class="form-control times" value="<?php if ($id != '') { echo $row_des['arrival']; } ?>">
                                         <span style="color:limegreen;display:none;font-size:20px"  id="endtick">&#10004;</span>
                                         </div>
                                     </div>
@@ -237,7 +239,7 @@ $obj4 = new Station;
     </div>
 </div>
 <!-- /page content -->
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
 <script>
 
 function update_time(element,table,col,id,tickid) {
@@ -279,6 +281,24 @@ function validateTime(element) {
     }
 }
 
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialize the datepicker
+        flatpickr(".dates", {
+            dateFormat: "Y-m-d", // Customize the date format (optional)
+            // Add any other options as needed
+        });
+
+        // Initialize the timepicker
+        flatpickr(".times", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i", // Customize the time format (optional)
+            // Add any other options as needed
+        });
+    });
 </script>
 
 
