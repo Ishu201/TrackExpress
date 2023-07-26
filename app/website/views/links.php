@@ -50,7 +50,7 @@ $userLevel = $row_user['level'];
 
     <!-- fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--   
   --tp-white: #e7e9e9;
   --tp-blue: #111c2f;
@@ -58,5 +58,52 @@ $userLevel = $row_user['level'];
   --tp-red: #b30f00;
   --tp-gray: #838b94;
  -->
+
+ <style>
+    /* Define custom properties for scrollbar width and colors */
+:root {
+  --scrollbar-width: 5px;
+  --scrollbar-color: #111C2F;
+  --scrollbar-background: lightgray;
+}
+
+/* Style the scrollbar */
+/* Note that this only works in webkit-based browsers (Chrome, Safari) */
+/* Use ::-webkit-scrollbar for styling the scrollbar */
+/* Use ::-webkit-scrollbar-thumb for styling the scrollbar handle (thumb) */
+/* Use ::-webkit-scrollbar-track for styling the scrollbar track */
+/* Use ::-webkit-scrollbar-corner for styling the scrollbar corner */
+/* Use ::-webkit-scrollbar-thumb:hover for styling the scrollbar handle on hover */
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+/* Scrollbar Handle (Thumb) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-background);
+}
+
+/* Scrollbar Corner */
+::-webkit-scrollbar-corner {
+  background-color: var(--scrollbar-background);
+}
+
+/* Scrollbar Handle (Thumb) on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #B31219;
+}
+
+body{
+  overflow-x: hidden;
+}
+
+ </style>
 
     

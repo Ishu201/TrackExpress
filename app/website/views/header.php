@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+<nav style="width:100%" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	<div class="container">
 		<a class="navbar-brand" href="index.php">Track<span style="color:#b30f00 !important">Express</span></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,11 +7,11 @@
 
 		<div class="collapse navbar-collapse" id="ftco-nav">
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item active"><a style="font-size:17px !important" href="index.php" class="nav-link">Home</a></li>
-				<li class="nav-item"><a style="font-size:17px !important" href="about.php" class="nav-link">About</a></li>
-				<li class="nav-item"><a style="font-size:17px !important" href="schedule.php" class="nav-link">Train Schedule</a></li>
+				<li class="nav-item" id="home"><a style="font-size:17px !important" href="index.php" class="nav-link">Home</a></li>
+				<li class="nav-item" id="about"><a style="font-size:17px !important" href="about.php" class="nav-link">About</a></li>
+				<li class="nav-item" id="schedule"><a  style="font-size:17px !important" href="schedule.php" class="nav-link">Train Schedule</a></li>
 				<!-- <li class="nav-item"><a href="tracking.php" class="nav-link">Tracking</a></li> -->
-				<li class="nav-item"><a style="font-size:17px !important" href="contact.php" class="nav-link">Contact Us</a></li>
+				<li class="nav-item"  id="contact"><a style="font-size:17px !important" href="contact.php" class="nav-link">Contact Us</a></li>
 				<li class="nav-item dropdown">
 					<a style="font-size:17px !important" class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					My Account
