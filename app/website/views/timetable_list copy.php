@@ -2,88 +2,15 @@
 include '../controllers/db_connect.php';
 $ob = new dbconnection();
 $con = $ob->connection();
-session_start();
 
-$date = $_GET['date'];
-$start = $_GET['start_location'];
-$end = $_GET['final_location'];
-
-$timestamp = strtotime($date);
-$dayInWords = date("l", $timestamp);
-
-include('../models/Timetable_model.php');
-$Timetable_obj = new Timetable;
-
-$start_st_name = $Timetable_obj->station_single($start);
-$end_st_name = $Timetable_obj->station_single($end);
-
-
-if (isset($_SESSION['customerID'])) {
-  $cusid = $_SESSION['customerID'];
-}else{
-  $cusid = '';
-}
+$id = '340'
 ?>
 
-<style>
-    h1 {
-        font-size: 20px;
-        text-align: center;
-        margin-top: 40px;
-        margin-bottom: 20px;
-    }
-
-    .panel-default>.panel-heading {
-        background-color: #ffffff;
-        color: rgba(0, 0, 0, .40);
-        padding: 15px;
-
-    }
-
-    .panel {
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .40);
-    }
-
-    .panel-group .panel {
-        margin-bottom: 20px;
-    }
-
-    .panel-title {
-        font-size: 18px;
-    }
-
-    .panel-title a,
-    .panel-title a:hover,
-    .panel-title a:focus {
-        text-decoration: none;
-    }
-
-    .panel-body p {
-        font-size: 16px;
-        padding: 15px;
-        color: #2B2E2E !important;
-    }
-
-    td {
-        color: #2B2E2E
-    }
-</style>
-
-<div class="x_content" id="table-container">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top: 40px;">
-                    <h5><b><?php echo $start_st_name; ?> to <?php echo $end_st_name; ?></b></h5>
-                    <h5>Train (Railway) schedule</h5>
-                    <h6>Date : <?php echo $date; ?></h6> <br>
-
                     <?php
-                    $sql_daily_record = "SELECT * FROM tbl_daily_trains WHERE date='$date' and status='active'";
+                    $sql_daily_record = "SELECT * FROM tbl_daily_trains WHERE id='$id'";
                     $result_daily_record = $con->query($sql_daily_record);
-                    $rowno = 1;
-                    $count = 0;
-                    while ($row_daily_record = $result_daily_record->fetch_array()) {
+                    
+                    $row_daily_record = $result_daily_record->fetch_array();
                         $MAINID = $row_daily_record['id'];
                         $schedule_id = $row_daily_record['schedule_id'];
                         $booked_seats = $row_daily_record['booked_seats'];
@@ -92,24 +19,20 @@ if (isset($_SESSION['customerID'])) {
                         $result_schedule_record = $con->query($sql_schedule_record);
                         $row_schedule_record = $result_schedule_record->fetch_array();
                         $train_id = $row_schedule_record['train_id'];
-                        $route_id = $row_schedule_record['route_id'];
-
-                        $departure = $row_schedule_record['departure'];
-                        $arrival = $row_schedule_record['arrival'];
-                        $twelveHourTime = date("h:i A", strtotime($departure));
 
                         $sql_train_record = "SELECT * FROM tbl_train WHERE id='$train_id'";
                         $result_train_record = $con->query($sql_train_record);
                         $row_train_record = $result_train_record->fetch_array();
-                        $train_name = $row_train_record['name'];
+                        $train_image = $row_train_record['image'];
                         $train_type = $row_train_record['type'];
+                        $train_total_seats = $row_train_record['total'];
 
-                        $sum_seats = (!empty($row_train_record['mclass_1']) ? $row_train_record['mclass_1'] : 0) +
-                            (!empty($row_train_record['mclass_2']) ? $row_train_record['mclass_2'] : 0) +
-                            (!empty($row_train_record['mclass_3']) ? $row_train_record['mclass_3'] : 0) +
-                            (!empty($row_train_record['wclass_1']) ? $row_train_record['wclass_1'] : 0) +
-                            (!empty($row_train_record['wclass_2']) ? $row_train_record['wclass_2'] : 0) +
-                            (!empty($row_train_record['wclass_3']) ? $row_train_record['wclass_3'] : 0);
+                            $mclass_1 = $row_train_record['mclass_1'];
+                            $mclass_2 = $row_train_record['mclass_2'];
+                            $mclass_3 = $row_train_record['mclass_3'];
+                            $wclass_1 = $row_train_record['wclass_1'];
+                            $wclass_2 = $row_train_record['wclass_2'];
+                            $wclass_3 = $row_train_record['wclass_3'];
 
                         $sql_route_record = "SELECT * FROM tbl_route WHERE id='$route_id'";
                         $result_route_record = $con->query($sql_route_record);
@@ -136,6 +59,7 @@ if (isset($_SESSION['customerID'])) {
                         $row_route_in_chk = mysqli_num_rows($result_route_in_record);
                         if ($row_route_in_chk > 0) {
                             $int_stat = 'yes';
+                            $sql_route_in_record;
                         } else {
                             $int_stat = 'no';
                         }
@@ -156,7 +80,6 @@ if (isset($_SESSION['customerID'])) {
                                     <h5 class="panel-title" style="font-size:15px">
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?php echo $rowno; ?>" aria-expanded="true" aria-controls="collapseOne<?php echo $rowno; ?>">
                                             <b><?php echo $route_name; ?> - <?php echo $twelveHourTime; ?> &nbsp; &nbsp; <i class="fas fa-caret-down"></i></b>
-                                            <?php $train_name = $route_name.' - '.$twelveHourTime; ?>
                                         </a>
                                     </h5>
                                 </div>
@@ -165,16 +88,9 @@ if (isset($_SESSION['customerID'])) {
                                         <table style="width:100%">
                                             <tbody>
                                                 <tr>
-                                                    <td style="width:30%">Start Station  </td>
+                                                    <td style="width:30%">Start Station</td>
                                                     <td><?php echo $start_station_name; ?></td>
-                                                    <td style="text-align:right"><a class="btn btn-info"
-   <?php if ($cusid == '') { ?>
-     onclick="alert('Please Log In to Track Express for Booking');"
-   <?php } else { ?>
-     href="booking.php?id=<?php echo $MAINID; ?>&start=<?php echo $start; ?>&end=<?php echo $end; ?>&name=<?php echo $train_name; ?>"
-   <?php } ?>
-   style="color: whitesmoke">Book the Train</a>
-</td>
+                                                    <td style="text-align:right"><a href="booking.php?id=<?php echo $MAINID; ?>" class="btn btn-info" style="color:whitesmoke">Book the Train</a></td>
                                                 </tr>
 
                                                 <tr>
@@ -250,19 +166,4 @@ if (isset($_SESSION['customerID'])) {
                                 </div>
                             </div>
                         <?php } ?>
-                    <?php
-                        $rowno++;
-                    } ?>
-
-                    <?php if ($count == 0) {  ?>
-                        <center>
-                            <p style='color:#B30F00'>We are Sorry... No train Schedules for your Search..</p>
-                        </center>
-                    <?php } ?>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</div>
+                    

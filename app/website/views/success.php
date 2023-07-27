@@ -6,11 +6,13 @@ try {
     $session_id = $_GET['session_id'];
 
     $session = $stripe->checkout->sessions->retrieve($session_id, []);
-    $orderID = $session->metadata->order_id;
+    $bookID = $session->metadata->booking_id;
 
-    echo "<h1>Thanks for your Booking, $session->customer_email! Your order ID is $orderID.</h1>";
+    echo "<h1>Thanks for your Booking, $session->customer_email! Your Booking is Completed</h1>";
   http_response_code(200);
+  header("Location:complete_checkout.php?id=$bookID&name=$session->customer_email");
 } catch (Error $e) {
   http_response_code(500);
   echo json_encode(['error' => $e->getMessage()]);
+  header("Location:error_checkout.php");
 }

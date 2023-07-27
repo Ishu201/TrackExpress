@@ -6,7 +6,7 @@ $userType = $_SESSION['userType'];
 $userName = $_SESSION['userName'];
 
 if ($userID == '') {
-  header("Location:homr.php");
+  header("Location:home.php");
 }
 
 ?>

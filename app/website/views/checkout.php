@@ -26,6 +26,15 @@ stripe products create  --name="Total Amount"  --description="Shopee Order Payme
 stripe prices create  --unit-amount=3000  --currency=lkr  --product="{{prod_OAhXSHoEWCkdl2}}" -->
 
 <?php
+
+$id = $_GET['id'];
+$price = $_GET['price'];
+$name = $_GET['name'];
+
+$price = (int)($price * 100); // Convert the price to an integer without decimals and in the smallest currency unit (e.g., cents).
+
+
+
 require_once('../../../vendor/autoload.php');
 
 $stripe = new \Stripe\StripeClient("sk_test_51NHnWuSCKBfIrcyXwCr4xfCHmluqrABBmnYVIrUb5THCneO8jGlcFjOisxovzAiun9tssDqKe0tfwzKQCbv64FOe00KnoL3VTD");
@@ -50,7 +59,7 @@ $product = $stripe->products->create([
 ]);
 
 $price = $stripe->prices->create([
-  'unit_amount' => 120000, //use .00 without the .
+  'unit_amount' => $price, //use .00 without the .
   'currency' => 'lkr',
   'product' => $product['id'],
 ]);
@@ -63,16 +72,16 @@ $session = $stripe->checkout->sessions->create([
             'quantity' => 1,
         ],
     ],
-    'customer_email' => 'ishu@gmail.com',
-    'success_url' => 'http://localhost/shopee/website/success.php?session_id={CHECKOUT_SESSION_ID}',
-    'cancel_url' => 'http://localhost/shopee/website/cancel.php',
+    'customer_email' => $name,
+    'success_url' => 'http://localhost/TrackExpress/app/website/views/success.php?session_id={CHECKOUT_SESSION_ID}',
+    'cancel_url' => 'http://localhost/TrackExpress/app/website/views/index.php',
     'billing_address_collection' => 'required',
     'payment_intent_data' => [
-        'description' => 'Order ID',
+        'description' => 'Booking ID',
     ],
     'metadata' => [
         'custom_message' => 'Thank you for your payment.',
-        'order_id' => '12345',
+        'booking_id' => $id,
     ],
     'mode' => 'payment',
 ]);
