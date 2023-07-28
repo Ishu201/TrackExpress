@@ -19,7 +19,7 @@
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="top: 85%;left: -30px;">
 						<a class="dropdown-item" href="my_account.php"><i class="fa fa-user mr-2 text-dark" aria-hidden="true"></i>  My Account, <?php echo $cusName; ?></a>
-						<a class="dropdown-item" href="#"><i class="fa fa-history text-dark mr-2" aria-hidden="true"></i>History</a>
+						<a class="dropdown-item" href="booking_history.php"><i class="fa fa-history text-dark mr-2" aria-hidden="true"></i>History</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="logout.php"><i class="fa fa-sign-out text-dark mr-2" aria-hidden="true"></i>Log Out</a>
 					</div>

@@ -6,7 +6,7 @@
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
 } else {
-  $id = '0';
+  $id = date('Y-m-d');
 }
 
 
@@ -36,6 +36,19 @@ $train_obj = new Train;
   });
 </script>
 
+
+<style>
+  .input-with-tickmark {
+    display: flex;
+    align-items: center;
+  }
+
+  .input-with-tickmark input {
+    margin-right: 5px;
+  }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.css">
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="">
@@ -72,7 +85,7 @@ $train_obj = new Train;
       <div class="col-md-12 col-sm-12  "><br>
         <div class="x_panel">
           <div class="x_title">
-            <h2><b>Scheduled Train List</b></h2>
+            <h2><b>Scheduled Train List  -  <?php echo $id ?></b></h2>
             <div class="clearfix">
               <?php include('session_msg.php') ?>
             </div>
@@ -80,10 +93,10 @@ $train_obj = new Train;
 
           <div class="col-md-6 col-sm-4 ">
             <label for="datetime">Select Date</label>
-            <input type="date" style="width:50%" id="datetime" class="form-control">
+            <input type="date" value="<?php echo $id ?>" min="<?php echo date('Y-m-d'); ?>" style="width:50%" id="datetime" class="form-control" onchange="redirectToPage(this)">
           </div>
 
-          <br><br><br> <br><br>
+          <br><br><br> <br>
           <hr>
           <div id="table_schedule">
             <div class="x_content" id="table-container">
@@ -142,7 +155,21 @@ $train_obj = new Train;
                       <!-- original departure -->
                       <td style="text-align:center"><?php echo $row_schedule['departure']; ?></td>
                       <!-- delays -->
-                      <td style="text-align:center"><?php echo $row_des['delay']; ?></td>
+                      <td style="text-align:center">
+                        <?php
+                        if ($row_des['delay'] == '00.00') {
+                          echo '-';
+                        } else {
+                          $originalTime = $row_schedule['departure'];
+                          $intervalInMinutes = $row_des['delay'];
+                          $dateTime = DateTime::createFromFormat('H:i', $originalTime);
+                          $dateTime->add(new DateInterval('PT' . $intervalInMinutes . 'M'));
+                          // Get the updated time in the desired format (24-hour format)
+                          $updatedTime = $dateTime->format('H:i');
+                          echo $updatedTime;
+                        }
+                        ?>
+                      </td>
                       <!-- booked seats -->
                       <td style="text-align:center"><?php echo $row_des['booked_seats']; ?></td>
                       <!--  arrival station -->
@@ -158,10 +185,24 @@ $train_obj = new Train;
                       <td style="text-align:center"><?php echo $row_schedule['arrival']; ?></td>
 
                       <!-- delayed arrival -->
-                      <td style="text-align:center"></td>
-                      <td style="text-align:right">
-                        <!-- <button onclick="window.location.href = 'schedule_trains.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-info editbtn">Delay</button> -->
-                        <!-- <button onclick="confirmRemove2('../controllers/Schedule.php','deactivate','<?php echo $row_des['id']; ?>','Active');" class="btn btn-sm btn-danger">Cancel</button> -->
+                      <td style="text-align:center">
+                      <?php
+                        if ($row_des['delay'] == '00.00') {
+                          echo '-';
+                        } else {
+                          $originalTime = $row_schedule['arrival'];
+                          $intervalInMinutes = $row_des['delay'];
+                          $dateTime = DateTime::createFromFormat('H:i', $originalTime);
+                          $dateTime->add(new DateInterval('PT' . $intervalInMinutes . 'M'));
+                          // Get the updated time in the desired format (24-hour format)
+                          $updatedTime = $dateTime->format('H:i');
+                          echo $updatedTime;
+                        }
+                          ?>
+                      </td>
+                      <td style="text-align:right;width:fit-content">
+                        <button class="btn btn-sm btn-info editbtn" data-toggle="modal" data-target="#delayModal" data-id="<?php echo $row_des['id']; ?>">Delay</button>
+                        <!-- <a class="btn btn-sm btn-danger" href="../controllers/Timetable.php?status=cancel&id=<?php echo $row_des['id']; ?>">Cancel</a> -->
                       </td>
                     </tr>
                   <?php } ?>
@@ -178,6 +219,77 @@ $train_obj = new Train;
 </div>
 <!-- /page content -->
 
+
+
+<!-- Bootstrap Modal -->
+<!-- ... -->
+<div class="modal fade" id="delayModal" tabindex="-1" role="dialog" aria-labelledby="delayModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="../controllers/Timetable.php?status=delay" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="delayModalLabel">Add Delay Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="time_input">Delay Time in Mins : </label>
+          <input type="hidden" value="<?php echo $id; ?>" id="date" name="date">
+          <input type="text" id="time_input" pattern="\d{2,3}" name="delay_time" class="form-control times" required>
+
+          <label for="reason_input">Reason : </label>
+          <textarea id="reason_input" name="reason" class="form-control" rows="4" required></textarea>
+
+          <!-- Hidden input to store the ID value passed from the button -->
+          <input type="hidden" id="modal_id_input" name="booking_id" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" style="background-color:#1ABB9C;border-color:#1ABB9C">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // JavaScript/jQuery code to handle the modal show event
+  $(document).on('click', '.editbtn', function() {
+    var idValue = $(this).data('id'); // Extract the ID value from the button's data-* attribute
+    // Update the hidden input value in the modal with the ID value
+    $('#modal_id_input').val(idValue);
+  });
+</script>
+<!-- ... -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize the datepicker
+    flatpickr(".dates", {
+      dateFormat: "Y-m-d", // Customize the date format (optional)
+      // Add any other options as needed
+    });
+
+    // Initialize the timepicker
+    flatpickr(".times", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i", // Customize the time format (optional)
+      // Add any other options as needed
+    });
+  });
+</script>
+
+
+
+<script>
+  function redirectToPage(element) {
+    // Replace "https://example.com/redirect-url" with the URL you want to redirect to.
+    var val = $(element).val()
+    window.location.href = "http://localhost/TrackExpress/app/system/views/cancel_schedule.php?id=" + val;
+  }
+</script>
 
 <script>
   // JavaScript code
@@ -213,43 +325,6 @@ $train_obj = new Train;
     xhttp.send();
   }
 </script>
-<script>
-  function confirmRemove2(url, status, id, val) {
-    // alert('asd')
-    swal({
-      title: "Are you sure?",
-      text: "Deactivating and Activating will effect the trains on the run..!!",
-      icon: "info",
-      buttons: ["Cancel", "Process"],
-      dangerMode: true,
-    }).then((willRemove) => {
-      if (willRemove) {
 
-        $.ajax({
-          url: url, // Replace with the URL of your PHP controller
-          type: 'GET',
-          data: {
-            status: status,
-            id: id,
-            val: val
-          },
-          success: function(response) {
-            selectedValue = $('#day').val()
-            loadTextFromPage(selectedValue)
-          },
-          error: function(xhr, status, error) {
-            // Handle the error response from the server
-            console.error('Error updating station:', error);
-            // Additional error handling or UI updates
-          }
-        });
-
-
-      } else {
-        swal("Scedule Status is not Changed.");
-      }
-    });
-  }
-</script>
 
 <?php include('footer.php') ?>

@@ -11,39 +11,6 @@ use PHPMailer\PHPMailer\Exception;
 class User
 {
 
-  // public function get_all() {
-  //     $con = $GLOBALS['con'];
-  //     $sql = "SELECT * FROM tbl_user WHERE status='active'";
-  //     $result = $con->query($sql);
-  //     return $result;
-  // }
-
-
-  // public function update_single() {
-  //     $con = $GLOBALS['con'];
-  //     $tid = $_POST['tid'];
-  //     $code = $_POST['code'];
-  //     $name = $_POST['name'];
-  //     $gps_link = $_POST['gps_link'];
-  //     $type = $_POST['type'];
-  //     $class_1 = $_POST['class_1'];
-  //     $class_2 = $_POST['class_2'];
-  //     $class_3 = $_POST['class_3'];
-
-  //       $sql_check = "SELECT * FROM tbl_user WHERE code='$code' and id !='$tid'";
-  //       $result_check = $con->query($sql_check);
-  //       $count_chk = $result_check->num_rows;
-
-  //       if($count_chk != 0){
-  //         $msg = $tid;
-  //       } else{
-  //         $sql = "UPDATE tbl_user SET `code`='$code', `name`='$name', `gps_link`='$gps_link', `type`='$type', `class_1`='$class_1', `class_2`='$class_2', `class_3`='$class_3' WHERE id ='$tid'";
-  //         $result = $con->query($sql) or die($con->error);
-  //         $msg = 'success';
-  //       }
-  //     return $msg;
-  // }
-
 
   public function add()
   {
@@ -339,4 +306,17 @@ class User
       
     return $msg;
   }
+
+
+
+  public function edit_user($tid) {
+    $con = $GLOBALS['con'];
+    $cus_name = $_POST['fullName'];
+    $mobile = $_POST['mobile'];
+   echo  $sql = "UPDATE tbl_customer SET cus_name='$cus_name',mobile='$mobile' WHERE id ='$tid'";
+    $result = $con->query($sql);
+    return $result;
+}
+
+
 }

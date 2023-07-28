@@ -67,9 +67,10 @@ $sql_daily_record = "SELECT * FROM temp_booking_details WHERE customer_name='$us
     $class          =  $row_daily_record['class'];
     $seat           =  $row_daily_record['seat'];
     $passenger      =  $row_daily_record['passenger'];
+    $booking_id      =  $row_daily_record['booking_id'];
 
 
-    $daily_train_id2 = str_pad($daily_train_id, 5, "0", STR_PAD_LEFT);
+    $daily_train_id2 = str_pad($booking_id, 5, "0", STR_PAD_LEFT);
 
     if ($class == '1') {
         $classname = 'First Class';
@@ -87,7 +88,7 @@ $sql_daily_record = "SELECT * FROM temp_booking_details WHERE customer_name='$us
 
 
     $recipient      =  $usermail; // Replace with the recipient's email address
-      $subject = 'Verification Code';
+      $subject = 'Booking Confirmation';
       $body = '
       <!DOCTYPE html>
       <html lang="en">
@@ -217,7 +218,7 @@ $sql_daily_record = "SELECT * FROM temp_booking_details WHERE customer_name='$us
 
 
 
-//header("Location:my_account.php");
+header("Location:my_account.php");
 
 
 ?>

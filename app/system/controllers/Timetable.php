@@ -21,11 +21,14 @@ switch ($status) {
 
 
     case "delay":
-      // $tid = $_REQUEST['id'];
-      // $val = $_REQUEST['val'];
-      //   $msg = $obj->deactivate($tid,$val);
-      //       // $_SESSION['success'] = 'The timetable is deactivated ..!!';
-      //       header("Location:../views/timetable_list.php");
+      $time_input = $_POST['delay_time'];
+      $reason     = $_POST['reason'];
+      $booking_id = $_POST['booking_id'];
+      $date = $_POST['date'];
+
+        $msg = $obj->delay($time_input,$reason,$booking_id);
+            $_SESSION['success'] = 'The Train is Delayed ..!!';
+            header("Location:../views/cancel_schedule.php?id=$date");
         break;
 
 

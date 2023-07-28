@@ -53,12 +53,12 @@ switch ($status) {
         
         break;
 
-    // case "remove":
-    //   $tid = $_REQUEST['id'];
-    //     $msg = $obj->remove_single($tid);
-    //         $_SESSION['success'] = 'User data is removed ..!!';
-    //         header("Location:../views/user_list.php");
-    //     break;
+    case "edit_user":
+      $tid = $_REQUEST['id'];
+        $msg = $obj->edit_user($tid);
+            $_SESSION['success'] = 'User data is Updated ..!!';
+            header("Location:../views/my_account.php");
+        break;
 
 
 }

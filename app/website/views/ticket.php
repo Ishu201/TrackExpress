@@ -65,7 +65,7 @@ body, p, h1 {
 }
 
 .airline .bottom {
-  height: 355px;
+  height: 410px;
   background: var(--bottombg);
   border-bottom-right-radius: 25px;
   border-bottom-left-radius: 25px;
@@ -215,14 +215,74 @@ body, p, h1 {
 
 </style>
 
+<?php 
+include '../controllers/db_connect.php';
+$db = new dbconnection();
+ $con = $db->connection();
+session_start();
+
+$booking_id = $_GET['id'];
+$cusid = $_SESSION['customerID'];
+include '../models/User_model.php';
+$user = new User();
+$user_details = $user->show_single($cusid);
+$row_user = $user_details->fetch_array();
+
+include '../models/Booking_model.php';
+$booking = new Booking();
+$booking_data = $booking->get_single_by_user($booking_id);
+
+$row_booking = $booking_data->fetch_array();
+$dbooking_idNew = str_pad($row_booking['booking_id'], 5, "0", STR_PAD_LEFT);
+
+$originalString = $row_booking['train'];
+$position = strpos($originalString, '-');
+if ($position !== false) {
+    $trimmedString = substr($originalString, 0, $position);
+} else {
+    $trimmedString = $originalString;
+}
 
 
+$daily_train_id = $row_booking['daily_train_id'];
+$train_times = $booking->get_time_by_booking($daily_train_id);
+$row_times = $train_times->fetch_array();
+
+
+$twentyFourHourTime = $row_times['departure'];
+$departure = date("g:i A", strtotime($twentyFourHourTime));
+
+$twentyFourHourTime = $row_times['arrival'];
+$arrival = date("g:i A", strtotime($twentyFourHourTime));
+
+
+$class = $row_booking['class'];
+$seat = $row_booking['seat'];
+
+if ($class == '1') {
+    $classname = 'First Class';
+} else if ($class == '2') {
+    $classname = 'Standard';
+} else {
+    $classname = 'General Class';
+}
+
+if ($seat == 'w') {
+    $seatname = 'Window Seat';
+} else {
+    $seatname = 'Middle Seat';
+}
+?>
+
+
+<title>Train Ticket</title>
+<link rel="icon" type="image/x-icon" href="http://localhost/TrackExpress/assets/website/images/logo.png">
 
 
 <div class="container">
     <div class="ticket airline" style="width:320px;height:fit-content">
         <div class="top" >
-            <h1>Online Ticket<br>00010</h1>
+            <h1>Online Ticket<br><?php echo $dbooking_idNew; ?></h1>
             <div class="big">
                 <p class="from">TRACK</p>
                 <p class="to"><i class="fas fa-arrow-right"></i> EXPRESS</p>
@@ -236,19 +296,20 @@ body, p, h1 {
         <div class="bottom">
             <div class="column">
                 <div class="row row-1">
-                    <p><span>Train</span>Podi Manike</p>
-                    <p class="row--right"><span>Route</span>Kelaniya Line</p>
+                    <p><span>Train</span><?php echo $row_booking['train_name']; ?></p>
+                    <p class="row--right" style="width:50%"><span>Route</span><?php echo $trimmedString; ?></p>
                 </div>
                 <div class="row row-2">
-                    <p><span>Departure</span>10:25 AM<br>Kelaniya</p>
+                    <p><span>Departure</span><?php echo $departure ?><br><?php echo $row_booking['start']; ?></p>
                     <!-- <p class="row--center"><span>Departs</span>11:00 AM</p> -->
-                    <p class="row--right"><span>Arrives</span>1:05 PM<br>Colombo</p>
+                    <p class="row--right"><span>Arrives</span><?php echo $arrival ?><br><?php echo $row_booking['end']; ?></p>
                 </div>
                 <div class="row row-3">
-                    <p><span>Passenger</span>Jesus Ramirez<br>0713456977</p>
-                    <p class="row--right"><span>Seat</span>5<br>First Class<br>Window seat</p>
+                    <p><span>Passenger</span><?php echo $row_user['cus_name']; ?><br><?php echo $row_user['mobile']; ?></p>
+                    <p class="row--right"><span>Seats</span><span style="font-size: 40px;font-weight:bold;color:#B30F00"><?php echo $row_booking['passenger']; ?></span><?php echo $classname; ?> / <?php echo $seatname; ?></p>
                 </div>
-            </div>
+            </div> <br>
+            <center><p style="font-size: 11px;">Thank you for booking with us. Have a safe journey!<br>Track Express</p></center>
             
         </div>
     </div>

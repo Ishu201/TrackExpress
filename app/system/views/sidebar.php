@@ -172,8 +172,8 @@ if ($userID == '') {
 
     /* Define custom properties for scrollbar width and colors */
 :root {
-  --scrollbar-width: 5px;
-  --scrollbar-color: #00cc66;
+  --scrollbar-width: 8px;
+  --scrollbar-color: #1ABB9C;
   --scrollbar-background: lightgray;
 }
 
@@ -207,7 +207,7 @@ if ($userID == '') {
 
 /* Scrollbar Handle (Thumb) on Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: darken(var(--scrollbar-color), 10%);
+  /* background-color: darken(var(--scrollbar-color), 10%); */
 }
 
     </style>
@@ -287,7 +287,6 @@ if ($userID == '') {
                   <li id="Passenger"><a><i class="fa fa-group"></i> Passenger Mgt <span class="fa fa-chevron-down"></span></a>
                     <ul id="Passengermenu" class="nav child_menu">
                       <li id="customers"><a href="customers.php">Customer List</a></li>
-                      <li id="loyalty"><a href="loyalty.php">Loyalty Customer</a></li>
                       <li id="supports"><a href="supports.php">Customer Support</a></li>
                     </ul>
                   </li>

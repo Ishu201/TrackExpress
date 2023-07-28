@@ -11,7 +11,7 @@
 
     include '../models/Booking_model.php';
     $booking = new Booking();
-    $booking_data = $booking->get_date_by_user($cusid);
+    $booking_data = $booking->get_all_by_user($cusid);
     $count = mysqli_num_rows($booking_data);
 
     ?>
@@ -71,7 +71,7 @@
             <div class="row no-gutters slider-text align-items-end justify-content-start" style="height:360px !important;">
                 <div class="col-md-9 ftco-animate pb-5">
                     <p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>My Account <i class="ion-ios-arrow-forward"></i></span></p>
-                    <h1 class="mb-3 bread">My Account</h1>
+                    <h1 class="mb-3 bread">Booking History</h1>
                 </div>
             </div>
         </div>
@@ -79,95 +79,14 @@
 
     <section style="background-color: #eee;">
         <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <img src="login/images/redlogo.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-                            <h5 class="my-3"><?php echo $cusName; ?></h5>
-                            <p class="text-muted mb-1">
-                                <?php
-                                // Assuming $row_des['level'] contains the traveler type
-                                $travelerType = $row_user['level'];
-
-                                // Display badges based on the traveler type
-                                if ($travelerType == 'Traveler') {
-                                    echo '<span class="badge badge-traveler">Traveler</span>';
-                                } elseif ($travelerType == 'Traveler Plus') {
-                                    echo '<span class="badge badge-traveler-plus">Traveler Plus</span>';
-                                } elseif ($travelerType == 'Elite Traveler') {
-                                    echo '<span class="badge badge-elite-traveler">Elite Traveler</span>';
-                                }
-                                ?>
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-8">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" style="color:darkslategrey"><b>Full Name</b> </p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo $cusName; ?></p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" style="color:darkslategrey"><b>Email</b></p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo $row_user['usermail']; ?></p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" style="color:darkslategrey"><b>Mobile</b></p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo $row_user['mobile']; ?></p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" style="color:darkslategrey"><b>No of Orders</b></p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo $row_user['no_of_bookings']; ?></p>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="row">
-                                <div class="col-sm-9"> </div>
-                                <div class="col-sm-3">
-                                    <div class="d-flex justify-content-start mb-2">
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#editProfileModal">Edit Profile</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
+            
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-header" >
                                 <h6>
-                                    <?php echo date('Y-m-d'); ?> Train Bookings
+                                    Train Booking List
                                 </h6>
                             </div>
                             <div class="card-content mt-3">
@@ -189,15 +108,16 @@
                                     <tbody>
                                         <?php if ($count > 0) {
                                             while ($row_booking = $booking_data->fetch_array()) {
+                                                $get_booking_id = $row_booking['booking_id'];
                                                 $dbooking_idNew = str_pad($row_booking['booking_id'], 5, "0", STR_PAD_LEFT);
 
                                                 $daily_train_id = $row_booking['daily_train_id'];
                                                 $train_times = $booking->get_time_by_booking($daily_train_id);
                                                 $row_times = $train_times->fetch_array();
 
-                                                $train_delay = $booking->chk_delay($daily_train_id);
+                                                 $train_delay = $booking->chk_delay($daily_train_id);
 
-                                                if ($train_delay > 0) {
+                                                if (($train_delay > 0) and ($train_delay != '00:00')) {
                                                     $originalTime = $row_times['departure'];
                                                     $dateTime = DateTime::createFromFormat('H:i', $originalTime);
                                                     $dateTime->add(new DateInterval('PT' . $train_delay . 'M'));
@@ -252,8 +172,8 @@
                                                     ?>
                                                     <td style="text-align: center;"><?php echo $classname; ?><br><?php echo $seatname; ?></td>
                                                     <td style="text-align: center;">
-                                                        <a href="your_bill_link_url"><i class='far fa-credit-card'></i></a> &nbsp;
-                                                        <a href="your_bill_link_url"><i class='fas fa-map-marker-alt'></i></a>
+                                                        <a target="_blank" href="ticket.php?id=<?php echo $get_booking_id; ?>"><i class='far fa-credit-card'></i></a> &nbsp;
+                                                        <a target="_blank" href="your_bill_link_url"><i class='fas fa-map-marker-alt'></i></a>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -308,7 +228,20 @@
 <script>
     $(document).ready(function() {
         // Handle form submission
-        $(" #saveChangesBtn").on("click", function() { var fullName=$("#fullName").val(); var email=$("#email").val(); var mobile=$("#mobile").val(); var numOrders=$("#numOrders").val(); // You can now use AJAX to send the form data to the server for processing if needed. // For simplicity, we'll just update the content in the modal. $(".modal-body p.mb-0").eq(0).text(fullName); $(".modal-body p.mb-0").eq(1).text(email); $(".modal-body p.mb-0").eq(2).text(mobile); $(".modal-body p.mb-0").eq(3).text(numOrders); $("#editProfileModal").modal("hide"); }); }); </script>
+        $(" #saveChangesBtn").on("click", function() { 
+            var fullName=$("#fullName").val(); 
+            var email=$("#email").val(); 
+            var mobile=$("#mobile").val(); 
+            var numOrders=$("#numOrders").val(); 
+            
+            $(".modal-body p.mb-0").eq(0).text(fullName); 
+            $(".modal-body p.mb-0").eq(1).text(email); 
+            $(".modal-body p.mb-0").eq(2).text(mobile); 
+            $(".modal-body p.mb-0").eq(3).text(numOrders); 
+            $("#editProfileModal").modal("hide"); 
+        }); 
+    }); 
+</script>
 
                             <?php include('footer.php') ?>
 

@@ -144,7 +144,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="book_pick_date" class="label"><span>*</span> Date</label>
-                                    <input type="date" id="datepicker" min="<?php echo date('Y-m-d'); ?>" class="form-control">
+                                    <input  type="date" id="datepicker" min="<?php $currentDate = date('Y-m-d'); echo date('Y-m-d', strtotime($currentDate . ' +1 day')); ?>" class="form-control">
                             </div>
                             <div class="col-md-3">
                                 <br>
