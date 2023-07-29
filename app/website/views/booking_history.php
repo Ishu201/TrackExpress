@@ -14,6 +14,7 @@
     $booking_data = $booking->get_all_by_user($cusid);
     $count = mysqli_num_rows($booking_data);
 
+
     ?>
 </head>
 
@@ -51,8 +52,9 @@
         th {
             font-size: 15px;
         }
-        td{
-            padding:3px;
+
+        td {
+            padding: 3px;
             font-size: 13px;
         }
 
@@ -65,7 +67,7 @@
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
 
-    <section class="hero-wrap" style="height: 360px;background-image: url(login/images/background-img.jpg);">
+    <section class="hero-wrap" style="height: 360px;background-image: url('<?php echo $web_assets_base_url; ?>images/abc5.jpg');">
         <div class="overlay" style="height: 360px;"></div>
         <div class="container">
             <div class="row no-gutters slider-text align-items-end justify-content-start" style="height:360px !important;">
@@ -79,12 +81,12 @@
 
     <section style="background-color: #eee;">
         <div class="container py-5">
-            
+
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="card-header" >
+                            <div class="card-header">
                                 <h6>
                                     Train Booking List
                                 </h6>
@@ -92,17 +94,17 @@
                             <div class="card-content mt-3">
                                 <table class="table table-bordered" style="min-width: unset!important;">
                                     <thead style="background-color: #bfbfbf;">
-                                            <th> # </th>
-                                            <th>Route </th>
-                                            <th>Train</th>
-                                            <th>Departure</th>
-                                            <th>Time</th>
-                                            <th>Arrival</th>
-                                            <th>Time</th>
-                                            <th>Delays</th>
-                                            <th>Seats</th>
-                                            <th>Seating Option</th>
-                                            <th></th>
+                                        <th> # </th>
+                                        <th>Route </th>
+                                        <th>Train</th>
+                                        <th>Departure</th>
+                                        <th>Time</th>
+                                        <th>Arrival</th>
+                                        <th>Time</th>
+                                        <th>Delays</th>
+                                        <th>Seats</th>
+                                        <th>Seating Option</th>
+                                        <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -115,7 +117,9 @@
                                                 $train_times = $booking->get_time_by_booking($daily_train_id);
                                                 $row_times = $train_times->fetch_array();
 
-                                                 $train_delay = $booking->chk_delay($daily_train_id);
+                                                $train_id = $row_times['train_id'];
+
+                                                $train_delay = $booking->chk_delay($daily_train_id);
 
                                                 if (($train_delay > 0) and ($train_delay != '00:00')) {
                                                     $originalTime = $row_times['departure'];
@@ -173,7 +177,7 @@
                                                     <td style="text-align: center;"><?php echo $classname; ?><br><?php echo $seatname; ?></td>
                                                     <td style="text-align: center;">
                                                         <a target="_blank" href="ticket.php?id=<?php echo $get_booking_id; ?>"><i class='far fa-credit-card'></i></a> &nbsp;
-                                                        <a target="_blank" href="your_bill_link_url"><i class='fas fa-map-marker-alt'></i></a>
+                                                        <a href="booking_history.php?id=<?php echo $train_id; ?>"><i class="fas fa-map-marker-alt"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -193,59 +197,75 @@
     </section>
 
 
-    <!-- Modal -->
-    <!-- Modal -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #67101C; border-bottom: none;">
-                    <h5 class="modal-title" id="editProfileModalLabel" style="color:white !important;font-size:17px">Edit Profile</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: darkslategray;">
-                        <span aria-hidden="true" style="color:whitesmoke">&times;</span>
-                    </button>
-                </div>
-                <form id="editProfileForm" method="post" action="../controllers/User.php?status=edit_user&id=<?php echo $cusid; ?>">
+    <!-- Modal --><?php if ($_GET['id'] != '') { ?>
+        <div class="modal fade bd-example-modal-lg" id="locationModel" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #67101C; border-bottom: none;">
+                        <h5 class="modal-title" id="locationModalLabel" style="color:white !important;font-size:17px">Train Location</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: darkslategray;">
+                            <span aria-hidden="true" style="color:whitesmoke">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body">
-                        <center><img src="login/images/redlogo.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;"></center>
-                        <div class="form-group"> <br>
-                            <center><label for="fullName" style="color: darkslategrey;font-size:15px">Full Name</label></center>
-                            <input type="text" style="width:80%;margin:auto;font-size:15px" class="form-control" id="fullName" name="fullName" value="<?php echo $cusName; ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <center><label for="mobile" style="color: darkslategrey;font-size:15px">Mobile</label></center>
-                            <input type="tel" style="width:80%;margin:auto;font-size:15px" class="form-control" id="mobile" name="mobile" value="<?php echo $row_user['mobile']; ?>" pattern="[0-9]{10}" required>
+                        <?php 
+                            $id = $_GET['id'];
+                            $train_track = $booking->train_track($id);
+                            $row_track = $train_track->fetch_array();
+                             $longitude = $row_track['longitude'];
+                             $latitude = $row_track['latitude'];
+                             date_default_timezone_set('Asia/Colombo');
+                        ?>
+                        <p style="color: #67101C;"><?php echo $row_track['name']; echo '&nbsp;'; echo date('H:i') ?> </p>
+                        <div>
+                            <?php
+                            
+                            // $longitude = 80.76436507450855;
+                            // $latitude = 7.308269992699617;
+
+                            $mapLink = "https://maps.google.com/maps?q=$latitude,$longitude&output=embed";
+                            $iframe = '<iframe width="100%" height="350px" frameborder="0" style="border:0" src="' . $mapLink . '" allowfullscreen></iframe>';
+                            echo $iframe;
+                            ?>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: lightslategray;">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="saveChangesBtn" style="background-color: #007bff; border-color: #007bff;"">Save Changes</button>
+
+                </div>
             </div>
-            </form>
         </div>
-    </div>
-</div>
+    <?php } ?>
 
-<script>
-    $(document).ready(function() {
-        // Handle form submission
-        $(" #saveChangesBtn").on("click", function() { 
-            var fullName=$("#fullName").val(); 
-            var email=$("#email").val(); 
-            var mobile=$("#mobile").val(); 
-            var numOrders=$("#numOrders").val(); 
-            
-            $(".modal-body p.mb-0").eq(0).text(fullName); 
-            $(".modal-body p.mb-0").eq(1).text(email); 
-            $(".modal-body p.mb-0").eq(2).text(mobile); 
-            $(".modal-body p.mb-0").eq(3).text(numOrders); 
-            $("#editProfileModal").modal("hide"); 
-        }); 
-    }); 
-</script>
 
-                            <?php include('footer.php') ?>
+    <script>
+        <?php if (isset($_GET['id'])) { ?>
+            $(document).ready(function() {
+                $('#locationModel').modal('show');
+            });
+        <?php }  ?>
+    </script>
 
-                            <?php include('scripts.php') ?>
+
+    <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $(" #saveChangesBtn").on("click", function() {
+                var fullName = $("#fullName").val();
+                var email = $("#email").val();
+                var mobile = $("#mobile").val();
+                var numOrders = $("#numOrders").val();
+
+                $(".modal-body p.mb-0").eq(0).text(fullName);
+                $(".modal-body p.mb-0").eq(1).text(email);
+                $(".modal-body p.mb-0").eq(2).text(mobile);
+                $(".modal-body p.mb-0").eq(3).text(numOrders);
+                $("#locationModal").modal("hide");
+            });
+        });
+    </script>
+
+    <?php include('footer.php') ?>
+
+    <?php include('scripts.php') ?>
 </body>
 
 </html>

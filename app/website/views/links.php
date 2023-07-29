@@ -20,7 +20,7 @@ $userLevel = $row_user['level'];
   $cusName = '';
   $userLevel = '';
 }
-
+date_default_timezone_set('Asia/Colombo');
 ?>
 
 <link rel="icon" type="image/x-icon" href="<?php echo $web_assets_base_url; ?>images/logo.png">

@@ -1,6 +1,36 @@
 <?php include('sidebar.php') ?>
 
 <?php include('header.php') ?>
+
+
+<?php
+include('../models/Customer_model.php');
+$obj_customer = new Customer;
+$result_customer = $obj_customer->get_all();
+$random_customers = $obj_customer->get_random();
+
+
+$count_customer = mysqli_num_rows($result_customer);
+
+
+include('../models/Booking_model.php');
+$obj_booking = new Booking;
+$sum_booking = $obj_booking->count_all_month();
+$sum_booking_all = $obj_booking->count_all();
+
+
+
+include('../models/Train_model.php');
+$obj_train = new Train;
+$result_train = $obj_train->get_all();
+$count_train = mysqli_num_rows($result_train);
+
+$val = $obj_booking->income_array();
+
+?>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -17,28 +47,28 @@
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
                     <div class="tile-stats" style="background-color:#325694;padding:17px">
                         <div class="icon"><i class="fa fa-users"></i></div>
-                        <div class="count" style="color:whitesmoke">179</div><br>
+                        <div class="count" style="color:whitesmoke"><?php echo $count_customer ?></div><br>
                         <h3 style="color:whitesmoke;font-size:25px">Total Customers</h3> <br>
                     </div>
                 </div>
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
                     <div class="tile-stats" style="background-color:#1196B4;padding:15px">
                         <div class="icon"><i class="fa fa-usd"></i></div>
-                        <div class="count" style="color:whitesmoke;font-size:30px">Rs. 20,000.00</div><br><br>
+                        <div class="count" style="color:whitesmoke;font-size:30px">Rs. <?php echo number_format($sum_booking,2); ?></div><br><br>
                         <h3 style="color:whitesmoke;font-size:25px">Monthly Revenue</h3> <br>
                     </div>
                 </div>
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
                     <div class="tile-stats" style="background-color:#056A54;padding:17px">
                         <div class="icon"><i class="fa fa-bus"></i></div>
-                        <div class="count" style="color:whitesmoke">179</div><br>
+                        <div class="count" style="color:whitesmoke"><?php echo $count_train ?></div><br>
                         <h3 style="color:whitesmoke;font-size:25px">Total Train Count</h3> <br>
                     </div>
                 </div>
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
                     <div class="tile-stats" style="background-color:#B0A8A7;padding:15px">
                         <div class="icon"><i class="fa fa-usd"></i></div>
-                        <div class="count" style="color:whitesmoke;font-size:30px">Rs. 20,000.00</div><br><br>
+                        <div class="count" style="color:whitesmoke;font-size:30px">Rs. <?php echo number_format($sum_booking_all,2); ?></div><br><br>
                         <h3 style="color:whitesmoke;font-size:25px">Gross Earnings</h3> <br>
                     </div>
                 </div>
@@ -64,7 +94,7 @@
                                         label: 'Monthly Income',
                                         borderColor: 'rgb(75, 192, 192)',
                                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        data: [1000, 1200, 800, 1500, 1800, 1300, 1400, 1600, 1100, 1900, 1700, 2000],
+                                        data: [<?php echo implode( ", ", $val ); ?>],
                                         fill: true,
                                     }]
                                 };
@@ -104,61 +134,48 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <ul class="list-unstyled top_profiles scroll-view">
-                                    <li class="media event">
-                                        <a class="pull-left border-aero profile_thumb">
-                                            <i class="fa fa-user aero"></i>
-                                        </a>
-                                        <div class="media-body">
-                                            <a class="title" href="#">Ms. Mary Jane</a>
-                                            <p><strong>$2300. </strong> Traveler </p>
-                                            <p> <small>12 Bookings</small>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="media event">
-                                        <a class="pull-left border-green profile_thumb">
-                                            <i class="fa fa-user green"></i>
-                                        </a>
-                                        <div class="media-body">
-                                            <a class="title" href="#">Ms. Mary Jane</a>
-                                            <p><strong>$2300. </strong> Traveler Plus </p>
-                                            <p> <small>12 Bookings</small>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="media event">
-                                        <a class="pull-left border-blue profile_thumb">
-                                            <i class="fa fa-user blue"></i>
-                                        </a>
-                                        <div class="media-body">
-                                            <a class="title" href="#">Ms. Mary Jane</a>
-                                            <p><strong>$2300. </strong> Elite Traveler </p>
-                                            <p> <small>12 Bookings</small>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="media event">
-                                        <a class="pull-left border-aero profile_thumb">
-                                            <i class="fa fa-user aero"></i>
-                                        </a>
-                                        <div class="media-body">
-                                            <a class="title" href="#">Ms. Mary Jane</a>
-                                            <p><strong>$2300. </strong> Traveler </p>
-                                            <p> <small>12 Bookings</small>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="media event">
-                                        <a class="pull-left border-green profile_thumb">
-                                            <i class="fa fa-user green"></i>
-                                        </a>
-                                        <div class="media-body">
-                                            <a class="title" href="#">Ms. Mary Jane</a>
-                                            <p><strong>$2300. </strong> Traveler Plus </p>
-                                            <p> <small>12 Bookings</small>
-                                            </p>
-                                        </div>
-                                    </li>
+                                <?php while ($row_random_customers = $random_customers->fetch_array()) {
+    $level = $row_random_customers['level'];
+?>
+
+<?php if ($level === 'Traveler') { ?>
+    <li class="media event">
+        <a class="pull-left border-aero profile_thumb">
+            <i class="fa fa-user aero"></i>
+        </a>
+        <div class="media-body">
+            <a class="title" href="#"><?php echo $row_random_customers['cus_name']; ?></a>
+            <p>Traveler</p>
+            <p><small><?php echo  $row_random_customers['no_of_bookings']; ?> Bookings</small></p>
+        </div>
+    </li>
+<?php } elseif ($level === 'Traveler Plus') { ?>
+    <li class="media event">
+        <a class="pull-left border-green profile_thumb">
+            <i class="fa fa-user green"></i>
+        </a>
+        <div class="media-body">
+            <a class="title" href="#"><?php echo $row_random_customers['cus_name']; ?></a>
+            <p>Traveler Plus</p>
+            <p><small><?php echo  $row_random_customers['no_of_bookings']; ?> Bookings</small></p>
+        </div>
+    </li>
+<?php } elseif ($level === 'Elite Traveler') { ?>
+    <li class="media event">
+        <a class="pull-left border-blue profile_thumb">
+            <i class="fa fa-user blue"></i>
+        </a>
+        <div class="media-body">
+            <a class="title" href="#"><?php echo $row_random_customers['cus_name']; ?></a>
+            <p>Elite Traveler</p>
+            <p><small><?php echo  $row_random_customers['no_of_bookings']; ?> Bookings</small></p>
+        </div>
+    </li>
+<?php } ?>
+
+<?php } ?>
+
+                                    
                                 </ul>
                             </div>
                         </div>

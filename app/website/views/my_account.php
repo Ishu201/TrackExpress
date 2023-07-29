@@ -65,7 +65,7 @@
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
 
-    <section class="hero-wrap" style="height: 360px;background-image: url(login/images/background-img.jpg);">
+    <section class="hero-wrap" style="height: 360px;background-image: url('<?php echo $web_assets_base_url; ?>images/abc5.jpg');">
         <div class="overlay" style="height: 360px;"></div>
         <div class="container">
             <div class="row no-gutters slider-text align-items-end justify-content-start" style="height:360px !important;">
@@ -195,9 +195,11 @@
                                                 $train_times = $booking->get_time_by_booking($daily_train_id);
                                                 $row_times = $train_times->fetch_array();
 
-                                                $train_delay = $booking->chk_delay($daily_train_id);
+                                                $train_id = $row_times['train_id'];
 
-                                                if ($train_delay > 0) {
+                                                 $train_delay = $booking->chk_delay($daily_train_id);
+
+                                                if (($train_delay > 0) and ($train_delay != '00:00')) {
                                                     $originalTime = $row_times['departure'];
                                                     $dateTime = DateTime::createFromFormat('H:i', $originalTime);
                                                     $dateTime->add(new DateInterval('PT' . $train_delay . 'M'));
@@ -252,8 +254,8 @@
                                                     ?>
                                                     <td style="text-align: center;"><?php echo $classname; ?><br><?php echo $seatname; ?></td>
                                                     <td style="text-align: center;">
-                                                        <a href="your_bill_link_url"><i class='far fa-credit-card'></i></a> &nbsp;
-                                                        <a href="your_bill_link_url"><i class='fas fa-map-marker-alt'></i></a>
+                                                        <a target="_blank" href="ticket.php?id=<?php echo $row_booking['booking_id']; ?>"><i class='far fa-credit-card'></i></a> &nbsp;
+                                                        <a href="my_account.php?id=<?php echo $cusid; ?>&track=<?php echo $train_id; ?>"><i class="fas fa-map-marker-alt"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -304,6 +306,57 @@
         </div>
     </div>
 </div>
+
+
+
+    <!-- Modal --><?php if ($_GET['track'] != '') { ?>
+        <div class="modal fade bd-example-modal-lg" id="locationModel" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #67101C; border-bottom: none;">
+                        <h5 class="modal-title" id="locationModalLabel" style="color:white !important;font-size:17px">Train Location</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: darkslategray;">
+                            <span aria-hidden="true" style="color:whitesmoke">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <?php 
+                            $id = $_GET['track'];
+                            $train_track = $booking->train_track($id);
+                            $row_track = $train_track->fetch_array();
+                             $longitude = $row_track['longitude'];
+                             $latitude = $row_track['latitude'];
+                             date_default_timezone_set('Asia/Colombo');
+                        ?>
+                        <p style="color: #67101C;"><?php echo $row_track['name']; echo '&nbsp;'; echo date('H:i') ?> </p>
+                        <div>
+                            <?php
+                            
+                            // $longitude = 80.76436507450855;
+                            // $latitude = 7.308269992699617;
+
+                            $mapLink = "https://maps.google.com/maps?q=$latitude,$longitude&output=embed";
+                            $iframe = '<iframe width="100%" height="350px" frameborder="0" style="border:0" src="' . $mapLink . '" allowfullscreen></iframe>';
+                            echo $iframe;
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
+
+    <script>
+        <?php if (isset($_GET['track'])) { ?>
+            $(document).ready(function() {
+                $('#locationModel').modal('show');
+            });
+        <?php }  ?>
+    </script>
+
+
 
 <script>
     $(document).ready(function() {

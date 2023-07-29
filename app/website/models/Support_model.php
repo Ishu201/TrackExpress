@@ -35,14 +35,6 @@ class Support {
   }
 
 
-  public function read($id) {
-      $con = $GLOBALS['con'];
-      $sql = "UPDATE  customer_mails set status='read' WHERE customer_id='$id'";
-      $result = $con->query($sql);
-      return $id;
-  }
-
-
 
   public function add() {
       $con = $GLOBALS['con'];
@@ -51,7 +43,7 @@ class Support {
       date_default_timezone_set('Asia/Colombo');
       $date = date('Y-m-d');
       $time = date('H:i');
-      $sql = "INSERT INTO `customer_mails`(`customer_id`, `subject`, `message`, `from`, `date`, `time`,`status`) VALUES('$customer','','$message','admin','$date','$time','read')";
+      $sql = "INSERT INTO `customer_mails`(`customer_id`, `subject`, `message`, `from`, `date`, `time`,`status`) VALUES('$customer','','$message','customer','$date','$time','pending')";
       $result = $con->query($sql);
       return $customer;
   }

@@ -202,7 +202,7 @@ $train_obj = new Train;
                       </td>
                       <td style="text-align:right;width:fit-content">
                         <button class="btn btn-sm btn-info editbtn" data-toggle="modal" data-target="#delayModal" data-id="<?php echo $row_des['id']; ?>">Delay</button>
-                        <!-- <a class="btn btn-sm btn-danger" href="../controllers/Timetable.php?status=cancel&id=<?php echo $row_des['id']; ?>">Cancel</a> -->
+                        <!-- <a class="btn btn-sm btn-danger" href="../controllers/Timetable.php?status=cancel&id=<?php echo $row_des['id']; ?>">Train</a> -->
                       </td>
                     </tr>
                   <?php } ?>

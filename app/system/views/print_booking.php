@@ -58,7 +58,7 @@ $result = $obj->get_all_by_date($date);
   <div class="header">
     <img class="logo" src="images/translogo.png" alt="Logo">
     <h3>TrackExpress</h3>
-    <div class="report-title" style="font-size:15px">Report - <?php echo date('Y-m-d'); ?></div>
+    <div class="report-title" style="font-size:15px">Booking Report - <?php echo date('Y-m-d'); ?></div>
   </div>
 
   <div class="table-container">

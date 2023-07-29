@@ -222,7 +222,8 @@ $db = new dbconnection();
 session_start();
 
 $booking_id = $_GET['id'];
-$cusid = $_SESSION['customerID'];
+// $cusid = $_SESSION['customerID'];
+$cusid = '10';
 include '../models/User_model.php';
 $user = new User();
 $user_details = $user->show_single($cusid);
@@ -288,9 +289,9 @@ if ($seat == 'w') {
                 <p class="to"><i class="fas fa-arrow-right"></i> EXPRESS</p>
             </div>
             <div class="top--side">
-                <i class="fas fa-plane"></i>
-                <p></p>
-                <p> </p>
+                <i class="fas fa-plane"></i> <br>
+                <p><?php echo $row_times['date']; ?> </p>
+                
             </div>
         </div>
         <div class="bottom">

@@ -11,8 +11,9 @@
 				<li class="nav-item" id="about"><a style="font-size:17px !important" href="about.php" class="nav-link">About</a></li>
 				<li class="nav-item" id="schedule"><a  style="font-size:17px !important" href="schedule.php" class="nav-link">Train Schedule</a></li>
 				<!-- <li class="nav-item"><a href="tracking.php" class="nav-link">Tracking</a></li> -->
-				<li class="nav-item"  id="contact"><a style="font-size:17px !important" href="contact.php" class="nav-link">Contact Us</a></li>
 				<?php if (isset($_SESSION['customerID'])) {  ?>
+				<li class="nav-item"  id="contact"><a style="font-size:17px !important" href="contact.php" class="nav-link">Contact Us</a></li>
+				
 				<li class="nav-item dropdown">
 					<a style="font-size:17px !important" class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					My Account
