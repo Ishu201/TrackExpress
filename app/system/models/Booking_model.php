@@ -14,6 +14,18 @@ class Booking
         return $result;
     }
 
+    public function get_all_by_date2($date)
+    {
+        $con = $GLOBALS['con'];
+        $sql = "SELECT tbl_bookings.*, tbl_daily_trains.*, tbl_bookings.id AS mainID
+      FROM tbl_bookings
+      INNER JOIN tbl_daily_trains ON tbl_bookings.daily_train_id = tbl_daily_trains.id
+      WHERE tbl_daily_trains.`date` like '$date%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+
     public function get_all_by_temp($id)
     {
         $con = $GLOBALS['con'];

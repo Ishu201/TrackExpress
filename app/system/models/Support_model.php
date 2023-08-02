@@ -46,8 +46,8 @@ class Support {
 
   public function add() {
       $con = $GLOBALS['con'];
-      $customer = $_POST['cusid'];
-      $message = $_POST['message'];
+      $customer = $con->real_escape_string($_POST['cusid']);
+      $message = $con->real_escape_string($_POST['message']);
       date_default_timezone_set('Asia/Colombo');
       $date = date('Y-m-d');
       $time = date('H:i');

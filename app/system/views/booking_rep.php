@@ -9,9 +9,9 @@ $obj = new Booking;
 if (isset($_GET['id'])) {
   $date = $_GET['id'];
 } else {
-  $date = date('Y-m-d');
+  $date = date('Y-m');
 }
-$result = $obj->get_all_by_date($date);
+$result = $obj->get_all_by_date2($date);
 
 
 ?>
@@ -21,7 +21,7 @@ $result = $obj->get_all_by_date($date);
   <div class="">
     <div class="page-title">
       <div class="title_left"><br>
-        <p>Ticket Booking Mgt / Booking List</p>
+        <p>Revenue Mgt / Online Booking List</p>
       </div>
       <!-- <a href="train_list.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Train List</a> -->
     </div>
@@ -43,11 +43,11 @@ $result = $obj->get_all_by_date($date);
           <div class="x_content">
           <div class="row">
             <div class="col-md-6 col-sm-4 ">
-              <label for="datetime">Select Date</label>
-              <input type="date" value="<?php echo $date ?>" style="width:50%" id="datetime" class="form-control" onchange="redirectToPage(this)">
+              <label for="datetime">Select Month</label>
+              <input type="month" value="<?php echo $date ?>" style="width:50%" id="datetime" class="form-control" onchange="redirectToPage(this)">
             </div>
             <div class="col-md-6 col-sm-4 ">
-            <a target="_blank" href="print_booking.php?date=<?php echo $date; ?>" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Print Booking List</a>
+            <a target="_blank" href="print_booking2.php?date=<?php echo $date; ?>" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Print Booking List</a>
             </div>
           </div>
 

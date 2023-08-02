@@ -12,10 +12,10 @@ class Station {
 
   public function update_single() {
       $con = $GLOBALS['con'];
-      $sid = $_POST['tid'];
-      $name = $_POST['name'];
-      $contact = $_POST['contact'];
-      $type = $_POST['type'];
+      $sid = $con->real_escape_string($_POST['tid']);
+      $name = $con->real_escape_string($_POST['name']);
+      $contact = $con->real_escape_string($_POST['contact']);
+      $type = $con->real_escape_string($_POST['type']);
 
          $sql_check = "SELECT * FROM tbl_station WHERE name='$name' and id !='$sid' and status='active'";
         $result_check = $con->query($sql_check);
@@ -41,9 +41,9 @@ class Station {
 
   function add() {
     $con = $GLOBALS['con'];
-    $name = $_POST['name'];
-    $contact = $_POST['contact'];
-    $type = $_POST['type'];
+    $name = $con->real_escape_string($_POST['name']);
+    $contact = $con->real_escape_string($_POST['contact']);
+    $type = $con->real_escape_string($_POST['type']);
       
         $sql_query = "SELECT * FROM tbl_station WHERE (name='$name' or contact='$contact') and status='active'";
         $result_query = $con->query($sql_query); 
@@ -58,8 +58,8 @@ class Station {
           $lastInsertID = $con->insert_id;
           
           if (isset($_POST['chkuser']) and ($type == 'Main Station')) {
-          $username = $_POST['username'];
-          $password = md5($_POST['password']);
+          $username = $con->real_escape_string($_POST['username']);
+          $password = md5($con->real_escape_string($_POST['password']));
 
           $sql = "INSERT INTO `tbl_user`(`station_id`,`username`, `password`, `first_name`, `mobile`, `type`) VALUES ('$lastInsertID','$username','$password','$name','$contact','station')";
           $result = $con->query($sql) or die($con->error);

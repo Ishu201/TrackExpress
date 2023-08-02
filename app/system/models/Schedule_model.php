@@ -23,9 +23,9 @@ class Schedule {
 
   function add() {
     $con = $GLOBALS['con'];
-      $day = $_POST['day'];
-      $train_id = $_POST['train_id'];
-      $route_id = $_POST['route_id'];
+      $day = $con->real_escape_string($_POST['day']);
+      $train_id = $con->real_escape_string($_POST['train_id']);
+      $route_id = $con->real_escape_string($_POST['route_id']);
       
           $sql = "INSERT INTO `tbl_schedule`( `day`, `train_id`, `route_id`) VALUES('$day','$train_id','$route_id')";
           $result = $con->query($sql) or die($con->error);
@@ -56,7 +56,7 @@ class Schedule {
   public function update_time($value,$table,$col,$id){
     $con = $GLOBALS['con'];
 
-    echo $sql = "UPDATE $table SET $col='$value' WHERE id='$id'";
+     $sql = "UPDATE $table SET $col='$value' WHERE id='$id'";
     $result = $con->query($sql);
     return $result;
   }
@@ -79,7 +79,7 @@ class Schedule {
   public function deactivate($id,$val){
     $con = $GLOBALS['con'];
 
-    echo $sql = "UPDATE tbl_schedule SET status='$val' WHERE id='$id'";
+     $sql = "UPDATE tbl_schedule SET status='$val' WHERE id='$id'";
     $result = $con->query($sql);
     return $result;
   }

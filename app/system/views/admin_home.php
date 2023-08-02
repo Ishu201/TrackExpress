@@ -2,7 +2,13 @@
 
 <?php include('header.php') ?>
 
-
+<?php 
+if($userType == 'station'){ 
+header('Location: ' . 'cancel_schedule.php');
+}else if($userType == 'train'){
+    header('Location: ' . 'train_location.php');
+}
+?>
 <?php
 include('../models/Customer_model.php');
 $obj_customer = new Customer;

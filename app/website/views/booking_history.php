@@ -177,7 +177,7 @@
                                                     <td style="text-align: center;"><?php echo $classname; ?><br><?php echo $seatname; ?></td>
                                                     <td style="text-align: center;">
                                                         <a target="_blank" href="ticket.php?id=<?php echo $get_booking_id; ?>"><i class='far fa-credit-card'></i></a> &nbsp;
-                                                        <a href="booking_history.php?id=<?php echo $train_id; ?>"><i class="fas fa-map-marker-alt"></i></a>
+                                                        <!-- <a href="booking_history.php?id=<?php echo $train_id; ?>"><i class="fas fa-map-marker-alt"></i></a> -->
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -197,7 +197,7 @@
     </section>
 
 
-    <!-- Modal --><?php if ($_GET['id'] != '') { ?>
+    <!-- Modal --><?php if (isset($_GET['track'])) { ?>
         <div class="modal fade bd-example-modal-lg" id="locationModel" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">

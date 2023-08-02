@@ -21,14 +21,24 @@ switch ($status) {
 
 
     case "delay":
-      $time_input = $_POST['delay_time'];
-      $reason     = $_POST['reason'];
-      $booking_id = $_POST['booking_id'];
-      $date = $_POST['date'];
+      $time_input = $con->real_escape_string($_POST['delay_time']);
+      $reason     = $con->real_escape_string($_POST['reason']);
+      $booking_id = $con->real_escape_string($_POST['booking_id']);
+      $date = $con->real_escape_string($_POST['date']);
 
         $msg = $obj->delay($time_input,$reason,$booking_id);
             $_SESSION['success'] = 'The Train is Delayed ..!!';
             header("Location:../views/cancel_schedule.php?id=$date");
+        break;
+
+    case "alter":
+      $train_id     = $con->real_escape_string($_POST['train_id']);
+      $booking_id = $con->real_escape_string($_POST['booking_id2']);
+      $day = $_GET['day'];
+
+        $msg = $obj->alter($train_id,$booking_id);
+            $_SESSION['success'] = 'The Train is Changed ..!!';
+            header("Location:../views/cancel_schedule.php?id=$day");
         break;
 
 

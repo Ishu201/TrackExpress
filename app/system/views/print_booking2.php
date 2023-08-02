@@ -1,6 +1,5 @@
-<?php include('sidebar.php') ?>
-
-<?php include('header.php') ?>
+<?php include('common.php');
+session_start(); ?>
 
 <?php
 include('../models/Booking_model.php');
@@ -9,53 +8,71 @@ $obj = new Booking;
 if (isset($_GET['id'])) {
   $date = $_GET['id'];
 } else {
-  $date = date('Y-m-d');
+  $date = date('Y-m');
 }
-$result = $obj->get_all_by_date($date);
+$result = $obj->get_all_by_date2($date);
 
 
 ?>
 
-<!-- page content -->
-<div class="right_col" role="main">
-  <div class="">
-    <div class="page-title">
-      <div class="title_left"><br>
-        <p>Ticket Booking Mgt / Booking List</p>
-      </div>
-      <!-- <a href="train_list.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Train List</a> -->
-    </div>
+<!DOCTYPE html>
+<html>
 
-    <div class="clearfix">
-      <?php include('session_msg.php') ?>
-    </div>
+<head>
+  <title>TrackExpress - Report</title>
+  <!-- Add Bootstrap CSS link here -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
 
+    .header {
+      text-align: center;
+    }
 
+    .logo {
+      max-width: 100px;
+    }
 
-    <div class="row">
-      <div class="col-md-12 col-sm-12  ">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2><b>Booking Details <?php echo $date ?></b></h2>
-            <div class="clearfix"></div>
+    .report-title {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
 
-          </div>
-          <div class="x_content">
-          <div class="row">
-            <div class="col-md-6 col-sm-4 ">
-              <label for="datetime">Select Date</label>
-              <input type="date" value="<?php echo $date ?>" style="width:50%" id="datetime" class="form-control" onchange="redirectToPage(this)">
-            </div>
-            <div class="col-md-6 col-sm-4 ">
-            <a target="_blank" href="print_booking.php?date=<?php echo $date; ?>" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Print Booking List</a>
-            </div>
-          </div>
+    .table-container {
+      margin-top: 30px;
+    }
 
-            
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="card-box table-responsive"> <br><br>
-                  <table id="datatable" class="table table-bordered" style="width:100%">
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    td {
+      font-size: 11px;
+    }
+
+    th {
+      font-size: 13px;
+
+    }
+  </style>
+</head>
+
+<body onload="print()">
+  <div class="header">
+    <img class="logo" src="images/translogo.png" alt="Logo">
+    <h3>TrackExpress</h3>
+    <div class="report-title" style="font-size:15px">Monthly Booking List Report - 
+    <?php $date = new DateTime($date.'-01');
+          echo $month = $date->format('F Y'); ?></div>
+  </div>
+
+  <div class="table-container">
+  <table id="datatable" class="table table-bordered" style="width:100%">
                     <thead>
                       <tr>
                         <th>Booking ID</th>
@@ -65,7 +82,7 @@ $result = $obj->get_all_by_date($date);
                         <th>Booked Seats</th>
                         <th>Seat Option</th>
                         <th>Bonus</th>
-                        <th>Total Amount(Rs.)</th>
+                        <th style="text-align:right">Total Amount(Rs.)</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -108,23 +125,16 @@ $result = $obj->get_all_by_date($date);
                       <?php } ?>
                     </tbody>
                   </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-</div>
-<!-- /page content -->
 
-<script>
-  function redirectToPage(element) {
-    // Replace "https://example.com/redirect-url" with the URL you want to redirect to.
-    var val = $(element).val()
-    window.location.href = "http://localhost/TrackExpress/app/system/views/booking_history.php?id=" + val;
-  }
-</script>
+  <div class="footer">
+    <p>TrackExpress</p>
+  </div>
 
-<?php include('footer.php') ?>
+  <!-- Add Bootstrap JS and jQuery links here -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

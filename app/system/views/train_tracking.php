@@ -73,15 +73,12 @@ $train_obj = new Train;
             </div>
           </div>
 
-
-          <br><br><br> <br>
-          <hr>
           <div id="table_schedule">
             <div class="x_content" id="table-container">
             <table id="datatable" class="table table-bordered" style="width:100%">
                   <thead>
                     <tr>
-                      <!-- <th>Route Name</th> -->
+                      <th>Route Name</th>
                       <th>Train</th>
                       <th style="text-align:center">Start Station</th>
                       <th style="text-align:center">GPS Location</th>
@@ -97,7 +94,7 @@ $train_obj = new Train;
                     ?>
                       <tr>
                         <!-- routename -->
-                        <!-- <td>
+                        <td>
                           <?php
                           $route_id = $row_schedule['route_id'];
 
@@ -105,7 +102,7 @@ $train_obj = new Train;
                           $row_route = $route->fetch_array();
                           echo $row_route['route_name'];
                           ?>
-                        </td> -->
+                        </td>
                         <!-- train -->
                         <td style="text-align:center">
                           <?php
@@ -177,8 +174,10 @@ $train_obj = new Train;
           <div class="modal-body">
             <?php
                   $id = $_GET['track'];
-                  $train_track = $booking->train_track($id);
-                  $row_track = $train_track->fetch_array();
+                   $sql = "SELECT * FROM tbl_train WHERE id='$id'";
+                  $result = $con->query($sql);
+                  
+                  $row_track = $result->fetch_array();
                   $longitude = $row_track['longitude'];
                   $latitude = $row_track['latitude'];
                   date_default_timezone_set('Asia/Colombo');

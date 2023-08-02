@@ -78,7 +78,7 @@
                   <td style="text-align:center;"><b><?php echo $row_des['total']; ?></b></td>
                   <td style="text-align:right;">
                     <button onclick="window.location.href = 'train_reg.php?id=<?php echo $row_des['id']; ?>';" class="btn btn-sm btn-success editbtn">Edit</button>
-                    <button onclick="confirmRemove('../controllers/Train.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>
+                    <button disabled onclick="confirmRemove('../controllers/Train.php?status=remove&id=<?php echo $row_des['id']; ?>');" class="btn btn-sm btn-danger removebtn">Remove</button>
                   </td>
                 </tr>
               <?php } ?>

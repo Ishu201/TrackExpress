@@ -208,133 +208,134 @@ class Timetable {
 }
 
 
-// public function cancel($booking_id){
-
-//   $con = $GLOBALS['con'];
-//     $sql = "UPDATE tbl_daily_trains SET `cancel_stat` = 'yes' WHERE id='$booking_id'";
-//     $result = $con->query($sql);
-
-//     $sql_st = "SELECT * FROM tbl_bookings where daily_train_id='$booking_id'"; //sunday
-//     $res_result = $con->query($sql_st);
-//     $row_data = $res_result->fetch_array();
-//     $cusID = $row_data['customer_id'];
-//     $tbl_bookings_id = $row_data['id'];
-//     $daily_train_id2 = str_pad($tbl_bookings_id, 5, "0", STR_PAD_LEFT);
-
-//     $sql_st2 = "SELECT * FROM tbl_customer where id='$cusID'"; //sunday
-//     $res_result2 = $con->query($sql_st2);
-//     $row_data2 = $res_result2->fetch_array();
-//     $usermail = $row_data2['usermail'];
 
 
-//     $recipient      =  $usermail; // Replace with the recipient's email address
-//       $subject = 'Verification Code';
-//       $body = '
-//       <!DOCTYPE html>
-//       <html lang="en">
+  public function alter($train_id,$booking_id) {
+    $con = $GLOBALS['con'];
+    $sql = "UPDATE tbl_daily_trains SET `alter_train`='$train_id'  WHERE id='$booking_id'";
+    $result = $con->query($sql);
+
+    $sql_st = "SELECT * FROM tbl_bookings where daily_train_id='$booking_id'"; //sunday
+    $res_result = $con->query($sql_st);
+    $row_data = $res_result->fetch_array();
+    $cusID = $row_data['customer_id'];
+    $tbl_bookings_id = $row_data['id'];
+    $daily_train_id2 = str_pad($tbl_bookings_id, 5, "0", STR_PAD_LEFT);
+
+    $sql_st2 = "SELECT * FROM tbl_customer where id='$cusID'"; //sunday
+    $res_result2 = $con->query($sql_st2);
+    $row_data2 = $res_result2->fetch_array();
+    $usermail = $row_data2['usermail'];
+
+
+    $recipient      =  $usermail; // Replace with the recipient's email address
+      $subject = 'Changed Train Information';
+      $body = '
+      <!DOCTYPE html>
+      <html lang="en">
       
-//       <head>
-//           <meta charset="UTF-8">
-//           <meta http-equiv="X-UA-Compatible" content="IE=edge">
-//           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//           <title>Verification Code Email</title>
-//           <style>
-//               /* Set a white background color for the email */
-//               body {
-//                   margin: 0;
-//                   padding: 0;
-//                   background-color: #ffffff;
-//                   font-family: Arial, sans-serif;
-//               }
+      <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Verification Code Email</title>
+          <style>
+              /* Set a white background color for the email */
+              body {
+                  margin: 0;
+                  padding: 0;
+                  background-color: #ffffff;
+                  font-family: Arial, sans-serif;
+              }
       
-//               /* Container styles */
-//               .container {
-//                   max-width: 600px;
-//                   margin: 0 auto;
-//                   padding: 20px;
-//                   box-sizing: border-box;
-//                   border: 1px solid #e0e0e0;
-//                   border-radius: 8px;
-//               }
+              /* Container styles */
+              .container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  padding: 20px;
+                  box-sizing: border-box;
+                  border: 1px solid #e0e0e0;
+                  border-radius: 8px;
+              }
       
-//               /* Heading styles */
-//               h1 {
-//                   color: #4285F4;
-//                   text-align: center;
-//               }
+              /* Heading styles */
+              h1 {
+                  color: #4285F4;
+                  text-align: center;
+              }
       
-//               /* Button styles */
-//               .cta-button {
-//                   display: inline-block;
-//                   background-color: #4285F4;
-//                   color: #ffffff;
-//                   text-decoration: none;
-//                   padding: 10px 20px;
-//                   border-radius: 5px;
-//               }
+              /* Button styles */
+              .cta-button {
+                  display: inline-block;
+                  background-color: #4285F4;
+                  color: #ffffff;
+                  text-decoration: none;
+                  padding: 10px 20px;
+                  border-radius: 5px;
+              }
       
-//               /* Footer styles */
-//               .footer {
-//                   color: #666666;
-//                   text-align: center;
-//                   margin-top: 20px;
-//               }
-//           </style>
-//           </style>
-//       </head>
+              /* Footer styles */
+              .footer {
+                  color: #666666;
+                  text-align: center;
+                  margin-top: 20px;
+              }
+          </style>
+          </style>
+      </head>
       
-//       <body>
-//           <div class="container">
-//               <h1 style="color:#AA1826 !important">Train Delay Notification - ['.$daily_train_id2.']</h1>
-//               <p>Dear ' . $recipient . ',</p>
-//               <p>We regret to inform you that your upcoming train journey has been canceled due to unforeseen circumstances.</p>
-//               <br>
-//               <p style="color:#AA1826 !important"><b>Please Check your Order List From TrackExpress to show the delay Details.. </b></p>
-//               <br>
-//               <div class="footer">
-//               We understand that this delay may cause inconvenience, and we sincerely apologize for any inconvenience caused. Our team is working diligently to resolve the situation and ensure a smooth journey for all passengers.</p>
-//             <p>If you have any questions or require further assistance, please do not hesitate to contact our customer support team at info@trackexpress.com
-//               <br>Best Regards,<br><b>TrackExpress</b>
-//           </div>
-//           </div>
-//       </body>
+      <body>
+          <div class="container">
+              <h1 style="color:#AA1826 !important">Train Change Notification - ['.$daily_train_id2.']</h1>
+              <p>Dear ' . $recipient . ',</p>
+              <p>We hope this email finds you well. We regret to inform you that there has been a change in the train of your upcoming train journey due some unavoidable reasons.</p>
+              <br>
+              <p style="color:#AA1826 !important"><b>Please Check your Order List From TrackExpress to show the changed Train Details.. </b></p>
+              <br>
+              <div class="footer">
+              We understand that this change may cause inconvenience, and we sincerely apologize for any inconvenience caused. Our team is working diligently to resolve the situation and ensure a smooth journey for all passengers.</p>
+            <p>If you have any questions or require further assistance, please do not hesitate to contact our customer support team at info@trackexpress.com
+              <br>Best Regards,<br><b>TrackExpress</b>
+          </div>
+          </div>
+      </body>
       
-//       </html>
-//       ';
+      </html>
+      ';
 
-//       $mail = new PHPMailer();
-//       // Set the mailer to use SMTP
-//       $mail->isSMTP();
+      $mail = new PHPMailer();
+      // Set the mailer to use SMTP
+      $mail->isSMTP();
 
-//       // SMTP settings (replace with your email provider's settings)
-//       $mail->Host = 'smtp.gmail.com';
-//       $mail->SMTPAuth = true;
-//       $mail->Username = 'ishutest201@gmail.com'; // Replace with your Gmail email address
-//       $mail->Password = 'fccfsuedwfcogoqf'; // Replace with your Gmail password
-//       $mail->SMTPSecure = 'ssl';
-//       $mail->Port = 465; // Use the appropriate port for your email provider
+      // SMTP settings (replace with your email provider's settings)
+      $mail->Host = 'smtp.gmail.com';
+      $mail->SMTPAuth = true;
+      $mail->Username = 'ishutest201@gmail.com'; // Replace with your Gmail email address
+      $mail->Password = 'fccfsuedwfcogoqf'; // Replace with your Gmail password
+      $mail->SMTPSecure = 'ssl';
+      $mail->Port = 465; // Use the appropriate port for your email provider
 
-//       // Sender and recipient
-//       $mail->setFrom('TrackExpress@support.com', 'Track Express');
-//       $mail->addAddress($recipient);
+      // Sender and recipient
+      $mail->setFrom('TrackExpress@support.com', 'Track Express');
+      $mail->addAddress($recipient);
 
-//       // Step 5: Add the HTML content to the email body.
-//       $mail->msgHTML($body);
+      // Step 5: Add the HTML content to the email body.
+      $mail->msgHTML($body);
 
-//       // Email content
-//       $mail->Subject = $subject;
-//       $mail->Body = $body;
+      // Email content
+      $mail->Subject = $subject;
+      $mail->Body = $body;
 
-//       // Send the email
-//       if (!$mail->send()) {
-//         echo 'Mailer Error: ' . $mail->ErrorInfo;
-//       } else {
-//         echo 'Message sent!';
-//       }
+      // Send the email
+      if (!$mail->send()) {
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+      } else {
+        echo 'Message sent!';
+      }
     
+    return $result;
+}
 
 
-//   return $result;
-// }
 
 }

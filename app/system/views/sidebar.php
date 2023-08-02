@@ -303,21 +303,29 @@ if ($userID == '') {
                       <li id="income_chart"><a href="income_chart.php">Income Chart</a></li>
                     </ul>
                   </li>
+                  <li id="Revenue"><a href="user_list.php"><i class="fa fa-clone"></i>User List </li>
                 </ul>
               </div>
-              <?php }else{ ?>
+              <?php }else if($userType == 'station'){ ?>
                 <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home </a>
                   </li>
                   <li id="Schedule"><a href="cancel_schedule.php"><i class="fa fa-list"></i> Cancel & Delay Schedule</a></li>
-                  <li id="Booking"><a href="booking_list.php"><i class="fa fa-bar-chart-o"></i> Check Booking Tickets</a></li>
-                  <li id="Revenue"><a href="booking_list.php"><i class="fa fa-clone"></i>Train Trcking Details </li>
+                  <li id="Revenue"><a href="train_tracking.php"><i class="fa fa-clone"></i>Train Trcking Details </li>
                 </ul>
               </div>
 
-              <?php } ?>
+              <?php }else{  ?>
 
+                <div class="menu_section">
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Home </a>
+                  </li>
+                  <li id="Schedule"><a href="train_location.php"><i class="fa fa-list"></i> Train Location </a></li>
+                </ul>
+              </div>
+                <?php } ?>
             </div>
             <!-- /sidebar menu -->
 

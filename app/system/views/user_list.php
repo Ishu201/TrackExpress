@@ -3,8 +3,8 @@
 <?php include('header.php') ?>
 
 <?php
-include('../models/Customer_model.php');
-$obj = new Customer;
+include('../models/User_model.php');
+$obj = new User;
 $result = $obj->get_all();
 ?>
 
@@ -33,7 +33,7 @@ $result = $obj->get_all();
     <div class="">
         <div class="page-title">
             <div class="title_left"><br>
-                <p>Passenger Mgt / Customer List</p>
+                <p>User List</p>
             </div>
             <!-- <a href="train_list.php" class="btn btn-sm btn-info" style="float:right;margin-top:10px;">Train List</a> -->
         </div>
@@ -46,18 +46,17 @@ $result = $obj->get_all();
             <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2><b>Customer Details</b></h2>
+                        <h2><b>User List</b></h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                         <table id="datatable" class="table table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Customer ID</th>
-                                    <th>Customer Name</th>
-                                    <th>Customer Email</th>
-                                    <th>User Level</th>
-                                    <th>Total Booking</th>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th style="text-align:center">Type</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,24 +65,23 @@ $result = $obj->get_all();
                                 ?>
                                     <tr>
                                         <td><?php echo $cusid; ?></td>
-                                        <td><?php echo $row_des['cus_name']; ?></td>
-                                        <td><?php echo $row_des['usermail']; ?></td>
-                                        <td>
+                                        <td><?php echo $row_des['first_name']; ?></td>
+                                        <td><?php echo $row_des['username']; ?></td>
+                                        <td style="text-align:center">
                                             <?php
                                             // Assuming $row_des['level'] contains the traveler type
-                                            $travelerType = $row_des['level'];
+                                            $travelerType = $row_des['type'];
 
                                             // Display badges based on the traveler type
-                                            if ($travelerType == 'Traveler') {
-                                                echo '<span class="badge badge-traveler">Traveler</span>';
-                                            } elseif ($travelerType == 'Traveler Plus') {
-                                                echo '<span class="badge badge-traveler-plus">Traveler Plus</span>';
-                                            } elseif ($travelerType == 'Elite Traveler') {
-                                                echo '<span class="badge badge-elite-traveler">Elite Traveler</span>';
+                                            if ($travelerType == 'station') {
+                                                echo '<span class="badge badge-traveler">Station User</span>';
+                                            } elseif ($travelerType == 'train') {
+                                                echo '<span class="badge badge-traveler-plus">Train User</span>';
+                                            } elseif ($travelerType == 'admin') {
+                                                echo '<span class="badge badge-elite-traveler">Admin User</span>';
                                             }
                                             ?>
                                         </td>
-                                        <td><?php echo $row_des['no_of_bookings']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

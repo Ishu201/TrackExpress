@@ -85,7 +85,7 @@ $train_obj = new Train;
       <div class="col-md-12 col-sm-12  "><br>
         <div class="x_panel">
           <div class="x_title">
-            <h2><b>Scheduled Train List  -  <?php echo $id ?></b></h2>
+            <h2><b>Scheduled Train List - <?php echo $id ?></b></h2>
             <div class="clearfix">
               <?php include('session_msg.php') ?>
             </div>
@@ -93,7 +93,7 @@ $train_obj = new Train;
 
           <div class="col-md-6 col-sm-4 ">
             <label for="datetime">Select Date</label>
-            <input type="date" value="<?php echo $id ?>" min="<?php echo date('Y-m-d'); ?>" style="width:50%" id="datetime" class="form-control" onchange="redirectToPage(this)">
+            <input type="date" value="<?php echo $id ?>" style="width:50%" id="datetime" class="form-control" onchange="redirectToPage(this)">
           </div>
 
           <br><br><br> <br>
@@ -112,7 +112,7 @@ $train_obj = new Train;
                     <th style="text-align:center">End Station</th>
                     <th style="text-align:center;width:8%">Original Arrival</th>
                     <th style="text-align:center;width:8%">Delayed Arrival</th>
-                    <th style="text-align:right;width:12%">Action</th>
+                    <?php if ($id == date('Y-m-d')) { ?><th style="text-align:right;width:15%">Action</th><?php } ?>
                   </tr>
                 </thead>
                 <tbody>
@@ -136,7 +136,13 @@ $train_obj = new Train;
                       <!-- train -->
                       <td style="text-align:center">
                         <?php
-                        $train_id = $row_schedule['train_id'];
+                        $alter_train = $row_des['alter_train'];
+                        if ($alter_train != '') {
+                          $train_id = $alter_train;
+                        } else {
+                          $train_id = $row_schedule['train_id'];
+                        }
+
 
                         $train = $train_obj->viewTrainselected($train_id);
                         $row_train = $train->fetch_array();
@@ -186,7 +192,7 @@ $train_obj = new Train;
 
                       <!-- delayed arrival -->
                       <td style="text-align:center">
-                      <?php
+                        <?php
                         if ($row_des['delay'] == '00.00') {
                           echo '-';
                         } else {
@@ -198,12 +204,14 @@ $train_obj = new Train;
                           $updatedTime = $dateTime->format('H:i');
                           echo $updatedTime;
                         }
-                          ?>
+                        ?>
                       </td>
-                      <td style="text-align:right;width:fit-content">
-                        <button class="btn btn-sm btn-info editbtn" data-toggle="modal" data-target="#delayModal" data-id="<?php echo $row_des['id']; ?>">Delay</button>
-                        <!-- <a class="btn btn-sm btn-danger" href="../controllers/Timetable.php?status=cancel&id=<?php echo $row_des['id']; ?>">Train</a> -->
-                      </td>
+                      <?php if ($id == date('Y-m-d')) { ?>
+                        <td style="text-align:right;width:fit-content">
+                          <button class="btn btn-sm btn-info editbtn" data-toggle="modal" data-target="#delayModal" data-id="<?php echo $row_des['id']; ?>">Delay</button>
+                          <button class="btn btn-sm btn-danger alterbtn" data-toggle="modal" data-target="#alterModel" data-id="<?php echo $row_des['id']; ?>">Change</button>
+                        </td>
+                      <?php } ?>
                     </tr>
                   <?php } ?>
 
@@ -215,6 +223,8 @@ $train_obj = new Train;
         </div>
       </div>
     </div>
+
+    
   </div>
 </div>
 <!-- /page content -->
@@ -253,12 +263,71 @@ $train_obj = new Train;
   </div>
 </div>
 
+<!-- Bootstrap Modal -->
+<!-- ... -->
+<div class="modal fade" id="alterModel" tabindex="-1" role="dialog" aria-labelledby="alterModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="../controllers/Timetable.php?status=alter&day=<?php echo $id; ?>" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="alterModelLabel">Change Train Due to Emergency</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="time_input">Select Another Train </label>
+          <input type="hidden" value="<?php echo $id; ?>" id="date" name="date">
+          <select id="train_id" name="train_id" class="form-control" required style="width:50%">
+            <option value="">- select a train -</option>
+            <?php
+            $sql = "SELECT * FROM tbl_train WHERE status = 'active'";
+            $result_trains = $con->query($sql);
+
+            while ($row_trains = $result_trains->fetch_array()) {
+              $train_org_id = $row_trains['id'];
+              echo  $sql2 = "SELECT tbl_schedule.* FROM tbl_daily_trains, tbl_schedule WHERE tbl_daily_trains.schedule_id = tbl_schedule.id and tbl_schedule.train_id='$train_org_id' and tbl_daily_trains.date = '$id'";
+              $result_schedule = $con->query($sql2);
+              $row_count = mysqli_num_rows($result_schedule);
+
+              if ($row_count == 0) {
+
+            ?>
+                <option value="<?php echo $row_trains['id']; ?>"><?php echo $row_trains['code']; ?> - <?php echo $row_trains['name']; ?></option>
+            <?php }
+            } ?>
+          </select>
+
+          <!-- Hidden input to store the ID value passed from the button -->
+          <input type="hidden" id="modal_id_input2" name="booking_id2" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" style="background-color:#1ABB9C;border-color:#1ABB9C">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
 <script>
   // JavaScript/jQuery code to handle the modal show event
   $(document).on('click', '.editbtn', function() {
     var idValue = $(this).data('id'); // Extract the ID value from the button's data-* attribute
     // Update the hidden input value in the modal with the ID value
     $('#modal_id_input').val(idValue);
+  });
+</script>
+
+<script>
+  // JavaScript/jQuery code to handle the modal show event
+  $(document).on('click', '.alterbtn', function() {
+    var idValue = $(this).data('id'); // Extract the ID value from the button's data-* attribute
+    // Update the hidden input value in the modal with the ID value
+    $('#modal_id_input2').val(idValue);
   });
 </script>
 <!-- ... -->

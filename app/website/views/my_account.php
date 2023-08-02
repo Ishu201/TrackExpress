@@ -309,7 +309,7 @@
 
 
 
-    <!-- Modal --><?php if ($_GET['track'] != '') { ?>
+    <!-- Modal --><?php if (isset($_GET['track'])) { ?>
         <div class="modal fade bd-example-modal-lg" id="locationModel" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">

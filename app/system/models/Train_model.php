@@ -38,18 +38,18 @@ class Train {
 
   public function update_single() {
     $con = $GLOBALS['con'];
-    $tid = $_POST['tid'];
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $speed = $_POST['speed'];
-    $type = $_POST['type'];
-    $wclass_1 = $_POST['wclass_1'];
-    $wclass_2 = $_POST['wclass_2'];
-    $wclass_3 = $_POST['wclass_3'];
-    $mclass_1 = $_POST['mclass_1'];
-    $mclass_2 = $_POST['mclass_2'];
-    $mclass_3 = $_POST['mclass_3'];
-    $total = $_POST['total'];
+    $tid = $con->real_escape_string($_POST['tid']);
+    $code = $con->real_escape_string($_POST['code']);
+    $name = $con->real_escape_string($_POST['name']);
+    $speed = $con->real_escape_string($_POST['speed']);
+    $type = $con->real_escape_string($_POST['type']);
+    $wclass_1 = $con->real_escape_string($_POST['wclass_1']);
+    $wclass_2 = $con->real_escape_string($_POST['wclass_2']);
+    $wclass_3 = $con->real_escape_string($_POST['wclass_3']);
+    $mclass_1 = $con->real_escape_string($_POST['mclass_1']);
+    $mclass_2 = $con->real_escape_string($_POST['mclass_2']);
+    $mclass_3 = $con->real_escape_string($_POST['mclass_3']);
+    $total = $con->real_escape_string($_POST['total']);
 
     // File upload handling
     $targetDir = "../../../assets/website/images/upload/";
@@ -102,17 +102,20 @@ class Train {
 
   function add() {
     $con = $GLOBALS['con'];
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $speed = $_POST['speed'];
-    $type = $_POST['type'];
-    $wclass_1 = $_POST['wclass_1'];
-    $wclass_2 = $_POST['wclass_2'];
-    $wclass_3 = $_POST['wclass_3'];
-    $mclass_1 = $_POST['mclass_1'];
-    $mclass_2 = $_POST['mclass_2'];
-    $mclass_3 = $_POST['mclass_3'];
-    $total = $_POST['total'];
+    $code = $con->real_escape_string($_POST['code']);
+    $name = $con->real_escape_string($_POST['name']);
+    $speed = $con->real_escape_string($_POST['speed']);
+    $type = $con->real_escape_string($_POST['type']);
+    $wclass_1 = $con->real_escape_string($_POST['wclass_1']);
+    $wclass_2 = $con->real_escape_string($_POST['wclass_2']);
+    $wclass_3 = $con->real_escape_string($_POST['wclass_3']);
+    $mclass_1 = $con->real_escape_string($_POST['mclass_1']);
+    $mclass_2 = $con->real_escape_string($_POST['mclass_2']);
+    $mclass_3 = $con->real_escape_string($_POST['mclass_3']);
+    $total = $con->real_escape_string($_POST['total']);
+
+    $username = $code.'@trackexpress.com';
+    $password = $code.'@tc';
 
     // File upload handling
     $targetDir = "../../../assets/website/images/upload/";
@@ -139,6 +142,11 @@ class Train {
                     $sql = "INSERT INTO tbl_train (`code`, `name`, `speed`, `type`, `wclass_1`, `wclass_2`, `wclass_3`, `mclass_1`, `mclass_2`, `mclass_3`, `total`, `image`) 
                             VALUES ('$code', '$name', '$speed', '$type', '$wclass_1', '$wclass_2', '$wclass_3', '$mclass_1', '$mclass_2', '$mclass_3', '$total', '$fileName')";
                     $result = $con->query($sql) or die($con->error);
+                    $lastInsertID = $con->insert_id;
+
+                    $sql = "INSERT INTO tbl_user (`station_id`, `username`, `password`,`first_name`, `type`) 
+                            VALUES ('$lastInsertID', '$username', '$password','$name', 'train')";
+                    $result = $con->query($sql) or die($con->error);
 
                     $msg = '2';
                 }
@@ -163,6 +171,8 @@ class Train {
     $result = $con->query($sql);
     return $result;
   }
+
+
 
 }
 
