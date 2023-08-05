@@ -21,26 +21,35 @@ switch ($status) {
     //          $_SESSION['success'] =  'Successfully Registered ..!!';
     //         // $code = 'error';
     //       } 
-        
+
     //     header("Location:../views/user_reg.php");
     //     break;
 
 
-    case "loginAdmin":
-         $msg = $obj->login_check();
-        
-          if ($msg == 'verified') {
-            header("Location:../views/admin_home.php");
-          }else if ($msg == 'notverified'){
-             $_SESSION['error'] = 'This Account is not Verified';
-            header("Location:../views");
-          }else{
-             $_SESSION['error'] = 'This Username or Password is Incorrect';
-            header("Location:../views");
-          }
-          
-        
-        break;
+  case "loginAdmin":
+    $msg = $obj->login_check();
+
+    if ($msg == 'verified') {
+
+      if ($_SESSION['userType'] == 'station') {
+        header("Location:../views/cancel_schedule.php");
+      } 
+      else if ($_SESSION['userType'] == 'train') {
+        header("Location:../views/train_location.php");
+      } 
+      else {
+        header("Location:../views/admin_home.php");
+      }
+    } else if ($msg == 'notverified') {
+      $_SESSION['error'] = 'This Account is not Verified';
+      header("Location:../views");
+    } else {
+      $_SESSION['error'] = 'This Username or Password is Incorrect';
+      header("Location:../views");
+    }
+
+
+    break;
 
     // case "remove":
     //   $tid = $_REQUEST['id'];

@@ -309,10 +309,7 @@ if ($userID == '') {
               <?php }else if($userType == 'station'){ ?>
                 <div class="menu_section">
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
-                  </li>
-                  <li id="Schedule"><a href="cancel_schedule.php"><i class="fa fa-list"></i> Cancel & Delay Schedule</a></li>
-                  <li id="Revenue"><a href="train_tracking.php"><i class="fa fa-clone"></i>Train Trcking Details </li>
+                  <li id="Schedule" class="active"><a href="cancel_schedule.php"><i class="fa fa-list"></i> Train Delays</a></li>
                 </ul>
               </div>
 
@@ -320,9 +317,7 @@ if ($userID == '') {
 
                 <div class="menu_section">
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
-                  </li>
-                  <li id="Schedule"><a href="train_location.php"><i class="fa fa-list"></i> Train Location </a></li>
+                  <li id="Schedule" class="active"><a href="train_location.php"><i class="fa fa-list"></i> Train Location </a></li>
                 </ul>
               </div>
                 <?php } ?>

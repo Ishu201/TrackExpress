@@ -54,7 +54,7 @@ $train_obj = new Train;
   <div class="">
     <div class="page-title">
       <div class="title_left"><br>
-        <p>Train Schedule Mgt / Cancel & Delayed Trains </p>
+        <p>Train Delays </p>
       </div>
       <div style="float: right;text-align:center">
         <?php
@@ -72,10 +72,7 @@ $train_obj = new Train;
         <!-- HTML code -->
         <img src="images/Loading2.gif" alt="" style="width: 50px; display: none;" id="loadingImage">
         <div style="display: none; cursor: not-allowed; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.15); z-index: 99999" id="loadingOverlay"></div>
-        <a href="#" id='btnload' class="btn btn-sm btn-info" id="startButton" onclick="startLoading()">Start for <?php echo $newYear ?>-<?php echo $newMonth ?></a>
-
-        <br><span>Time Table is created untill <?php echo $row_last_date ?></span>
-      </div>
+        </div>
 
     </div>
     <br>
@@ -98,7 +95,7 @@ $train_obj = new Train;
 
           <br><br><br> <br>
           <hr>
-          <div id="table_schedule">
+          <div id="table_schedule"> 
             <div class="x_content" id="table-container">
               <table id="datatable" class="table table-bordered" style="width:100%">
                 <thead>
@@ -121,15 +118,19 @@ $train_obj = new Train;
                     $schedule_id = $row_des['schedule_id'];
                     $schedule = $Schedule_obj->viewScheduleselected($schedule_id);
                     $row_schedule = $schedule->fetch_array();
+
+                    $route_id = $row_schedule['route_id'];
+
+                        $route = $route_obj->viewRouteselected($route_id);
+                        $row_route = $route->fetch_array();
+                        $start_station_id = $row_route['start_station_id'];
+                        if($_SESSION['userID'] == $start_station_id){
                   ?>
                     <tr>
                       <!-- routename -->
                       <td>
                         <?php
-                        $route_id = $row_schedule['route_id'];
-
-                        $route = $route_obj->viewRouteselected($route_id);
-                        $row_route = $route->fetch_array();
+                        
                         echo $row_route['route_name'];
                         ?>
                       </td>
@@ -152,7 +153,6 @@ $train_obj = new Train;
                       <!-- start station -->
                       <td style="text-align:center">
                         <?php
-                        $start_station_id = $row_route['start_station_id'];
                         $start_station = $station_obj->viewStationselected($start_station_id);
                         $row_start_station = $start_station->fetch_array();
                         echo $row_start_station['name'];
@@ -213,7 +213,7 @@ $train_obj = new Train;
                         </td>
                       <?php } ?>
                     </tr>
-                  <?php } ?>
+                  <?php } } ?>
 
                 </tbody>
               </table>

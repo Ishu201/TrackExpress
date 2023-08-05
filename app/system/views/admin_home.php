@@ -2,13 +2,7 @@
 
 <?php include('header.php') ?>
 
-<?php 
-if($userType == 'station'){ 
-header('Location: ' . 'cancel_schedule.php');
-}else if($userType == 'train'){
-    header('Location: ' . 'train_location.php');
-}
-?>
+
 <?php
 include('../models/Customer_model.php');
 $obj_customer = new Customer;
@@ -31,7 +25,6 @@ $obj_train = new Train;
 $result_train = $obj_train->get_all();
 $count_train = mysqli_num_rows($result_train);
 
-$val = $obj_booking->income_array();
 
 ?>
 
@@ -90,6 +83,26 @@ $val = $obj_booking->income_array();
                     </div>
                     <div class="x_content">
                         <div class="col-md-9 col-sm-12 ">
+
+                        <?php 
+                            $month = date('Y');
+            $year = $month;
+            $sal = [];
+
+              for ($i=1; $i < 13; $i++) {
+                $month = $year.'-'.sprintf("%02d", $i);
+                $expo_amt = 0;
+                 $sql = "SELECT SUM(tbl_bookings.total_payment) AS totalPay
+                FROM tbl_bookings
+                INNER JOIN tbl_daily_trains ON tbl_bookings.daily_train_id = tbl_daily_trains.id
+                WHERE tbl_daily_trains.`date` like '$month%'";
+                
+                  $result = $con->query($sql);
+                    $row_expo = $result->fetch_array();
+                    $expo_amt = $row_expo['totalPay'];
+                    $sal[] = $expo_amt;
+              }
+            ?>
                             <canvas id="lineChart" width="100%" height="400px"></canvas>
 
                             <script>
@@ -100,7 +113,7 @@ $val = $obj_booking->income_array();
                                         label: 'Monthly Income',
                                         borderColor: 'rgb(75, 192, 192)',
                                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        data: [<?php echo implode( ", ", $val ); ?>],
+                                        data: [<?php echo implode( ", ", $sal ); ?>,0,50],
                                         fill: true,
                                     }]
                                 };
@@ -130,7 +143,7 @@ $val = $obj_booking->income_array();
                         <div class="col-md-3 col-sm-12 ">
                             <div>
                                 <div class="x_title">
-                                    <h2>Top Customers</h2>
+                                    <h2>Recent Customers</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>

@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Geolocation Example</title>
-</head>
-<body>
-    
-    <?php
-    $id = '7'; 
-    include('common.php');
 
+    <?php
+    $id = $_SESSION['userID'];
+    
     include '../../website/models/Train_model.php';
     $train = new Train();
     $train_data = $train->viewTrainselected($id);
     $row_train = $train_data->fetch_array();
     ?>
-
-    <p id="demo"></p>
 
     <script>
         var x = document.getElementById("demo");
@@ -55,10 +46,3 @@
         }
     </script>
 
-    <div class="col-md-6">
-        <!-- Display your train information or other content here as needed -->
-        <br> <br>
-    </div>
-
-</body>
-</html>

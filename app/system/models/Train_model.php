@@ -115,7 +115,7 @@ class Train {
     $total = $con->real_escape_string($_POST['total']);
 
     $username = $code.'@trackexpress.com';
-    $password = $code.'@tc';
+    $password = md5($code.'@tc');
 
     // File upload handling
     $targetDir = "../../../assets/website/images/upload/";
